@@ -1,0 +1,16 @@
+html {
+  height: 100%;
+}
+body {
+  height: 100%;
+  background: #020202
+}
+#root {
+  height: 100%;
+}
+nav {
+  height: 70px;
+}
+.bg {
+  background: #29373a;
+}
