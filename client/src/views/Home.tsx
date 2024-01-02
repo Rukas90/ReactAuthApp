@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
-import NavigationBar from "./components/NavigationBar"
-import LoginForm from "./components/LoginForm"
+import NavigationBar from "../components/NavigationBar"
+import LoginForm from "../components/LoginForm"
 import axios from "axios"
 
 const Home = () => {
@@ -21,7 +21,7 @@ const Home = () => {
   return (
     <>
       <div className="w-100 h-100 hstack">
-        <div className="h-100 bg-black p-4" style={loginContainerStyle}>
+        <div className="h-100 bg-black py-4 px-6" style={loginContainerStyle}>
           <LoginForm />
         </div>
         <div className="h-100 flex-grow-1 p-4 bg">

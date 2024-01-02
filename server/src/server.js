@@ -26,9 +26,7 @@ export class Server {
 
         //this.router         = new Router(this)
     }
-    #setupMiddleware() {
-        this.app.set('view engine', 'ejs')
-        
+    #setupMiddleware() {        
         this.app.use(express.static('public'))
         this.app.use(bodyParser.urlencoded({ extended: true }))
         this.app.use(session({
