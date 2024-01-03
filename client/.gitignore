@@ -10,6 +10,10 @@ lerna-debug.log*
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
+# SCSS Compiled CSS file
+/src/scss/main.css
+/src/scss/main.css.map
+
 # Runtime data
 pids
 *.pid
