@@ -1,0 +1,19 @@
+{
+    "CONTINUE": "Tęsti",
+    "CONTINUE_WITH_GOOGLE": "Tęsti su Google",
+    "CONTINUE_WITH_TWITTER": "Tęsti su Twitter",
+    "EMAIL": "El. paštas",
+    "PASSWORD": "Slaptažodis",
+    "OR": "ARBA",
+    "REGISTER": "Registruotis",
+    "ALREADY_HAVE_AN_ACCOUNT?": "Jau turite paskyrą?",
+    "DONT_HAVE_AN_ACCOUNT": "Neturite paskyros?",
+    "LOGIN": "Prisijungti",
+    "LOG_IN": "Prisijungti",
+    "PASSWORD_LOWERCASE_CONDITION": "Yra mažosios raidės (a–z)",
+    "PASSWORD_UPPERCASE_CONDITION": "Turi didžiąsias raides (A–Z)",
+    "PASSWORD_NUMBER_CONDITION": "Yra skaičius (0–9)",
+    "PASSWORD_SPECIAL_CHARACTER_CONDITION": "Turi ypatingą charakterį",
+    "PASSWORD_MINIMUM_CHARACTER_CONDITION": "Turi mažiausiai {{count}} simbolių",
+    "FORGOT_THE_PASSWORD?": "Pamiršote slaptažodį?"
+}

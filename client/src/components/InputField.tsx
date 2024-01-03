@@ -9,6 +9,7 @@ interface Props {
   autocomplete?: string
   hideable?: boolean
   isVisible?: boolean
+  onValueChange?: (newValue: string) => void
 }
 
 const InputField = ({
@@ -17,12 +18,19 @@ const InputField = ({
   autocomplete,
   hideable,
   isVisible,
+  onValueChange,
 }: Props) => {
   const [visible, setVisible] = useState(isVisible)
   const [text, setText] = useState("")
 
   const onInputTextChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setText(event.target.value)
+    const newValue = event.target.value
+
+    setText(newValue)
+
+    if (onValueChange) {
+      onValueChange(newValue)
+    }
   }
 
   return (

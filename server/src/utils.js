@@ -1,6 +1,6 @@
 import path                 from 'path'
 import { fileURLToPath }    from 'url'
-import { DBTableSchema }    from './table_schema.js'
+import { DBTableSchema }    from './db-table-schema.js'
 
 export const rootPath     = path.dirname(fileURLToPath(import.meta.url))
 export const cookieMaxAge = 365 * 24 * 60 * 60 * 1000

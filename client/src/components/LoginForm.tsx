@@ -1,45 +1,35 @@
 import React from "react"
-import GoogleLoginButton from "./GoogleLoginButton"
-import XLoginButton from "./XLoginButton"
 import FormHeader from "../templates/FormHeader"
-import LabelHorizontalSeparator from "../templates/LabelHorizontalSeparator"
 import Spacer from "../templates/Spacer"
-import InputField from "./InputField"
 import CustomButton from "./CustomButton"
+import AuthSocialButtons from "../templates/AuthSocialButtons"
+import AuthForm from "../templates/AuthForm"
+import { useTranslation } from "react-i18next"
+import LanguageSwitcher from "./LanguageSwitcher"
 
 const LoginForm = () => {
+  const { t } = useTranslation()
+
   return (
     <>
       <FormHeader
-        header="Login"
-        secondary="Don't have an account?"
-        linkText="Register"
+        header={t("LOGIN")}
+        secondary={t("DONT_HAVE_AN_ACCOUNT")}
+        linkText={t("REGISTER")}
         linkHref="/register"
       />
-      <div className="form-container w-100 mt-4">
+      <div className="form-container w-100 mt-4 d-flex justify-content-center">
         <div className="auth-form-container w-100 d-flex justify-content-center align-items-center vstack">
-          <GoogleLoginButton />
-          <XLoginButton />
-          <LabelHorizontalSeparator label="OR" />
-          <Spacer space={1.5} unit="rem" isVertical />
-          <div className="w-100">
-            <InputField type="email" placeholder="Email" autocomplete="email" />
-            <Spacer space={1.5} unit="rem" isVertical />
-            <InputField
-              type="password"
-              placeholder="Password"
-              hideable
-              isVisible={false}
-            />
-          </div>
-          <Spacer space={1.5} unit="rem" isVertical />
+          <AuthSocialButtons />
+          <AuthForm />
           <span>
             <a href="#" className="link-light fw-light">
-              Forgot the password?
+              {t("FORGOT_THE_PASSWORD?")}
             </a>
           </span>
           <Spacer space={1.5} unit="rem" isVertical />
-          <CustomButton text="Log in" icon="" link="#" extendWidth />
+          <CustomButton text={t("LOG_IN")} icon="" link="#" extendWidth />
+          <LanguageSwitcher />
         </div>
       </div>
     </>

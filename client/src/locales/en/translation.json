@@ -1,0 +1,19 @@
+{
+    "CONTINUE": "Continue",
+    "CONTINUE_WITH_GOOGLE": "Continue with Google",
+    "CONTINUE_WITH_TWITTER": "Continue with Twitter",
+    "EMAIL": "Email",
+    "PASSWORD": "Password",
+    "OR": "OR",
+    "REGISTER": "Register",
+    "ALREADY_HAVE_AN_ACCOUNT?": "Already have an account?",
+    "DONT_HAVE_AN_ACCOUNT": "Don't have an account?",
+    "LOGIN": "Login",
+    "LOG_IN": "Log in",
+    "PASSWORD_LOWERCASE_CONDITION": "Has a lowercase character (a-z)",
+    "PASSWORD_UPPERCASE_CONDITION": "Has a uppercase character (A-Z)",
+    "PASSWORD_NUMBER_CONDITION": "Has a number (0-9)",
+    "PASSWORD_SPECIAL_CHARACTER_CONDITION": "Has a special character",
+    "PASSWORD_MINIMUM_CHARACTER_CONDITION": "Has a minimum of {{count}} characters",
+    "FORGOT_THE_PASSWORD?": "Forgot the password?"
+}

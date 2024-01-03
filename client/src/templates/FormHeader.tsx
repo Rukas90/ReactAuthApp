@@ -22,6 +22,7 @@ const FormHeader = ({
         <img className="logo" src={Logo} />
         <Spacer space={3} unit="rem" isVertical />
         <h1 className="text-light">{header}</h1>
+        <Spacer space={0.5} unit="rem" isVertical />
         <div>
           <span className="text-secondary">{secondary}</span>
           <span className="ms-2">

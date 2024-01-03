@@ -2,10 +2,11 @@ import express                                          from 'express'
 import { log, error }                                   from 'console'
 import session                                          from 'express-session'
 import connectPgSimple                                  from 'connect-pg-simple'
+import cors                                             from 'cors'
 import bodyParser                                       from 'body-parser'
 import { Database }                                     from './database.js'
-import { PassportAuth }                                 from './passportAuth.js'
-import { Router }                                       from './router.js'
+import { PassportAuth }                                 from './passport-auth.js'
+import { Endpoints }                                    from './endpoints.js'
 import { cookieMaxAge, getUsersDatabaseTableSchema }    from './utils.js'
 
 export class Server {
@@ -24,9 +25,12 @@ export class Server {
         this.passportAuth   = new PassportAuth(this)
         this.passportAuth.initialize()
 
-        //this.router         = new Router(this)
+        this.endpoints      = new Endpoints(this)
     }
-    #setupMiddleware() {        
+    #setupMiddleware() {
+        this.app.use(cors({
+            origin: 'http://localhost:5173' // Client side URL
+        }))
         this.app.use(express.static('public'))
         this.app.use(bodyParser.urlencoded({ extended: true }))
         this.app.use(session({
