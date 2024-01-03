@@ -20,6 +20,13 @@ nav {
   height: 70px;
 }
 
+.logo {
+  width: 150px;
+  height: 150px;
+  border-radius: 100%;
+  box-shadow: 0 0 250px 8px rgba(68, 0, 255, 0.2470588235);
+}
+
 .bg {
   background: #29373a;
 }
@@ -97,6 +104,10 @@ nav {
 
 .non-rounded {
   border-radius: 0;
+}
+
+.auth-form-container {
+  max-width: 400px;
 }
 
 .letter-spacing-1 {
