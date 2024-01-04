@@ -17,6 +17,7 @@
     },
     "include": [
       "src",                                     // Include all files in the src directory,
-      "src/types/**/*.d.ts"                      // Include your custom type definitions
+      "src/types/**/*.d.ts",                     // Include your custom type definitions
+      "./vite-env.d.ts"
     ]
 }

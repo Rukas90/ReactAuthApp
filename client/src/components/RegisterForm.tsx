@@ -5,6 +5,7 @@ import AuthSocialButtons from "../templates/AuthSocialButtons"
 import AuthForm from "../templates/AuthForm"
 import ValidationGroup from "./ValidationGroup"
 import { useTranslation } from "react-i18next"
+import LanguageSwitcher from "./LanguageSwitcher"
 
 const RegisterForm = () => {
   const minPasswordLength = 12

@@ -1,5 +1,3 @@
-import axios from 'axios'
-
 export class Endpoints {
     constructor(server) {
         this.server = server
@@ -13,6 +11,13 @@ export class Endpoints {
             } else {
                 res.json({ authenticated: false })
             }
+        })
+        this.server.app.get('/session/lang', (req, res) => {
+            res.json( { language : req.session.language || 'en' } );
+        })
+        this.server.app.put('/session/lang', (req, res) => {
+            req.session.language = req.body.language;
+            res.send('Language updated');
         })
     }
 }

@@ -1,25 +1,27 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { useTranslation } from "react-i18next"
 import { languages } from "../config/i18n"
+import axios from "axios"
+import { API_URL } from "../utils/Variables"
+import { useLanguage } from "../contexts/LanguageProvider"
+
+const GetLanguageName = (language: string) => {
+  return languages.find((lang) => lang.code === language)?.name || "Language"
+}
 
 const LanguageSwitcher = () => {
+  const { currentLanguage, setCurrentLanguage } = useLanguage()
   const { i18n } = useTranslation()
-  const [language, setLanguage] = useState("")
 
-  useEffect(() => {
-    const savedLanguage = localStorage.getItem("language") || i18n.language
-
-    if (savedLanguage && i18n.language !== savedLanguage) {
-      i18n.changeLanguage(savedLanguage)
-    }
-    const currentLanguage = languages.find(
-      (lang) => lang.code === savedLanguage
+  const changeLanguage = async (language: string) => {
+    await axios.put(
+      `${API_URL}/session/lang`,
+      { language: language },
+      { withCredentials: true }
     )
-    setLanguage(currentLanguage ? currentLanguage.name : "Language")
-  }, [i18n.language])
-  const changeLanguage = (language: string) => {
-    i18n.changeLanguage(language)
-    localStorage.setItem("language", language)
+    await i18n.changeLanguage(language)
+
+    setCurrentLanguage(language)
   }
   return (
     <div className="dropdown">
@@ -29,7 +31,7 @@ const LanguageSwitcher = () => {
         data-bs-toggle="dropdown"
         aria-expanded="false"
       >
-        {language}
+        {GetLanguageName(currentLanguage)}
       </button>
       <ul className="dropdown-menu">
         {languages.map(({ code, name }) => (

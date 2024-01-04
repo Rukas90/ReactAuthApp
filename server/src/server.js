@@ -29,16 +29,19 @@ export class Server {
     }
     #setupMiddleware() {
         this.app.use(cors({
-            origin: 'http://localhost:5173' // Client side URL
+            origin: 'http://localhost:5173', // Client side URL
+            credentials: true // To allow sending of cookies with requests
         }))
         this.app.use(express.static('public'))
+        this.app.use(express.json())
         this.app.use(bodyParser.urlencoded({ extended: true }))
         this.app.use(session({
             secret:            process.env.PASSPORT_SESSION_SECRET,
             resave:            false,
             saveUninitialized: false,
             cookie:            { 
-                secure: false, 
+                secure: false,
+                httpOnly: true, 
                 maxAge: cookieMaxAge 
             },
             store:             new this.pgSessionStore({
