@@ -4,6 +4,19 @@ interface Props {
   label: string
 }
 
+/**
+ * LabelHorizontalSeparator Component
+ *
+ * Renders a label with horizontal lines on either side.
+ * Commonly used as a visual separator in forms and UI layouts.
+ *
+ * Props:
+ * - label: The text to be displayed in the center of the separator.
+ *
+ * Style:
+ * - Uses horizontal rules (hr) to create lines on either side of the label.
+ * - The label is centered and styled with specific classes for consistent appearance.
+ */
 const LabelHorizontalSeparator = ({ label }: Props) => {
   return (
     <>

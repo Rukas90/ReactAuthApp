@@ -3,6 +3,13 @@ import CustomButton from "./CustomButton"
 import TwitterIcon from "../img/icons/social/twitter.png"
 import { useTranslation } from "react-i18next"
 
+/**
+ * XLoginButton Component
+ *
+ * Renders a button for Twitter login functionality.
+ *
+ * Utilizes the CustomButton component to create a specialized button for Twitter login.
+ */
 const XLoginButton = () => {
   const { t } = useTranslation()
 

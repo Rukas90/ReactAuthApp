@@ -7,6 +7,12 @@ import AuthForm from "../templates/AuthForm"
 import { useTranslation } from "react-i18next"
 import LanguageSwitcher from "./LanguageSwitcher"
 
+/**
+ * LoginForm Component
+ *
+ * A login interface providing multiple authentication options.
+ * Includes social media logins, a standard form for credentials, and language switching capabilities.
+ */
 const LoginForm = () => {
   const { t } = useTranslation()
 

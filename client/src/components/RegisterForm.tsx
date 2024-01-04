@@ -7,6 +7,11 @@ import ValidationGroup from "./ValidationGroup"
 import { useTranslation } from "react-i18next"
 import LanguageSwitcher from "./LanguageSwitcher"
 
+/**
+ * RegisterForm Component
+ *
+ * Renders a registration form with various authentication methods and password validation.
+ */
 const RegisterForm = () => {
   const minPasswordLength = 12
   const [password, setPassword] = useState("")

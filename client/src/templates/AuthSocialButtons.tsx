@@ -5,6 +5,11 @@ import LabelHorizontalSeparator from "./LabelHorizontalSeparator"
 import Spacer from "./Spacer"
 import { useTranslation } from "react-i18next"
 
+/**
+ * AuthSocialButtons Component
+ *
+ * Provides social media login options for authentication forms.
+ */
 const AuthSocialButtons = () => {
   const { t } = useTranslation()
 

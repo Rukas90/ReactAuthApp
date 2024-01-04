@@ -3,12 +3,24 @@ import Spacer from "./Spacer"
 import Logo from "../img/icons/common/logo.png"
 
 interface Props {
-  header: string
-  secondary: string
-  linkText: string
-  linkHref: string
+  header: string // Main header text
+  secondary: string // Secondary text
+  linkText: string // Text for the link
+  linkHref: string // URL for the link
 }
 
+/**
+ * FormHeader Component
+ *
+ * Renders a header for forms with a logo, a primary header, secondary text, and a link.
+ * Suitable for use in authentication forms like login or registration.
+ *
+ * Props:
+ * - header: Main text displayed prominently.
+ * - secondary: Additional text displayed below the main header.
+ * - linkText: Text for a hyperlink, typically for navigation (e.g., 'Login' or 'Register').
+ * - linkHref: URL that the hyperlink points to.
+ */
 const FormHeader = ({
   header,
   secondary,
