@@ -3,7 +3,8 @@ import React from "react"
 interface Props {
   text: string
   icon?: string
-  link: string
+  link?: string
+  action?: () => void
   extendWidth?: boolean
 }
 
@@ -14,28 +15,40 @@ interface Props {
  * Props:
  * - text: The text displayed on the button.
  * - icon: (Optional) URL of an icon to display alongside the text.
- * - link: The destination URL for the button's action.
+ * - link: (Optional) The destination URL for the button's action.
+ * - action: (Optional) A function to execute on button click.
  * - extendWidth: (Optional) If set to true, the button extends to full width.
  */
-const CustomButton = ({ text, icon, link, extendWidth }: Props) => {
+const CustomButton = ({ text, icon, link, action, extendWidth }: Props) => {
   // Dynamic classes for the button, extending full width if extendWidth is true
   const classes = `btn btn-light ${
     extendWidth ? "w-100" : ""
   } py-2 px-4 mb-4 d-flex justify-content-center align-items-center text-center non-rounded`
 
+  const buttonElement = (
+    <button
+      type="button"
+      className={classes}
+      onClick={link ? undefined : action}
+    >
+      {icon && <img src={icon} className="social-btn-icon mx-2" />}
+      <span className="fw-medium">{text}</span>
+    </button>
+  )
   return (
     <>
-      <a
-        href={link}
-        className={`link-underline link-underline-opacity-0 ${
-          extendWidth ? "w-100" : ""
-        }`}
-      >
-        <button type="button" className={classes}>
-          {icon && <img src={icon} className="social-btn-icon mx-2" />}
-          <span className="fw-medium">{text}</span>
-        </button>
-      </a>
+      {link ? (
+        <a
+          href={link}
+          className={`link-underline link-underline-opacity-0 ${
+            extendWidth ? "w-100" : ""
+          }`}
+        >
+          {buttonElement}
+        </a>
+      ) : (
+        buttonElement
+      )}
     </>
   )
 }

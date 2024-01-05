@@ -32,7 +32,7 @@ const FormHeader = ({
       <div className="header-container w-100 d-flex vstack align-items-center text-center lh-lg">
         <Spacer space={1.5} unit="rem" isVertical />
         <img className="logo" src={Logo} />
-        <Spacer space={3} unit="rem" isVertical />
+        <Spacer space={1.5} unit="rem" isVertical />
         <h1 className="text-light">{header}</h1>
         <Spacer space={0.5} unit="rem" isVertical />
         <div>

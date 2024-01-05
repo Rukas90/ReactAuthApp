@@ -15,5 +15,10 @@
     "PASSWORD_NUMBER_CONDITION": "Yra skaičius (0–9)",
     "PASSWORD_SPECIAL_CHARACTER_CONDITION": "Turi ypatingą charakterį",
     "PASSWORD_MINIMUM_CHARACTER_CONDITION": "Turi mažiausiai {{count}} simbolių",
-    "FORGOT_THE_PASSWORD?": "Pamiršote slaptažodį?"
+    "FORGOT_THE_PASSWORD?": "Pamiršote slaptažodį?",
+    "VERIFY_ACCOUNT" : "Patvirtinkite Paskyrą",
+    "VERIFY_YOUR_ACCOUNT" : "Prašome suaktyvinti savo paskyrą. Kodas buvo išsiųstas į paskyros el. pašto adresą.",
+    "RESEND_CODE" : "Atsiųskite kodą dar kartą",
+    "VERIFICATION_CODE" : "Patvirtinimo kodas",
+    "LOG_OUT" : "Atsijungti"
 }

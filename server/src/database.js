@@ -28,6 +28,16 @@ export class Database {
             client.release()
         }
     }
+    updateUser = async (id, property, value) => {
+        try {
+            const query = `UPDATE users SET ${property} = $1 WHERE id = $2`;
+            await this.query(query, [value, id]);
+        }
+        catch (error) {
+            console.error('Database update user error', error.stack);
+            throw error;
+        }
+    };
     getUserById = async (id) => {
         try {
             const result = await this.query('SELECT * FROM users WHERE id = $1', [id])
@@ -40,23 +50,23 @@ export class Database {
             throw error
         }
     }
-    getUserByUsername = async (username) => {
+    getUserByEmail = async (email) => {
         try {
-            const result = await this.query('SELECT * FROM users WHERE username = $1', [username])
+            const result = await this.query('SELECT * FROM users WHERE email = $1', [email])
 
             return result.rowCount <= 0 ? null : result.rows[0]
         }
         catch (error) {
 
-            cserror('Database get user by username error', error.stack)
+            cserror('Database get user by email error', error.stack)
             throw error
         }
     }
-    createUser = async (username, password) => {
+    createUser = async (email, password) => {
         try {
-            const newUser = User.createUniqueUser(username, password)
+            const newUser = new User(null, email, password)
         
-            await query('INSERT INTO users (id, username, password) VALUES ($1, $2, $3)', [newUser.id, username, password])
+            await this.query('INSERT INTO users (id, email, password, is_verified, date, verification_code, code_expire_date) VALUES ($1, $2, $3, $4, $5, $6, $7)', [newUser.id, email, password, newUser.is_verified, newUser.date, newUser.verification_code, newUser.code_expire_date])
     
             return newUser
         }

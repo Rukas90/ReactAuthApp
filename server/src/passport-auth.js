@@ -27,12 +27,15 @@ export class PassportAuth {
             }
         });
         
-        passport.use(new LocalStrategy(async (username, password, done) => {
+        passport.use(new LocalStrategy({
+            usernameField: 'email',
+            passwordField: 'password'
+        }, async (email, password, done) => {
             try {
-                const user = await database.getUserByUsername(username, server)
+                const user = await database.getUserByEmail(email, server)
 
                 if (!user) {
-                    return done(null, false, { message: `User by the username ${username} does not exists!` })
+                    return done(null, false, { message: `User by the email ${email} does not exists!` })
                 }
                 const isValid = await bcrypt.compare(password + process.env.PEPPER_KEY, user.password)
         

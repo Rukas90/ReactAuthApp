@@ -23,10 +23,8 @@ const useLanguageSetting = () => {
     const fetchAndSetLanguage = async () => {
       try {
         // Fetch the preferred language from the server
-        const response = await axios.get(`${API_URL}/session/lang`, {
-          withCredentials: true,
-        })
-        const targetLanguage = response.data.language || i18n.language
+        const storedLanguage = localStorage.getItem("language")
+        const targetLanguage = storedLanguage || i18n.language
 
         // Update the language if it differs from the current one
         if (targetLanguage && i18n.language !== targetLanguage) {

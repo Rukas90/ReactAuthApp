@@ -15,5 +15,10 @@
     "PASSWORD_NUMBER_CONDITION": "Has a number (0-9)",
     "PASSWORD_SPECIAL_CHARACTER_CONDITION": "Has a special character",
     "PASSWORD_MINIMUM_CHARACTER_CONDITION": "Has a minimum of {{count}} characters",
-    "FORGOT_THE_PASSWORD?": "Forgot the password?"
+    "FORGOT_THE_PASSWORD?": "Forgot the password?",
+    "VERIFY_ACCOUNT" : "Verify Account",
+    "VERIFY_YOUR_ACCOUNT" : "Please activate your account. The code was sent to the account email address.",
+    "RESEND_CODE" : "Resend Code",
+    "VERIFICATION_CODE" : "Verification Code",
+    "LOG_OUT" : "Logout"
 }

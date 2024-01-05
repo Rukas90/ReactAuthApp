@@ -1,9 +1,11 @@
 import React from "react"
 import { Routes, Route } from "react-router-dom"
-import Home from "./views/Home"
-import Login from "./views/Login"
-import Register from "./views/Register"
+import HomeView from "./views/HomeView"
+import LoginView from "./views/LoginView"
+import RegisterView from "./views/RegisterView"
 import useLanguageSetting from "./hooks/useLanguageSetting"
+import VerifyView from "./views/VerifyView"
+import { MessageProvider } from "./contexts/MessageContext"
 
 /**
  * App Component
@@ -19,11 +21,14 @@ const App = () => {
 
   return (
     <>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
+      <MessageProvider>
+        <Routes>
+          <Route path="/" element={<HomeView />} />
+          <Route path="/login" element={<LoginView />} />
+          <Route path="/register" element={<RegisterView />} />
+          <Route path="/verify" element={<VerifyView />} />
+        </Routes>
+      </MessageProvider>
     </>
   )
 }

@@ -33,11 +33,7 @@ const LanguageSwitcher = () => {
    */
   const changeLanguage = async (language: string) => {
     // Update the language setting on the server
-    await axios.put(
-      `${API_URL}/session/lang`,
-      { language: language },
-      { withCredentials: true }
-    )
+    localStorage.setItem("language", language)
 
     // Change the language in the i18n instance
     await i18n.changeLanguage(language)
@@ -48,7 +44,7 @@ const LanguageSwitcher = () => {
   return (
     <div className="dropdown">
       <button
-        className="btn btn-secondary dropdown-toggle"
+        className="btn btn-black text-secondary dropdown-toggle"
         type="button"
         data-bs-toggle="dropdown"
         aria-expanded="false"
