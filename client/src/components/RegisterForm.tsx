@@ -55,7 +55,7 @@ const RegisterForm = () => {
       />
       <div className="form-container w-100 mt-4 d-flex justify-content-center">
         <div className="auth-form-container w-100 d-flex justify-content-center align-items-center vstack">
-          <AuthSocialButtons />
+          <AuthSocialButtons prompt />
           <AuthForm onEmailChange={setEmail} onPasswordChange={setPassword} />
           <PasswordValidationGroup
             password={password}

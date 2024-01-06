@@ -10,4 +10,7 @@ export class DBTableSchema {
 
         return `CREATE TABLE ${tableName} (${definitions})`;
     }
+    getColumnNames() {
+        return this.columns.map(column => column.name);
+    }
 }

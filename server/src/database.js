@@ -1,6 +1,7 @@
-import pg                   from 'pg';
-import { User }             from './user.js'
-import { error as cserror } from 'console'
+import pg                               from 'pg';
+import { User }                         from './user.js'
+import { error as cserror }             from 'console'
+import { getUsersDatabaseTableSchema }  from './utils.js'
 
 export class Database {
     constructor(name, port) {
@@ -30,11 +31,11 @@ export class Database {
     }
     updateUser = async (id, property, value) => {
         try {
-            const query = `UPDATE users SET ${property} = $1 WHERE id = $2`;
-            await this.query(query, [value, id]);
+            const query = `UPDATE users SET ${property} = $1 WHERE id = $2`
+            await this.query(query, [value, id])
         }
         catch (error) {
-            console.error('Database update user error', error.stack);
+            console.error('Database update user error', error.stack)
             throw error;
         }
     };
@@ -66,7 +67,7 @@ export class Database {
         try {
             const newUser = new User(null, email, password)
         
-            await this.query('INSERT INTO users (id, email, password, is_verified, date, verification_code, code_expire_date) VALUES ($1, $2, $3, $4, $5, $6, $7)', [newUser.id, email, password, newUser.is_verified, newUser.date, newUser.verification_code, newUser.code_expire_date])
+            await pushUser(newUser)
     
             return newUser
         }
@@ -75,6 +76,43 @@ export class Database {
             cserror('Database create user error', error.stack)
             throw error
         }
+    }
+    createGoogleUser = async (email, id) => {
+        try {
+            const newUser = new User(null, email, null)
+        
+            newUser.google_id   = id
+            newUser.is_verified = true
+
+            await pushUser(newUser)
+    
+            return newUser
+        }
+        catch (error) {
+
+            cserror('Database create user error', error.stack)
+            throw error
+        }
+    }
+    pushUser = async (user) => {
+        const params = [
+            user.id, 
+            user.email, 
+            user.password, 
+            user.is_verified, 
+            user.date, 
+            user.verification_code, 
+            user.code_expire_date, 
+            user.google_id, 
+            user.twitter_id
+        ]
+        const schemaNames  = getUsersDatabaseTableSchema().getColumnNames()
+        const columns      = schemaNames.join(', ')
+        const placeholders = params.map((_, index) => `$${index + 1}`).join(', ')
+
+        const command = `INSERT INTO users (${columns}) VALUES (${placeholders})`
+
+        await this.query(command, params)
     }
     #connectToAvailableClient = async () => {
         try {
@@ -88,7 +126,7 @@ export class Database {
     }
     validateDBTable = async (tableName, schema) => {
         try {
-            const sqlQuery = schema.getCreateTableSQL(tableName);
+            const sqlQuery = schema.getCreateTableSQL(tableName)
         
             await this.query(sqlQuery, [], false)
     

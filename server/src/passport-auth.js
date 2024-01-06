@@ -1,6 +1,7 @@
-import bcrypt                         from 'bcrypt'
-import passport                       from 'passport'
-import { Strategy as LocalStrategy }  from 'passport-local'
+import bcrypt                            from 'bcrypt'
+import passport                          from 'passport'
+import { Strategy as LocalStrategy }     from 'passport-local'
+import { Strategy as GoogleStrategy }    from 'passport-google-oauth20'
 
 export class PassportAuth {
     constructor(server) {
@@ -43,6 +44,34 @@ export class PassportAuth {
                     return done(null, false, { message: 'Incorrect password.' })
                 }
                 return done(null, user)
+            }
+            catch (error) {
+                return done(error)
+            }
+        }))
+
+        passport.use(new GoogleStrategy({
+            clientID: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            callbackURL: "/auth/google/callback"
+        },
+        async (accessToken, refreshToken, profile, done) => {
+            try {
+                const email        = profile.emails[0].value
+                const profileID    = profile.id;
+                const existingUser = await database.getUserByEmail(email);
+
+                if (existingUser) {
+
+                    existingUser.google_id = profileID
+
+                    await database.updateUser(existingUser.id, 'google_id', profileID)
+
+                    return done(null, existingUser);
+                }
+                const newUser = await database.createGoogleUser(email, profileID);
+
+                return done(null, newUser);
             }
             catch (error) {
                 return done(error)

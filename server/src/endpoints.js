@@ -47,6 +47,15 @@ export class Endpoints {
         this.server.app.post('/auth/login', passport.authenticate('local'), async (req, res) => {
             res.status(200).send('Logged in successfully');
         })
+        this.server.app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+        this.server.app.get('/auth/google/register', passport.authenticate('google', { scope: ['profile', 'email'], prompt: 'select_account' }));
+
+        this.server.app.get('/auth/google/callback', passport.authenticate('google', 
+            { failureRedirect: '/login' }), (req, res) => {
+
+            res.redirect('http://localhost:5173/')
+        })
+
         this.server.app.post('/auth/verify', async (req, res) => {
             const code = req.body.code
             const user = req.user

@@ -14,5 +14,7 @@ export class User {
         codeExpireDate.setHours(codeExpireDate.getHours() + 24);
 
         this.code_expire_date   = codeExpireDate.toISOString();
+        this.google_id          = ''
+        this.twitter_id         = ''
     }
 }

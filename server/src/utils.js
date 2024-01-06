@@ -13,7 +13,9 @@ export const getUsersDatabaseTableSchema = () => {
         { name: 'is_verified',        type: 'BOOLEAN DEFAULT FALSE' },
         { name: 'date',               type: 'TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP' },
         { name: 'verification_code',  type: 'VARCHAR' },
-        { name: 'code_expire_date' ,  type: 'TIMESTAMP WITH TIME ZONE' }
+        { name: 'code_expire_date' ,  type: 'TIMESTAMP WITH TIME ZONE' },
+        { name: 'google_id',          type: 'TEXT' },
+        { name: 'twitter_id',         type: 'TEXT' }
     ])
 }
 export const generateRandomCode = (length = 6) => {

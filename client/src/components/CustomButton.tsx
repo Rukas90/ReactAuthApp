@@ -6,6 +6,7 @@ interface Props {
   link?: string
   action?: () => void
   extendWidth?: boolean
+  disabled?: boolean
 }
 
 /**
@@ -19,7 +20,14 @@ interface Props {
  * - action: (Optional) A function to execute on button click.
  * - extendWidth: (Optional) If set to true, the button extends to full width.
  */
-const CustomButton = ({ text, icon, link, action, extendWidth }: Props) => {
+const CustomButton = ({
+  text,
+  icon,
+  link,
+  action,
+  extendWidth,
+  disabled,
+}: Props) => {
   // Dynamic classes for the button, extending full width if extendWidth is true
   const classes = `btn btn-light ${
     extendWidth ? "w-100" : ""
@@ -29,7 +37,8 @@ const CustomButton = ({ text, icon, link, action, extendWidth }: Props) => {
     <button
       type="button"
       className={classes}
-      onClick={link ? undefined : action}
+      onClick={link || disabled ? undefined : action}
+      disabled={disabled}
     >
       {icon && <img src={icon} className="social-btn-icon mx-2" />}
       <span className="fw-medium">{text}</span>
@@ -39,7 +48,7 @@ const CustomButton = ({ text, icon, link, action, extendWidth }: Props) => {
     <>
       {link ? (
         <a
-          href={link}
+          href={disabled ? "" : link}
           className={`link-underline link-underline-opacity-0 ${
             extendWidth ? "w-100" : ""
           }`}

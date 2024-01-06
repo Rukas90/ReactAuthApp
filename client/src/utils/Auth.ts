@@ -43,6 +43,17 @@ export const Login = async ({ email, password }: AuthProps) : Promise<Response> 
         status: response.status
     }
 }
+export const AuthGoogle = async () : Promise<Response> => {
+    const response = await POST('/auth/google')
+    const success  = response.status === 200
+    
+    return {
+        success: success,
+        error: success ? '' : "Failed to authenticate user!",
+        data: response.data,
+        status: response.status
+    }
+}
 export const Verify = async (code : string) : Promise<Response> => {
     const response = await POST('/auth/verify', {
         code: code

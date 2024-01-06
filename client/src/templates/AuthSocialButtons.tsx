@@ -5,18 +5,22 @@ import LabelHorizontalSeparator from "./LabelHorizontalSeparator"
 import Spacer from "./Spacer"
 import { useTranslation } from "react-i18next"
 
+interface Props {
+  prompt?: boolean
+}
+
 /**
  * AuthSocialButtons Component
  *
  * Provides social media login options for authentication forms.
  */
-const AuthSocialButtons = () => {
+const AuthSocialButtons = ({ prompt = false }: Props) => {
   const { t } = useTranslation()
 
   return (
     <>
-      <GoogleLoginButton />
-      <XLoginButton />
+      <GoogleLoginButton prompt={prompt} />
+      <XLoginButton prompt={prompt} />
       <LabelHorizontalSeparator label={t("OR")} />
       <Spacer space={1.5} unit="rem" isVertical />
     </>
