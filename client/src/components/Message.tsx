@@ -2,19 +2,7 @@ import React, { useState, useEffect } from "react"
 import InfoIcon from "../img/icons/common/info.svg"
 import Spacer from "../templates/Spacer"
 import useVisualEffect, { EffectProperties } from "../hooks/useVisualEffect"
-
-type ColorOption =
-  | "light"
-  | "secondary"
-  | "dark"
-  | "black"
-  | "white"
-  | "info"
-  | "warning"
-  | "danger"
-  | "error"
-  | "success"
-  | "primary"
+import { ColorOption } from "../utils/ColorOption"
 
 interface Props extends EffectProperties {
   header?: string

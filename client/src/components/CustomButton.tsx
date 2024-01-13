@@ -7,6 +7,7 @@ interface Props {
   action?: () => void
   extendWidth?: boolean
   disabled?: boolean
+  style?: string | "light" | "dark"
 }
 
 /**
@@ -27,11 +28,12 @@ const CustomButton = ({
   action,
   extendWidth,
   disabled,
+  style = "light",
 }: Props) => {
   // Dynamic classes for the button, extending full width if extendWidth is true
-  const classes = `btn btn-light ${
+  const classes = `btn btn-${style} ${
     extendWidth ? "w-100" : ""
-  } py-2 px-4 mb-4 d-flex justify-content-center align-items-center text-center non-rounded`
+  } py-2 px-4 d-flex justify-content-center align-items-center text-center non-rounded`
 
   const buttonElement = (
     <button

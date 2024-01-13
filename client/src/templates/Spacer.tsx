@@ -1,10 +1,5 @@
 import React from "react"
-
-interface Props {
-  space: number // The amount of space to be applied
-  unit?: "px" | "rem" | "%" // Unit for the spacing (defaults to pixels)
-  isVertical: boolean // Determines if the spacing is vertical or horizontal
-}
+import { SpacerProps } from "../props/SpacerProps"
 
 /**
  * Spacer Component
@@ -21,7 +16,7 @@ interface Props {
  * - To create vertical space, set isVertical to true.
  * - For horizontal space, set isVertical to false.
  */
-const Spacer = ({ space, unit = "px", isVertical }: Props) => {
+const Spacer = ({ space, unit = "px", isVertical }: SpacerProps) => {
   const size = `${space}${unit}`
 
   const styling = {

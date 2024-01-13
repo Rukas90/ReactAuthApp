@@ -1,4 +1,5 @@
 import React from "react"
+import { useMediaQuery } from "react-responsive"
 import LanguageSwitcher from "../components/LanguageSwitcher"
 import Spacer from "../templates/Spacer"
 import ErrorMessage from "../components/ErrorMessage"
@@ -11,19 +12,20 @@ interface Props {
 const AuthView: React.FC<Props> = ({ formComponent }) => {
   const { message } = broadcast() // Retrieves broadcasted messages from the MessageContext.
 
+  const fullScreen = useMediaQuery({ query: "(max-width: 1400px)" })
+
   const containerStyle = {
-    width: "32.5%",
+    width: fullScreen ? "100%" : "32.5%",
   }
   const backgroundStyle = {
     width: "67.5%",
     backgroundColor: "#29373a",
-    backgroundImage: `url('https://images.unsplash.com/photo-1601042879364-f3947d3f9c16?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')`,
+    backgroundImage: `url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1744&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')`,
   }
-
   return (
-    <div className="w-100 hstack flex-grow-1">
+    <div className="w-100 d-flex h-min-100vh">
       <div
-        className="bg-black pt-4 pb-5 px-6 justify-content-center hstack flex-grow-1"
+        className="bg-black pt-2 pt-mb-4 pb-4 pb-md-5 px-3 px-md-6 justify-content-center flex-row d-flex h-auto"
         style={containerStyle}
       >
         <div className="auth-form-container vstack justify-content-between">
@@ -37,10 +39,9 @@ const AuthView: React.FC<Props> = ({ formComponent }) => {
           </div>
         </div>
       </div>
-      <div
-        className="background-cover hstack position-static"
-        style={backgroundStyle}
-      ></div>
+      {!fullScreen && (
+        <div className="background-cover d-flex" style={backgroundStyle}></div>
+      )}
     </div>
   )
 }

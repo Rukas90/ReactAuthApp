@@ -1,0 +1,12 @@
+export type ColorOption =
+  | "light"
+  | "secondary"
+  | "dark"
+  | "black"
+  | "white"
+  | "info"
+  | "warning"
+  | "danger"
+  | "error"
+  | "success"
+  | "primary"

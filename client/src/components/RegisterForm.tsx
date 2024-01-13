@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import FormHeader from "../templates/FormHeader"
 import CustomButton from "./CustomButton"
 import AuthSocialButtons from "../templates/AuthSocialButtons"
@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom"
 import PasswordValidationGroup from "../templates/PasswordValidationGroup"
 import { Register } from "../utils/Auth"
 import { broadcast } from "../contexts/MessageContext"
+import Spacer from "../templates/Spacer"
+import { useCsrfToken } from "../contexts/CsrfContext"
 
 /**
  * RegisterForm Component
@@ -19,6 +21,8 @@ const RegisterForm = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [passwordState, setPasswordState] = useState(false)
+
+  const { fetchCsrfToken } = useCsrfToken()
 
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -40,6 +44,7 @@ const RegisterForm = () => {
     const response = await Register({
       email: email,
       password: password,
+      token: await fetchCsrfToken(),
     })
     if (response.success) {
       navigate("/verify")
@@ -67,6 +72,7 @@ const RegisterForm = () => {
             action={RegisterSubmit}
             extendWidth
           />
+          <Spacer space={1.5} unit="rem" isVertical />
         </div>
       </div>
     </div>

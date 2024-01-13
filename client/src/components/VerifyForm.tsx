@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next"
 import InputField from "./InputField"
 import { Verify } from "../utils/Auth"
 import { useNavigate } from "react-router-dom"
+import { useCsrfToken } from "../contexts/CsrfContext"
 
 const VerifyForm = () => {
   const [code, setCode] = useState("")
@@ -13,8 +14,10 @@ const VerifyForm = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
 
+  const { fetchCsrfToken } = useCsrfToken()
+
   const verifyAccount = async () => {
-    const response = await Verify(code)
+    const response = await Verify(code, await fetchCsrfToken())
 
     if (response.success) {
       navigate("/")
@@ -34,6 +37,7 @@ const VerifyForm = () => {
             type="number"
             placeholder={t("VERIFICATION_CODE")}
             onValueChange={setCode}
+            extendWidth
           />
           <Spacer space={1.5} unit="rem" isVertical />
           <CustomButton
@@ -42,6 +46,7 @@ const VerifyForm = () => {
             action={verifyAccount}
             extendWidth
           />
+          <Spacer space={1.5} unit="rem" isVertical />
         </div>
       </div>
     </div>

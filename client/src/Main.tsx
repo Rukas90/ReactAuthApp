@@ -5,6 +5,7 @@ import App from "./App.js"
 import { BrowserRouter } from "react-router-dom" // Provides routing capabilities
 import "./scss/main.css" // Global styles
 import { LanguageProvider } from "./contexts/LanguageProvider" // Context provider for language settings
+import { CsrfProvider } from "./contexts/CsrfContext"
 
 // Find the root element in the HTML to mount the React application
 var element = document.getElementById("root")
@@ -14,9 +15,11 @@ if (element != null) {
   ReactDOM.createRoot(element).render(
     <React.StrictMode>
       <BrowserRouter>
-        <LanguageProvider>
-          <App />
-        </LanguageProvider>
+        <CsrfProvider>
+          <LanguageProvider>
+            <App />
+          </LanguageProvider>
+        </CsrfProvider>
       </BrowserRouter>
     </React.StrictMode>
   )

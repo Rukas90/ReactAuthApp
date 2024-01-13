@@ -20,7 +20,9 @@ const AuthSocialButtons = ({ prompt = false }: Props) => {
   return (
     <>
       <GoogleLoginButton prompt={prompt} />
+      <Spacer space={1.5} unit="rem" isVertical />
       <XLoginButton prompt={prompt} />
+      <Spacer space={1.5} unit="rem" isVertical />
       <LabelHorizontalSeparator label={t("OR")} />
       <Spacer space={1.5} unit="rem" isVertical />
     </>

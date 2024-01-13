@@ -1,6 +1,8 @@
 import axios, { AxiosResponse, AxiosRequestConfig } from "axios"
 import { API_URL } from "./Variables"
 
+axios.defaults.withCredentials = true
+
 export const BuildApiUrl = (url: string): string => {
     const path = url.startsWith('/') ? url : `/${url}`
 

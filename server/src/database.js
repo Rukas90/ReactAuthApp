@@ -1,7 +1,8 @@
 import pg                               from 'pg';
-import { User }                         from './user.js'
 import { error as cserror }             from 'console'
 import { getUsersDatabaseTableSchema }  from './utils.js'
+import { v4 as uuidv4 }                 from 'uuid'
+import { generateRandomCode }           from './utils.js'
 
 export class Database {
     constructor(name, port) {
@@ -41,7 +42,7 @@ export class Database {
     };
     getUserById = async (id) => {
         try {
-            const result = await this.query('SELECT * FROM users WHERE id = $1', [id])
+            const result = await this.query('SELECT id, email, is_verified, two_fa_active FROM users WHERE id = $1', [id])
 
             return result.rowCount <= 0 ? null : result.rows[0]
         }
@@ -53,7 +54,7 @@ export class Database {
     }
     getUserByEmail = async (email) => {
         try {
-            const result = await this.query('SELECT * FROM users WHERE email = $1', [email])
+            const result = await this.query('SELECT id, email, is_verified, two_fa_active FROM users WHERE email = $1', [email])
 
             return result.rowCount <= 0 ? null : result.rows[0]
         }
@@ -63,11 +64,24 @@ export class Database {
             throw error
         }
     }
+    getUserPassword = async (id) => {
+        try {
+            const result = await this.query('SELECT password FROM users WHERE id = $1', [id])
+
+            return result.rowCount <= 0 ? null : result.rows[0].password
+        }
+        catch (error) {
+
+            cserror('Database get user password error', error.stack)
+            throw error
+        }
+    }
     createUser = async (email, password) => {
         try {
-            const newUser = new User(null, email, password)
-        
-            await pushUser(newUser)
+            let newUser      = this.getNewUser(email)
+            newUser.password = password
+
+            await this.push('users', newUser, getUsersDatabaseTableSchema())
     
             return newUser
         }
@@ -79,13 +93,13 @@ export class Database {
     }
     createGoogleUser = async (email, id) => {
         try {
-            const newUser = new User(null, email, null)
-        
-            newUser.google_id   = id
-            newUser.is_verified = true
+            let newUser = this.getNewUser(email)
 
-            await pushUser(newUser)
-    
+            newUser.is_verified = true
+            newUser.google_id   = id
+
+            await this.push('users', newUser, getUsersDatabaseTableSchema())
+
             return newUser
         }
         catch (error) {
@@ -94,25 +108,39 @@ export class Database {
             throw error
         }
     }
-    pushUser = async (user) => {
-        const params = [
-            user.id, 
-            user.email, 
-            user.password, 
-            user.is_verified, 
-            user.date, 
-            user.verification_code, 
-            user.code_expire_date, 
-            user.google_id, 
-            user.twitter_id
-        ]
-        const schemaNames  = getUsersDatabaseTableSchema().getColumnNames()
-        const columns      = schemaNames.join(', ')
-        const placeholders = params.map((_, index) => `$${index + 1}`).join(', ')
+    getNewUser(email) {
+        const userID         = uuidv4()
+        const codeExpireDate = new Date()
+        codeExpireDate.setHours(codeExpireDate.getHours() + 24)
 
-        const command = `INSERT INTO users (${columns}) VALUES (${placeholders})`
+        return {
+            id: userID,
+            email: email,
+            is_verified: false,
+            verification_code: generateRandomCode(),
+            date: new Date().toISOString(),
+            code_expire_date: codeExpireDate.toISOString()
+        }
+    }
+    push = async (table, data, schema) => {
+        const schemaNames    = schema.getColumnNames()
 
-        await this.query(command, params)
+        const entries      = Object.entries(data).filter(([key, _]) => schemaNames.includes(key))
+        const keys         = entries.map(([key, _]) => key)
+        const values       = entries.map(([_, value]) => value)
+
+        const columns = keys.join(', ')
+        const placeholders = keys.map((_, index) => `$${index + 1}`).join(', ')
+
+        const command = `INSERT INTO ${table} (${columns}) VALUES (${placeholders})`
+
+        await this.query(command, values)
+    }
+    fetch = async (values, table, whereID, whereValue) => {
+        const keys = Array.isArray(values) ? values.join(', ') : values
+        const command = `SELECT ${keys} FROM ${table} WHERE ${whereID} = $1`
+
+        return await this.query(command, [whereValue])
     }
     #connectToAvailableClient = async () => {
         try {

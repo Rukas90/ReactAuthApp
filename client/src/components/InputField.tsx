@@ -1,15 +1,18 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import VisibilityOn from "../img/icons/common/visibility-on.svg"
 import VisibilityOff from "../img/icons/common/visibility-off.svg"
 import IconCheck from "./IconCheck"
 
 interface Props {
   type?: string | "text" | "email" | "password"
+  value?: string
   placeholder?: string
   autocomplete?: string
   hideable?: boolean
   isVisible?: boolean
   onValueChange?: (newValue: string) => void
+  readonly?: boolean
+  extendWidth?: boolean
 }
 
 /**
@@ -26,14 +29,22 @@ interface Props {
  */
 const InputField = ({
   type = "text",
+  value,
   placeholder,
   autocomplete,
   hideable,
   isVisible,
   onValueChange,
+  readonly = false,
+  extendWidth = false,
 }: Props) => {
   const [visible, setVisible] = useState(isVisible)
-  const [text, setText] = useState("")
+  const [text, setText] = useState(value || "")
+
+  useEffect(() => {
+    // Update the text state whenever the value prop changes
+    setText(value || "")
+  }, [value])
 
   /**
    * Handles changes to the input field's value.
@@ -42,6 +53,9 @@ const InputField = ({
    * @param {React.ChangeEvent<HTMLInputElement>} event - The change event from the input field.
    */
   const onInputTextChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (readonly) {
+      return
+    }
     const newValue = event.target.value
 
     setText(newValue)
@@ -50,10 +64,13 @@ const InputField = ({
       onValueChange(newValue)
     }
   }
-
   return (
     <>
-      <div className="position-relative d-flex align-items-start justify-content-center vstack">
+      <div
+        className={`position-relative d-flex align-items-start justify-content-center vstack m-auto ${
+          extendWidth && "w-100"
+        }`}
+      >
         <label
           aria-disabled="true"
           className={`position-absolute start-0 text-secondary mx-3 transition-all user-select-none pointer-events-none ${
@@ -63,12 +80,14 @@ const InputField = ({
           {placeholder}
         </label>
         <input
+          value={value}
           type={hideable && visible ? "text" : type}
           className={`w-100 ${
             text ? "pt-4 pb-2 align-bottom" : "py-2"
           } px-3 border-0 input-field text-light transition-all`}
           onChange={onInputTextChanged}
           autoComplete={autocomplete}
+          readOnly={readonly}
         />
         {hideable && (
           <IconCheck

@@ -1,5 +1,21 @@
-import bcrypt from 'bcrypt'
+
 import passport from 'passport'
+import { 
+    captureSessionInfo, 
+    isAuthenticated, 
+} from './middlewares.js'
+import { 
+    get_auth_status, 
+    register_user, 
+    verify_verification_code, 
+    log_out_user 
+} from './auth.js'
+import { 
+    get_2fa_status, 
+    get_2fa_data, 
+    verify_2fa_code,
+    deactivate_2fa
+} from './2fa.js'
 
 export class Endpoints {
     constructor(server) {
@@ -8,89 +24,46 @@ export class Endpoints {
         this.#initialize()
     }
     #initialize() {
-        this.server.app.get('/auth/status', (req, res) => {
-            if (req.isAuthenticated()) {        
-                const user       = req.user
-                const isVerified = user.is_verified
-                
-                res.json({ 
-                    authenticated: true, 
-                    isVerified: isVerified 
-                })
-            } else {
-                res.json({ authenticated: false })
-            }
-        })
-        this.server.app.post('/auth/register', async (req, res) => {
-            const email    = req.body.email;
-            const password = req.body.password;
- 
-            const database = this.server.database;
         
-            try {
-                const user = await database.query('SELECT * FROM users WHERE email = $1', [email])
+        // Middlewares...
+
+        const cSRFTokenVerification = this.server.cSRFTokenVerification
+        const syncCSRFSecret        = this.server.syncCSRFSecretMiddleware
+
+        // Basic Auth
         
-                if (user.rowCount > 0) {
-                    return res.status(409).send('User already exists')
-                }
-                const salt           = await bcrypt.genSalt(10)
-                const hashedPassword = await bcrypt.hash(password + process.env.PEPPER_KEY, salt)
-        
-                await database.createUser(email, hashedPassword)
-                        
-                res.status(200).send('User registered successfully');
-            } catch (err) {
-                console.error('Error during registration:', err)
-                res.status(500).send('Internal Server Error')
-            }
-        })
-        this.server.app.post('/auth/login', passport.authenticate('local'), async (req, res) => {
-            res.status(200).send('Logged in successfully');
-        })
-        this.server.app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+        this.server.app.post('/auth/register', cSRFTokenVerification, async (req, res) => await register_user(req, res, this.server))
+        this.server.app.post('/auth/login',    cSRFTokenVerification, passport.authenticate('local'), syncCSRFSecret, captureSessionInfo, 
+            async (req, res) => 
+                res
+                .status(200)
+                .cookie('X-CSRF-Token', this.server.tokens.create(req.session.csrfSecret), { httpOnly: true, sameSite: 'Lax' })
+                .send('Logged in successfully'))
+
+        // Google Auth
+
+        this.server.app.get('/auth/google',          passport.authenticate('google', { scope: ['profile', 'email'] }));
         this.server.app.get('/auth/google/register', passport.authenticate('google', { scope: ['profile', 'email'], prompt: 'select_account' }));
+        this.server.app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), syncCSRFSecret, captureSessionInfo, 
+            (req, res) => res
+                .cookie('X-CSRF-Token', this.server.tokens.create(req.session.csrfSecret), { httpOnly: true, sameSite: 'Lax' })
+                .redirect(process.env.CLIENT_ORIGIN))
 
-        this.server.app.get('/auth/google/callback', passport.authenticate('google', 
-            { failureRedirect: '/login' }), (req, res) => {
+        // 2FA Auth
 
-            res.redirect('http://localhost:5173/')
-        })
+        this.server.app.get('/auth/2fa/status', isAuthenticated, async (req, res) => await get_2fa_status(req, res, this.server))
+        this.server.app.get('/auth/2fa',        isAuthenticated, async (req, res) => await get_2fa_data(req, res, this.server))
+        this.server.app.post('/auth/2fa',       cSRFTokenVerification, isAuthenticated, async (req, res) => await verify_2fa_code(req, res, this.server))
+        this.server.app.delete('/auth/2fa',     cSRFTokenVerification, isAuthenticated, async (req, res) => await deactivate_2fa(req, res, this.server))
 
-        this.server.app.post('/auth/verify', async (req, res) => {
-            const code = req.body.code
-            const user = req.user
+        // Auth Validate
 
-            if (!req.isAuthenticated()) {
-                return res.status(401).json({
-                    message: "User is not logged in!"
-                })
-            }
-            if (!user) {
-                return res.status(404).json({ 
-                    message: "User is not found!"
-                })
-            }
-            if (user.verification_code !== code) {
-                return res.status(400).json({ message: 'Invalid verification code.' });
-            }
-            await this.server.database.updateUser(user.id, 'is_verified', true);
+        this.server.app.get('/auth/status',  (req, res) => get_auth_status(req, res))
+        this.server.app.post('/auth/verify', cSRFTokenVerification, isAuthenticated, async (req, res) => await verify_verification_code(req, res, this.server))
 
-            req.user.is_verified = true;
+        // Log out
 
-            return res.status(200).json({ message: 'Verification successful.' });
-        })
-        this.server.app.post('/auth/logout', (req, res) => {
-            req.logout(function(err) {
-                if (err) { 
-                    console.error(err); 
-                    return res.status(500).send("Error logging out");
-                }
-                if (req.session) {
-                    delete req.session.passport;
-                }
-                return res.status(200).send("Logged out successfully");
-            })
-        });
+        this.server.app.post('/auth/logout', cSRFTokenVerification, isAuthenticated, (req, res) => log_out_user(req, res, this.server))
     }
 }
 

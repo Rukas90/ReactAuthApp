@@ -3,9 +3,12 @@ import { Routes, Route } from "react-router-dom"
 import HomeView from "./views/HomeView"
 import LoginView from "./views/LoginView"
 import RegisterView from "./views/RegisterView"
-import useLanguageSetting from "./hooks/useLanguageSetting"
 import VerifyView from "./views/VerifyView"
+import useLanguageSetting from "./hooks/useLanguageSetting"
+import { usePreventWindowUnload } from "./hooks/usePreventWindowUnload"
 import { MessageProvider } from "./contexts/MessageContext"
+import { BusyProvider } from "./contexts/BusyProvider"
+import { DialogProvider } from "./contexts/DialogContext"
 
 /**
  * App Component
@@ -18,16 +21,21 @@ import { MessageProvider } from "./contexts/MessageContext"
  */
 const App = () => {
   useLanguageSetting() // Initialize language settings
+  usePreventWindowUnload()
 
   return (
     <>
       <MessageProvider>
-        <Routes>
-          <Route path="/" element={<HomeView />} />
-          <Route path="/login" element={<LoginView />} />
-          <Route path="/register" element={<RegisterView />} />
-          <Route path="/verify" element={<VerifyView />} />
-        </Routes>
+        <DialogProvider>
+          <BusyProvider>
+            <Routes>
+              <Route path="/" element={<HomeView />} />
+              <Route path="/login" element={<LoginView />} />
+              <Route path="/register" element={<RegisterView />} />
+              <Route path="/verify" element={<VerifyView />} />
+            </Routes>
+          </BusyProvider>
+        </DialogProvider>
       </MessageProvider>
     </>
   )

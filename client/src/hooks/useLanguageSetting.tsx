@@ -1,7 +1,5 @@
 import { useEffect } from "react"
-import axios from "axios"
 import { useTranslation } from "react-i18next"
-import { API_URL } from "../utils/Variables"
 import { useLanguage } from "../contexts/LanguageProvider"
 
 /**

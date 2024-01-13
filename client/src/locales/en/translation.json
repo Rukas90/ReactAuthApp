@@ -20,5 +20,6 @@
     "VERIFY_YOUR_ACCOUNT" : "Please activate your account. The code was sent to the account email address.",
     "RESEND_CODE" : "Resend Code",
     "VERIFICATION_CODE" : "Verification Code",
-    "LOG_OUT" : "Logout"
+    "LOG_OUT" : "Logout",
+    "SETTINGS": "Settings"
 }

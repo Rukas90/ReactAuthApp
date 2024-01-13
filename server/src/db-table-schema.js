@@ -8,9 +8,9 @@ export class DBTableSchema {
 
         }).join(', ');
 
-        return `CREATE TABLE ${tableName} (${definitions})`;
+        return `CREATE TABLE ${tableName} (${definitions})`
     }
     getColumnNames() {
-        return this.columns.map(column => column.name);
+        return this.columns.map(column => column.name)
     }
 }

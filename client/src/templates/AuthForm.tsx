@@ -36,6 +36,7 @@ const AuthForm = ({ onEmailChange, onPasswordChange }: Props) => {
           placeholder={t("PASSWORD")}
           hideable
           isVisible={false}
+          autocomplete="current-password"
           onValueChange={onPasswordChange}
         />
       </form>

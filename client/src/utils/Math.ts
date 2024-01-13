@@ -37,3 +37,18 @@ export const Clamp01 = (value: number): number => {
 
     return value
 }
+
+export const Clamp = (value: number, min: number, max: number): number => {
+
+    if (value < min) {
+        value = min
+    }
+    if (value > max) {
+        value = max
+    }
+    return value
+}
+
+export const ClampIndex = <T> (index: number, array: Array<T>): number => {
+    return Clamp(index, 0, array.length - 1)
+}

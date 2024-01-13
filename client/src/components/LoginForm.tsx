@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import FormHeader from "../templates/FormHeader"
 import Spacer from "../templates/Spacer"
 import CustomButton from "./CustomButton"
@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next"
 import { Login } from "../utils/Auth"
 import { useNavigate } from "react-router-dom"
 import { broadcast } from "../contexts/MessageContext"
+import { useCsrfToken } from "../contexts/CsrfContext"
 
 /**
  * LoginForm Component
@@ -23,6 +24,8 @@ const LoginForm = () => {
   const navigate = useNavigate()
   const { broadcastMessage: broadcastMessage } = broadcast()
 
+  const { fetchCsrfToken } = useCsrfToken()
+
   const HandleLogin = async () => {
     if (!email || !password) {
       broadcastMessage("Please fill in the login details")
@@ -31,8 +34,11 @@ const LoginForm = () => {
     const response = await Login({
       email: email,
       password: password,
+      token: await fetchCsrfToken(),
     })
     if (response.success) {
+      await fetchCsrfToken(true) // Refresh the token from the server
+
       navigate("/")
     }
   }
@@ -61,6 +67,7 @@ const LoginForm = () => {
             action={HandleLogin}
             extendWidth
           />
+          <Spacer space={1.5} unit="rem" isVertical />
         </div>
       </div>
     </div>

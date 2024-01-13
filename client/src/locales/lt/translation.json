@@ -20,5 +20,6 @@
     "VERIFY_YOUR_ACCOUNT" : "Prašome suaktyvinti savo paskyrą. Kodas buvo išsiųstas į paskyros el. pašto adresą.",
     "RESEND_CODE" : "Atsiųskite kodą dar kartą",
     "VERIFICATION_CODE" : "Patvirtinimo kodas",
-    "LOG_OUT" : "Atsijungti"
+    "LOG_OUT" : "Atsijungti",
+    "SETTINGS": "Nustatymai"
 }

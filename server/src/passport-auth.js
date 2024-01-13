@@ -38,7 +38,12 @@ export class PassportAuth {
                 if (!user) {
                     return done(null, false, { message: `User by the email ${email} does not exists!` })
                 }
-                const isValid = await bcrypt.compare(password + process.env.PEPPER_KEY, user.password)
+                const userPassword = await database.getUserPassword(user.id)
+
+                if (!userPassword) {
+                    return done(null, false, { message: `User by the email ${email} does not have a password!` })
+                }
+                const isValid = await bcrypt.compare(password + process.env.PEPPER_KEY, userPassword)
         
                 if (!isValid) {
                     return done(null, false, { message: 'Incorrect password.' })

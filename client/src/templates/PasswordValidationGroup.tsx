@@ -9,17 +9,27 @@ import ValidationGroup from "../components/ValidationGroup"
 import { useTranslation } from "react-i18next"
 
 interface Props {
-  password: string
-  minLength?: number
-  onValidationStatusChange?: (status: boolean) => void
+  password: string // The password to be validated
+  minLength?: number // Optional minimum length requirement for the password
+  onValidationStatusChange?: (status: boolean) => void // Callback for password validation status
 }
 
+/**
+ * PasswordValidationGroup Component
+ * Renders a group of validation conditions for password strength and requirements.
+ * It checks for lowercase, uppercase, numeric, and special characters, as well as minimum length.
+ *
+ * Props:
+ * - password: The password string to validate.
+ * - minLength: The minimum length the password should be. Default is 12.
+ * - onValidationStatusChange: Callback function that receives the overall validation status.
+ */
 const PasswordValidationGroup = ({
   password,
   minLength = 12,
   onValidationStatusChange,
 }: Props) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation() // Hook for internationalization
 
   return (
     <>
