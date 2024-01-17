@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt'
+import { promisify } from 'util'
 
 export const get_auth_status = (req, res) => {
     if (req.isAuthenticated()) {        
@@ -71,20 +72,24 @@ export const verify_verification_code = async (req, res, server) => {
     return res.status(200).json({ message: 'Verification successful.' })
 }
 
-export const log_out_user = (req, res, server) => {
-    req.logout(function(err) {
-        if (err) { 
-            console.error(err)
-            return res.status(500).send("Error logging out")
-        }
+export const log_out_user = async (req, res, server) => {
+    try {
+        const logout = promisify(req.logout).bind(req)
+
+        await logout()
+
         if (req.session) {
             delete req.session.passport
         }
         server.syncCSRFSecret(req)
 
         return res
-            .status(200)
-            .cookie('X-CSRF-Token', server.tokens.create(req.session.csrfSecret), { httpOnly: true, sameSite: 'Lax' })
-            .send("Logged out successfully")
-    })
+        .status(200)
+        .cookie('X-CSRF-Token', server.tokens.create(req.session.csrfSecret), { httpOnly: true, sameSite: process.env.SAME_SITE })
+        .send("Logged out successfully")
+    }
+    catch (error) {
+        console.error("Error during logout:", error)
+        return res.status(500).send("Error logging out")
+    }
 }

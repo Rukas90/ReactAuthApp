@@ -35,6 +35,7 @@
     "query-string": "^8.1.0",
     "speakeasy": "^2.0.0",
     "string-hash": "^1.1.3",
+    "util.promisify": "^1.1.2",
     "uuid": "^9.0.1"
   }
 }

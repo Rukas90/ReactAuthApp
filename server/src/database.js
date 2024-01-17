@@ -3,6 +3,7 @@ import { error as cserror }             from 'console'
 import { getUsersDatabaseTableSchema }  from './utils.js'
 import { v4 as uuidv4 }                 from 'uuid'
 import { generateRandomCode }           from './utils.js'
+import geoip                            from 'geoip-lite'
 
 export class Database {
     constructor(name, port) {
@@ -108,6 +109,23 @@ export class Database {
             throw error
         }
     }
+    getUserSessions = async (id) => {
+        
+        const data = await this.fetch('*', 'sessions', 'user_id', id)
+
+        if (!data || data.rowCount < 1) {
+            return null
+        }
+        const sessions = data.rows.map(session => {
+            const geo = geoip.lookup(session.ip_address);
+            return {
+                ...session,
+                geo: geo ? { latitude: geo.ll[0], longitude: geo.ll[1] } : null
+            };
+        });
+        return sessions
+    }
+
     getNewUser(email) {
         const userID         = uuidv4()
         const codeExpireDate = new Date()

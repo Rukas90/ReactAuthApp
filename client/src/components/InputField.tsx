@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import VisibilityOn from "../img/icons/common/visibility-on.svg"
 import VisibilityOff from "../img/icons/common/visibility-off.svg"
-import IconCheck from "./IconCheck"
+import Checkbox from "./Checkbox"
 
 interface Props {
   type?: string | "text" | "email" | "password"
@@ -90,12 +90,15 @@ const InputField = ({
           readOnly={readonly}
         />
         {hideable && (
-          <IconCheck
+          <Checkbox
             onIcon={VisibilityOn}
             offIcon={VisibilityOff}
             checked={isVisible}
-            classes="visibility-btn-icon invert position-absolute end-0 my-0 mx-2"
-            onChange={setVisible}
+            classes="visibility-btn-icon invert position-absolute end-0 my-0 mx-2 icon-toggle"
+            onStateChange={(newState) => {
+              setVisible(newState)
+              return true
+            }}
           />
         )}
       </div>

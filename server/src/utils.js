@@ -34,9 +34,31 @@ export const getSessionsDatabaseTableSchema = () => {
 }
 
 export const generateRandomCode = (length = 6) => {
-    let code = '';
+    let code = ''
+    
     for (let i = 0; i < length; i++) {
-        code += Math.floor(Math.random() * 10).toString(); // Add a random digit (0-9) as a string
+        code += Math.floor(Math.random() * 10).toString() // Add a random digit (0-9) as a string
     }
-    return code;
+    return code
+}
+
+/**
+ * Constructs a URL from path segments and query parameters.
+ *
+ * @param {string[]} pathSegments - An array of path segments.
+ * @param {Object[]} queryParams - An array of objects with 'name' and 'value' properties for query parameters.
+ * @returns {string} The formatted URL.
+ */
+export const GetPath = (pathSegments, queryParams) => {
+    const path = pathSegments.join('/').replace(/\/+/g, '/').replace(/\/$/, '')
+
+    const url    = new URL(path)
+    const params = new URLSearchParams()
+
+    queryParams.forEach(param => {
+        params.append(param.name, param.value)
+    })
+    url.search = params.toString()
+
+    return url.toString()
 }

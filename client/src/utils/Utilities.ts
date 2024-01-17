@@ -1,5 +1,14 @@
+import { CacheDBKey } from "./Cache";
+
 export const MobileMediaQuery = {
     query: "(max-width: 640px)"
+}
+
+export type OnValueChangeValidationHook<T> = (newValue: T, callback: (state: boolean) => void) => void;
+
+export const SessionAuthTokenKey : CacheDBKey = {
+    name: "Token",
+    database: "Main"
 }
 
 /**

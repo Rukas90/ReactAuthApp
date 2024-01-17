@@ -14,26 +14,35 @@ export class PassportAuth {
         server.app.use(passport.initialize())
         server.app.use(passport.session())
 
-        passport.serializeUser((user, done) => {
-            done(null, user.id)
-        });
+        passport.serializeUser((user, done) => {            
+            done(null, {
+                userID: user.id,
+                sessionID: user.sessionID
+            })
+        })
         
-        passport.deserializeUser(async (id, done) => {
+        passport.deserializeUser(async (obj, done) => {
             try {
-                const user = await database.getUserById(id, server)
+                const user = await database.getUserById(obj.userID)
 
-                done(null, user)
+                if (user) {
+                    user.sessionID = obj.sessionID
+                    done(null, user)
+
+                    return
+                }
+                done(null, false)
             } catch (error) {
                 done(error)
             }
-        });
+        })
         
         passport.use(new LocalStrategy({
             usernameField: 'email',
             passwordField: 'password'
         }, async (email, password, done) => {
             try {
-                const user = await database.getUserByEmail(email, server)
+                const user = await database.getUserByEmail(email)
 
                 if (!user) {
                     return done(null, false, { message: `User by the email ${email} does not exists!` })
@@ -63,8 +72,8 @@ export class PassportAuth {
         async (accessToken, refreshToken, profile, done) => {
             try {
                 const email        = profile.emails[0].value
-                const profileID    = profile.id;
-                const existingUser = await database.getUserByEmail(email);
+                const profileID    = profile.id
+                const existingUser = await database.getUserByEmail(email)
 
                 if (existingUser) {
 
@@ -72,11 +81,11 @@ export class PassportAuth {
 
                     await database.updateUser(existingUser.id, 'google_id', profileID)
 
-                    return done(null, existingUser);
+                    return done(null, existingUser)
                 }
-                const newUser = await database.createGoogleUser(email, profileID);
+                const newUser = await database.createGoogleUser(email, profileID)
 
-                return done(null, newUser);
+                return done(null, newUser)
             }
             catch (error) {
                 return done(error)

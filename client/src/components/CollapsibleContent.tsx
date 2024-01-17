@@ -1,6 +1,8 @@
 import React, { useState, useEffect, ReactNode, useRef } from "react"
-import Spacer from "../templates/Spacer"
+import Spacer from "./Templates/Spacer"
 import { Clamp01 } from "../utils/Math"
+import Checkbox from "./Checkbox"
+import { OnValueChangeValidationHook } from "../utils/Utilities"
 
 interface Props {
   node: ReactNode // Content to display when the collapsible is expanded
@@ -8,10 +10,7 @@ interface Props {
   label?: ReactNode // Label for the collapsible content
   state?: boolean // Controlled state of collapsible (expanded/collapsed)
   onStateChange?: (newState: boolean) => void // Callback when state changes
-  onBeforeStateChange?: (
-    newState: boolean,
-    callback: (state: boolean) => void
-  ) => void // Hook to intercept state change
+  onBeforeStateChange?: OnValueChangeValidationHook<boolean> // Hook to intercept state change
   readonly?: boolean // If true, prevents interaction with the collapsible
 }
 
@@ -80,15 +79,16 @@ const CollapsibleContent = ({
 
   // Handle state change events from the checkbox
   const updateState = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newState = event.target.checked
+
     if (readonly) {
       return
     }
-    const newState = event.target.checked
-
     // Call the onBeforeStateChange hook if provided
     if (onBeforeStateChange) {
       onBeforeStateChange(newState, (status) => {
         if (!status) {
+          setEnabled(!newState)
           return
         }
         toState(newState)

@@ -43,7 +43,7 @@ export class Server {
         }))
         const limiter = rateLimit({
             windowMs:        15 * 60 * 1000,
-            limit:           100,
+            limit:           10000,
             standardHeaders: 'draft-7',
             legacyHeaders:   false,
         })
@@ -103,7 +103,7 @@ export class Server {
         next()
     }
     syncCSRFSecret = (req) => {
-        if (req.session.csrfSecret) {
+        if (req.session && req.session.csrfSecret) {
             return
         }
         const secret = this.tokens.secretSync()

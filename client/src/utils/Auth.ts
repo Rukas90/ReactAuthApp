@@ -1,10 +1,13 @@
 import { DELETE, GET, POST } from "./Requests"
 import { Response } from "./Response"
+import { v4 as uuidv4 } from "uuid"
+import { CacheLocation, SetValue } from "./Cache"
+import { SessionAuthTokenKey } from "./Utilities"
 
 interface AuthProps {
     email: string,
     password: string
-    token: string
+    csrfToken: string
 }
 
 /**
@@ -15,14 +18,14 @@ interface AuthProps {
  * @param {AuthProps} AuthProps - Email and password for registration.
  * @returns {Promise<Response>} The response object indicating success or failure.
 */
-export const Register = async ({ email, password, token }: AuthProps) : Promise<Response> => {
+export const Register = async ({ email, password, csrfToken }: AuthProps) : Promise<Response> => {
     const authData = {
         email: email,
         password: password,
     }
     let response = await POST('/auth/register', authData, {
         headers: {
-            'csrf-token': token
+            'csrf-token': csrfToken
         }
     })
     if (response.status !== 200) {
@@ -33,7 +36,7 @@ export const Register = async ({ email, password, token }: AuthProps) : Promise<
             status: response.status
         }
     }
-    const loginProps = { email: email, password: password, token: token }
+    const loginProps = { email: email, password: password, csrfToken: csrfToken }
     return await Login(loginProps)
 }
 /**
@@ -43,17 +46,24 @@ export const Register = async ({ email, password, token }: AuthProps) : Promise<
  * @param {AuthProps} AuthProps - Email and password for login.
  * @returns {Promise<Response>} The response object indicating success or failure.
 */
-export const Login = async ({ email, password, token }: AuthProps) : Promise<Response> => {
+export const Login = async ({ email, password, csrfToken }: AuthProps) : Promise<Response> => {
+    const authToken = await InitializeAuthToken()
+  
+    if (!authToken) {
+        throw "Unable to initialize auth token"
+    }
     const authData = {
         email: email,
         password: password,
     }
     const response = await POST('/auth/login', authData, {
+        
         headers: {
-            'csrf-token': token
+            'csrf-token': csrfToken,
+            'auth-token': authToken
         }
     })
-    const success  = response.status === 200
+    const success = response.status === 200
 
     return {
         success: success,
@@ -63,6 +73,23 @@ export const Login = async ({ email, password, token }: AuthProps) : Promise<Res
     }
 }
 
+export const InitializeAuthToken = async () : Promise<string | null> => {
+
+    const authToken = uuidv4()
+    const location = await SetValue({
+        key: SessionAuthTokenKey,
+        value: authToken, 
+        life: 60000,
+        singleUse: true,
+        encode: true,
+        password: authToken
+    })
+    if (location === CacheLocation.Nowhere) {
+        return null
+    }
+    return authToken
+}
+
 /**
  * Verify
  * Verifies a user with a provided verification code.
@@ -70,12 +97,12 @@ export const Login = async ({ email, password, token }: AuthProps) : Promise<Res
  * @param {string} code - Verification code.
  * @returns {Promise<Response>} The response object indicating success or failure.
 */
-export const Verify = async (code : string, token: string) : Promise<Response> => {
+export const Verify = async (code : string, csrfToken: string) : Promise<Response> => {
     const response = await POST('/auth/verify', {
         code: code
     }, {
         headers: {
-            'csrf-token': token
+            'csrf-token': csrfToken
         }
     })
     const success = response.status === 200
@@ -93,10 +120,10 @@ export const Verify = async (code : string, token: string) : Promise<Response> =
  *
  * @returns {Promise<Response>} The response object indicating success or failure.
 */
-export const Logout = async (token: string) : Promise<Response> => {
+export const Logout = async (csrfToken: string) : Promise<Response> => {
     const response = await POST('/auth/logout', {}, {
         headers: {
-            'csrf-token': token
+            'csrf-token': csrfToken
         }
     })
     const success = response.status === 200
@@ -154,12 +181,12 @@ export const Get2FAInitializeData = async () : Promise<Response> => {
  * @param {string} code - 2FA code.
  * @returns {Promise<Response>} The response object indicating success or failure.
 */
-export const Verify2FA = async (code: string, token: string) : Promise<Response> => {
+export const Verify2FA = async (code: string, csrfToken: string) : Promise<Response> => {
     const response = await POST('/auth/2fa', {
         code: code
     }, {
         headers: {
-            'csrf-token': token
+            'csrf-token': csrfToken
         }
     })
     const success = response.status === 200
@@ -177,10 +204,10 @@ export const Verify2FA = async (code: string, token: string) : Promise<Response>
  *
  * @returns {Promise<Response>} The response object indicating success or failure.
 */
-export const Deactivate2FA = async (token: string) : Promise<Response> => {
+export const Deactivate2FA = async (csrfToken: string) : Promise<Response> => {
     const response = await DELETE('/auth/2fa', {
         headers: {
-            'csrf-token': token
+            'csrf-token': csrfToken
         }
     })
     const success = response.status === 200

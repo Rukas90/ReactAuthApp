@@ -1,5 +1,5 @@
 import React, { useEffect } from "react"
-import Spacer from "../templates/Spacer"
+import Spacer from "./Templates/Spacer"
 import ConditionalItem from "./ConditionalItem"
 import { ValidationGroupCondition } from "../utils/ValidationGroupCondition"
 

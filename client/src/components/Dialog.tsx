@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react"
-import { DialogProps } from "../props/DialogProps"
+import { DialogProps } from "./props/DialogProps"
 import { v4 as uuidv4 } from "uuid"
-import DialogNode from "../templates/DialogNode"
+import DialogNode from "./Templates/DialogNode"
 
 /**
  * Dialog Class

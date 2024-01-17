@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import InfoIcon from "../img/icons/common/info.svg"
-import Spacer from "../templates/Spacer"
+import Spacer from "./Templates/Spacer"
 import useVisualEffect, { EffectProperties } from "../hooks/useVisualEffect"
 import { ColorOption } from "../utils/ColorOption"
 

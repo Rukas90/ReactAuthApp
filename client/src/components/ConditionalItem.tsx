@@ -1,5 +1,5 @@
 import React from "react"
-import { ConditionalItemProps } from "../props/ConditionalItemProps"
+import { ConditionalItemProps } from "./props/ConditionalItemProps"
 
 /**
  * ConditionalItem Component

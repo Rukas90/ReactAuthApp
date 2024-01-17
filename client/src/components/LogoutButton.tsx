@@ -1,5 +1,5 @@
 import React from "react"
-import CustomButton from "./CustomButton"
+import CustomButton from "./Buttons/CustomButton"
 import { useTranslation } from "react-i18next"
 import { Logout } from "../utils/Auth"
 import { useNavigate } from "react-router-dom"

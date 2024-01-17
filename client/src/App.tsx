@@ -1,9 +1,11 @@
 import React from "react"
 import { Routes, Route } from "react-router-dom"
-import HomeView from "./views/HomeView"
-import LoginView from "./views/LoginView"
-import RegisterView from "./views/RegisterView"
-import VerifyView from "./views/VerifyView"
+import {
+  HomeView,
+  LoginView,
+  RegisterView,
+  VerifyView,
+} from "./components/views"
 import useLanguageSetting from "./hooks/useLanguageSetting"
 import { usePreventWindowUnload } from "./hooks/usePreventWindowUnload"
 import { MessageProvider } from "./contexts/MessageContext"

@@ -13,6 +13,12 @@
       "resolveJsonModule": true,                 // Include modules imported with '.json' extension
       "isolatedModules": true,                   // Ensure each file can be safely transpiled without relying on other imports
       "jsx": "react",                            // Support JSX in .tsx files
+      "baseUrl": ".",
+      "paths": {
+        "utils/*": ["src/utils/*"],
+        "img/*": ["src/img/*"],
+        "components/*": ["src/components/*"]
+      },
       "noEmit": true                             // Do not emit outputs (if using with Babel)
     },
     "include": [

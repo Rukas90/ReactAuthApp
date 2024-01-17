@@ -34,25 +34,35 @@ export const captureSessionInfo = async (req, _, next) => {
         const existingSession = await database.query(`SELECT * FROM sessions WHERE ${selector}`, 
             [
                 sessionData.user_id, 
-                sessionData.ip_address, 
+                sessionData.ip_address,
                 sessionData.device_type, 
                 sessionData.source
             ])
 
         // Update the existing session
         if (existingSession.rowCount > 0) {
-            await database.query('UPDATE sessions SET last_activity_time = $1 WHERE session_id = $2',
-                [sessionData.last_activity_time, existingSession.rows[0].session_id])
+            const existingSessionID = existingSession.rows[0].session_id
 
+            await database.query('UPDATE sessions SET last_activity_time = $1 WHERE session_id = $2',
+                [sessionData.last_activity_time, existingSessionID])
+
+            req.user.sessionID = existingSessionID
             return
         }
         // Insert a new session
         await database.push('sessions', sessionData, getSessionsDatabaseTableSchema())
+
+        req.user.sessionID = sessionData.session_id
     }
     catch (error) {
         throw error
     }
     finally {
+        req.session.passport.user = { 
+            userID:    req.user.id,
+            sessionID: req.user.sessionID 
+        };
+        req.session.save()
         next()
     }
 }

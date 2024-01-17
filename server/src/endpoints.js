@@ -37,19 +37,19 @@ export class Endpoints {
             async (req, res) => 
                 res
                 .status(200)
-                .cookie('X-CSRF-Token', this.server.tokens.create(req.session.csrfSecret), { httpOnly: true, sameSite: 'Lax' })
-                .send('Logged in successfully'))
+                .cookie('X-CSRF-Token', this.server.tokens.create(req.session.csrfSecret), { httpOnly: true, sameSite: process.env.SAME_SITE })
+                .redirect(process.env.CLIENT_ORIGIN))
 
         // Google Auth
 
-        this.server.app.get('/auth/google',          passport.authenticate('google', { scope: ['profile', 'email'] }));
-        this.server.app.get('/auth/google/register', passport.authenticate('google', { scope: ['profile', 'email'], prompt: 'select_account' }));
+        this.server.app.get('/auth/google',          passport.authenticate('google', { scope: ['profile', 'email'] }))
+        this.server.app.get('/auth/google/register', passport.authenticate('google', { scope: ['profile', 'email'], prompt: 'select_account' }))
         this.server.app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), syncCSRFSecret, captureSessionInfo, 
-            (req, res) => res
-                .cookie('X-CSRF-Token', this.server.tokens.create(req.session.csrfSecret), { httpOnly: true, sameSite: 'Lax' })
+            (req, res) => 
+                res
+                .status(200)
+                .cookie('X-CSRF-Token', this.server.tokens.create(req.session.csrfSecret), { httpOnly: true, sameSite: process.env.SAME_SITE })
                 .redirect(process.env.CLIENT_ORIGIN))
-
-        // 2FA Auth
 
         this.server.app.get('/auth/2fa/status', isAuthenticated, async (req, res) => await get_2fa_status(req, res, this.server))
         this.server.app.get('/auth/2fa',        isAuthenticated, async (req, res) => await get_2fa_data(req, res, this.server))
@@ -64,6 +64,16 @@ export class Endpoints {
         // Log out
 
         this.server.app.post('/auth/logout', cSRFTokenVerification, isAuthenticated, (req, res) => log_out_user(req, res, this.server))
+    
+        // Sessions
+
+        this.server.app.get('/session', isAuthenticated, async (req, res) => {
+            return res.status(200).json({ sessionID: req.user.sessionID })
+        })
+        this.server.app.get('/sessions', isAuthenticated, async (req, res) => {
+            return res.status(200).json({ sessions: await this.server.database.getUserSessions(req.user.id), user: {
+                sessionID: req.user.sessionID
+            } })
+        })
     }
 }
-

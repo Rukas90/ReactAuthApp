@@ -11,6 +11,7 @@ $list-group-border-radius: 2px;
 $btn-border-radius: 2px;
 $dropdown-border-radius: 2px;
 $dark-color: rgb(33, 37, 41);
+$fs-7: 0.85rem;
 
 @import '../../node_modules/bootstrap/scss/bootstrap'; 
 
@@ -113,7 +114,7 @@ nav {
 }
 
 .fs-7 {
-  font-size: 0.85rem;
+  font-size: $fs-7;
 }
 .fs-8 {
   font-size: 0.725rem;
@@ -162,6 +163,10 @@ nav {
   background-color: rgb(103, 13, 13);
 }
 
+.bg-clear {
+  background-color: rgba(0, 0, 0, 0); 
+}
+
 .text-active {
   color: #0d6efd;
 }
@@ -202,6 +207,34 @@ nav {
   min-height: 100vh !important; 
 }
 
+@keyframes slideDown {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0.0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.animate-slide-down {
+  animation: slideDown 0.2s ease-in-out;
+}
+
+@keyframes slideLeft {
+  0% {
+    transform: translateX(100%);
+    opacity: 0.0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+.animate-slide-left {
+  animation: slideLeft 0.2s ease-in-out;
+}
+
 @keyframes popIn {
   0% {
     transform: scale(0.5);
@@ -220,8 +253,66 @@ nav {
   animation: popIn 0.1s ease-in-out;
 }
 
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-in-out;
+}
+
 .overlay {
   background-color: rgba(0, 0, 0, 0.5);
+}
+
+.icon-btn {
+  opacity: 0.5;
+  transform: translateX(0);
+  transition: all 0.15s ease-in-out;
+}
+.icon-btn:hover {
+  opacity: 1.0;
+}
+.icon-btn:active {
+  opacity: 0.85;
+}
+
+.icon-btn.slide-right:hover {
+  transform: translateX(25%);
+}
+.icon-btn.slide-right:active {
+  transform: translateX(37.5%);
+} 
+.icon-btn.slide-left:hover {
+  transform: translateX(-25%);
+}
+.icon-btn.slide-left:active {
+  transform: translateX(-37.5%);
+}
+
+.hover-underline-animation {
+  display: inline-block;
+  position: relative;
+  color: white;
+  text-decoration: none;
+}
+.hover-underline-animation::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  background-color: white;
+  transition: opacity 0.3s ease, left 0.3s ease;
+}
+.hover-underline-animation:hover::after {
+  opacity: 1.0;
 }
 
 .constraint-body-container {
@@ -261,4 +352,17 @@ nav {
     .letter-spacing-#{$size} {
         letter-spacing: $size * 1px;
     }
+}
+
+/* Custom CSS */
+@media (max-width: 767.98px) {
+  .fs-res-body {
+      font-size: $fs-7;
+  }
+}
+
+@media (min-width: 768px) {
+  .fs-res-body {
+      font-size: var(--bs-body-font-size);
+  }
 }
