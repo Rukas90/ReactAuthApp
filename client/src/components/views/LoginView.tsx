@@ -1,6 +1,6 @@
 import React from "react"
 import AuthView from "./AuthView"
-import LoginForm from "../Forms/LoginForm"
+import LoginForm from "Components/Forms/LoginForm"
 
 const LoginView = () => {
   return <AuthView formComponent={<LoginForm />} />

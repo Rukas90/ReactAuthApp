@@ -6,9 +6,11 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      'utils': path.resolve(__dirname, './src/utils'),
-      'img': path.resolve(__dirname, './src/img'),
-      'components': path.resolve(__dirname, './src/components'),
-    }
+      'Utils': path.resolve(__dirname, './src/Utils'),
+      'Img': path.resolve(__dirname, './src/Img'),
+      'Components': path.resolve(__dirname, './src/Components'),
+      'Contexts': path.resolve(__dirname, './src/Contexts'),
+      'Hooks': path.resolve(__dirname, './src/Hooks'),
+      'Templates': path.resolve(__dirname, './src/Components/Templates')
   }
-})
+}})

@@ -1,5 +1,5 @@
 import React, { ReactNode, useState, useEffect } from "react"
-import { ClampIndex } from "../utils/Math"
+import { ClampIndex } from "Utils/Math"
 
 export interface Tab {
   name: string

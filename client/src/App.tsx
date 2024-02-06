@@ -5,12 +5,15 @@ import {
   LoginView,
   RegisterView,
   VerifyView,
-} from "./components/views"
-import useLanguageSetting from "./hooks/useLanguageSetting"
-import { usePreventWindowUnload } from "./hooks/usePreventWindowUnload"
-import { MessageProvider } from "./contexts/MessageContext"
-import { BusyProvider } from "./contexts/BusyProvider"
-import { DialogProvider } from "./contexts/DialogContext"
+  Verify2FAView,
+  OAuthIdentifyView,
+} from "./Components/Views"
+import useLanguageSetting from "./Hooks/useLanguageSetting"
+import { usePreventWindowUnload } from "./Hooks/usePreventWindowUnload"
+import { MessageProvider } from "./Contexts/MessageContext"
+import { BusyProvider } from "./Contexts/BusyProvider"
+import { DialogProvider } from "./Contexts/DialogContext"
+import { NotificationsProvider } from "Contexts/NotificationsContexts"
 
 /**
  * App Component
@@ -28,16 +31,20 @@ const App = () => {
   return (
     <>
       <MessageProvider>
-        <DialogProvider>
-          <BusyProvider>
-            <Routes>
-              <Route path="/" element={<HomeView />} />
-              <Route path="/login" element={<LoginView />} />
-              <Route path="/register" element={<RegisterView />} />
-              <Route path="/verify" element={<VerifyView />} />
-            </Routes>
-          </BusyProvider>
-        </DialogProvider>
+        <NotificationsProvider>
+          <DialogProvider>
+            <BusyProvider>
+              <Routes>
+                <Route path="/" element={<HomeView />} />
+                <Route path="/login" element={<LoginView />} />
+                <Route path="/register" element={<RegisterView />} />
+                <Route path="/verify" element={<VerifyView />} />
+                <Route path="/oauth-identify" element={<OAuthIdentifyView />} />
+                <Route path="/verify-2fa" element={<Verify2FAView />} />
+              </Routes>
+            </BusyProvider>
+          </DialogProvider>
+        </NotificationsProvider>
       </MessageProvider>
     </>
   )

@@ -1,29 +1,32 @@
 {
-    "compilerOptions": {
-      "target": "es5",                           // Specify ECMAScript target version
-      "lib": ["dom", "dom.iterable", "esnext"],  // Specify library files to be included in the compilation
-      "allowJs": true,                           // Allow JavaScript files to be compiled
-      "skipLibCheck": true,                      // Skip type checking of declaration files
-      "esModuleInterop": true,                   // Enables ES6 module interoperability
-      "allowSyntheticDefaultImports": true,      // Allow default imports from modules with no default export
-      "strict": true,                            // Enable all strict type-checking options
-      "forceConsistentCasingInFileNames": true,  // Disallow inconsistently-cased references to the same file
-      "module": "esnext",                        // Specify module code generation
-      "moduleResolution": "node",                // Determine how modules get resolved
-      "resolveJsonModule": true,                 // Include modules imported with '.json' extension
-      "isolatedModules": true,                   // Ensure each file can be safely transpiled without relying on other imports
-      "jsx": "react",                            // Support JSX in .tsx files
-      "baseUrl": ".",
-      "paths": {
-        "utils/*": ["src/utils/*"],
-        "img/*": ["src/img/*"],
-        "components/*": ["src/components/*"]
-      },
-      "noEmit": true                             // Do not emit outputs (if using with Babel)
+  "compilerOptions": {
+    "target": "es2017", // Specify ECMAScript target version
+    "lib": ["dom", "dom.iterable", "esnext"], // Specify library files to be included in the compilation
+    "allowJs": true, // Allow JavaScript files to be compiled
+    "skipLibCheck": true, // Skip type checking of declaration files
+    "esModuleInterop": true, // Enables ES6 module interoperability
+    "allowSyntheticDefaultImports": true, // Allow default imports from modules with no default export
+    "strict": true, // Enable all strict type-checking options
+    "forceConsistentCasingInFileNames": true, // Disallow inconsistently-cased references to the same file
+    "module": "esnext", // Specify module code generation
+    "moduleResolution": "node", // Determine how modules get resolved
+    "resolveJsonModule": true, // Include modules imported with '.json' extension
+    "isolatedModules": true, // Ensure each file can be safely transpiled without relying on other imports
+    "jsx": "react", // Support JSX in .tsx files
+    "baseUrl": ".",
+    "paths": {
+      "Utils/*": ["src/Utils/*"],
+      "Img/*": ["src/Img/*"],
+      "Components/*": ["src/Components/*"],
+      "Contexts/*": ["src/Contexts/*"],
+      "Hooks/*": ["src/Hooks/*"],
+      "Templates/*": ["src/Components/Templates/*"]
     },
-    "include": [
-      "src",                                     // Include all files in the src directory,
-      "src/types/**/*.d.ts",                     // Include your custom type definitions
-      "./vite-env.d.ts"
-    ]
+    "noEmit": true // Do not emit outputs (if using with Babel)
+  },
+  "include": [
+    "src", // Include all files in the src directory,
+    "src/Types/**/*.d.ts", // Include your custom type definitions
+    "./vite-env.d.ts"
+  ]
 }

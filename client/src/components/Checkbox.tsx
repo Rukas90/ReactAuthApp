@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 
 interface Props {
   id?: string
@@ -28,7 +28,7 @@ const Checkbox = ({
   onIcon,
   offIcon,
   role,
-  checked,
+  checked = false,
   classes,
   style,
   onStateChange,

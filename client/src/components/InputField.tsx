@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from "react"
-import VisibilityOn from "../img/icons/common/visibility-on.svg"
-import VisibilityOff from "../img/icons/common/visibility-off.svg"
+import VisibilityOn from "Img/Icons/Common/visibility-on.svg"
+import VisibilityOff from "Img/Icons/Common/visibility-off.svg"
 import Checkbox from "./Checkbox"
+import { RoundnessOption } from "Utils/Types/RoundnessOption"
 
 interface Props {
   type?: string | "text" | "email" | "password"
   value?: string
   placeholder?: string
+  preservePlaceholder?: boolean
   autocomplete?: string
   hideable?: boolean
   isVisible?: boolean
   onValueChange?: (newValue: string) => void
   readonly?: boolean
   extendWidth?: boolean
+  indicateError?: boolean
+  roundness?: RoundnessOption | null
 }
 
 /**
@@ -31,12 +35,15 @@ const InputField = ({
   type = "text",
   value,
   placeholder,
+  preservePlaceholder = true,
   autocomplete,
   hideable,
   isVisible,
   onValueChange,
   readonly = false,
   extendWidth = false,
+  indicateError = false,
+  roundness = null,
 }: Props) => {
   const [visible, setVisible] = useState(isVisible)
   const [text, setText] = useState(value || "")
@@ -64,13 +71,9 @@ const InputField = ({
       onValueChange(newValue)
     }
   }
-  return (
+  const placeholderNode = (
     <>
-      <div
-        className={`position-relative d-flex align-items-start justify-content-center vstack m-auto ${
-          extendWidth && "w-100"
-        }`}
-      >
+      {(preservePlaceholder || (!preservePlaceholder && !text)) && (
         <label
           aria-disabled="true"
           className={`position-absolute start-0 text-secondary mx-3 transition-all user-select-none pointer-events-none ${
@@ -79,11 +82,23 @@ const InputField = ({
         >
           {placeholder}
         </label>
+      )}
+    </>
+  )
+
+  return (
+    <div className={`${extendWidth && "w-100"}`}>
+      <div
+        className={`position-relative overflow-hidden d-flex align-items-start justify-content-center vstack m-auto ${roundness} ${
+          indicateError && "indicator-danger"
+        }`}
+      >
+        {placeholderNode}
         <input
           value={value}
           type={hideable && visible ? "text" : type}
           className={`w-100 ${
-            text ? "pt-4 pb-2 align-bottom" : "py-2"
+            text && preservePlaceholder ? "pt-4 pb-2 align-bottom" : "py-2"
           } px-3 border-0 input-field text-light transition-all`}
           onChange={onInputTextChanged}
           autoComplete={autocomplete}
@@ -102,7 +117,7 @@ const InputField = ({
           />
         )}
       </div>
-    </>
+    </div>
   )
 }
 export default InputField

@@ -5,7 +5,7 @@ import React, {
   ReactNode,
   useCallback,
 } from "react"
-import { GetCSRFToken } from "../utils/Auth"
+import { GetCSRFToken } from "Utils/Auth"
 
 interface CsrfContextType {
   csrfToken: string
@@ -32,9 +32,11 @@ export const CsrfProvider: React.FC<CsrfProviderProps> = ({ children }) => {
     async (refresh: boolean = false) => {
       if (refresh || !csrfToken) {
         const response = await GetCSRFToken()
-        setCsrfToken(response.data)
 
-        return response.data
+        const token = response.data.csrfToken
+
+        setCsrfToken(token)
+        return token
       }
       return csrfToken
     },

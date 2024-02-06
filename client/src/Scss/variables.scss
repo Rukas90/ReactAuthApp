@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Source+Sans+3:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import '../../node_modules/bootstrap/scss/functions';
+@import '../../node_modules/bootstrap/scss/variables';
+
+// Color
+
+$bg-menu: #080808;
+$bg-toggle-settings: rgb(23, 26, 28);
+$list-group-bg: $dark;
+$list-group-border-color: #000000;
+$list-group-color: $secondary;
+$dark-color: rgb(33, 37, 41);
+$accent-color: rgb(226, 68, 25);
+$bg-error: rgb(103, 13, 13);
+$clear: rgba(0, 0, 0, 0);
+$bg-darker: hsl(210, 11%, 10%);
+$bg-dialog: rgba($bg-darker, 0.5);
+$default-body-color: #020202;
+$body-color: #29373a;
+$overlay-bg-color: rgba(0, 0, 0, 0.5);
+$overlay-light-bg-color: rgba(255, 255, 255, 0.05);
+$text-active-color: #0d6efd;
+$bt-dark: rgb(33, 37, 41);
+
+// Border
+
+$list-group-border-radius: 2px;
+$btn-border-radius: 2px;
+$dropdown-border-radius: 2px;
+
+// Size
+
+$full-size: 100%;
+$full-viewport-width: 100vw;
+$full-viewport-height: 100vh;
+$constraint-content-body-width: 80rem !important;
+
+// Text
+
+$fs-7: 0.85rem;
+$fs-8: 0.725rem;
+$fs-9: 0.65rem;
+
+// Padding
+
+$p-6: 5rem !important;
+
+// Animation
+
+$animation-duration-short: 0.1s;
+$animation-duration-mid: 0.15s;
+$animation-duration: 0.2s;
+$animation-duration-slow: 0.3s;
+$easing-function: ease-in-out;
+
+// Opacity
+
+$opacity-full: 1.0;
+$opacity-high: 0.85;
+$opacity-medium: 0.65;
+$opacity-half: 0.50;
+$opacity-low: 0.35;
+$opacity-none: 0.0;
+
+// Icon Btn
+
+$icon-btn-hover-translate-right: 25%;
+$icon-btn-active-translate-right: 37.5%;
+$icon-btn-hover-translate-left: -25%;
+$icon-btn-active-translate-left: -37.5%;
+
+// Digit Field
+
+$digit-field-height: 50px;
+
+// Dot Close Btn
+
+$dot-close-btn-bg-color: rgb(219, 46, 23);
+$dot-close-btn-hover-outline-color: rgba(219, 23, 30, 0.25);
+$dot-close-btn-transition-duration: 0.2s;
+$dot-close-btn-outline-width: 4px;
+
+// Various
+
+$qr-code-img-width: 225px;
+
+// Misc
+
+$underline-height: 2px;
+$underline-color-default: white;
+$underline-color-focused: $accent-color;
+
+// Indicator
+
+$indicator-bg-color: rgba($bg-error, 1.0);
+$indicator-outline-color: $bg-error;
+$indicator-outline-style: solid;
+$indicator-outline-width: 1px;
+
+@import '../../node_modules/bootstrap/scss/bootstrap';

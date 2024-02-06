@@ -1,8 +1,7 @@
 import React from "react"
-import { SessionData } from "utils/SessionData"
+import { SessionData } from "Utils/SessionData"
 import moment from "moment"
-import { useMediaQuery } from "react-responsive"
-import ArrowRight from "../img/icons/common/arrow-right.svg"
+import ArrowRight from "Img/Icons/Common/arrow-right.svg"
 import CustomButton from "./Buttons/CustomButton"
 
 interface Props {
@@ -51,7 +50,7 @@ const Session = ({ data, onSelect = undefined }: Props) => {
           </div>
         </div>
         <div className="position-absolute end-0">
-          <div className="d-flex gap-3 me-3 overflow-hidden">
+          <div className="d-flex gap-3 me-3 overflow-hidden bg-darker">
             {
               <div className="m-0 bg-dark px-3 py-1 rounded d-lg-block d-none">
                 <p className="m-auto text-secondary fs-7 fw-semibold">

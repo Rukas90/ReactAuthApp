@@ -1,12 +1,12 @@
 import React from "react"
-import Spacer from "./Spacer"
-import Logo from "img/icons/common/logo.png"
+import Spacer from "Components/Spacer"
+import Logo from "Img/Icons/Common/logo.png"
 
 interface Props {
   header: string // Main header text
   secondary: string // Secondary text
-  linkText: string // Text for the link
-  linkHref: string // URL for the link
+  linkText?: string // Text for the link
+  linkHref?: string // URL for the link
 }
 
 /**
@@ -21,12 +21,7 @@ interface Props {
  * - linkText: Text for a hyperlink, typically for navigation (e.g., 'Login' or 'Register').
  * - linkHref: URL that the hyperlink points to.
  */
-const FormHeader = ({
-  header,
-  secondary,
-  linkText,
-  linkHref: linkHref,
-}: Props) => {
+const FormHeader = ({ header, secondary, linkText, linkHref }: Props) => {
   return (
     <>
       <div className="header-container w-100 d-flex vstack align-items-center text-center lh-lg">
@@ -37,11 +32,13 @@ const FormHeader = ({
         <Spacer space={0.5} unit="rem" isVertical />
         <div>
           <span className="text-secondary">{secondary}</span>
-          <span className="ms-2">
-            <a className="link-light" href={linkHref}>
-              {linkText}
-            </a>
-          </span>
+          {linkText && (
+            <span className="ms-2">
+              <a className="link-light" href={linkHref}>
+                {linkText}
+              </a>
+            </span>
+          )}
         </div>
       </div>
     </>

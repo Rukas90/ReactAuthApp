@@ -2,7 +2,11 @@ import moment                               from 'moment'
 import geoip                                from 'geoip-lite'
 import useragent                            from 'express-useragent'
 import { v4 as uuidv4 }                     from 'uuid'
-import { getSessionsDatabaseTableSchema }   from './utils.js'
+import { 
+    getSessionsDBTableSchema, 
+    sessionsDBTable 
+}                                           from './utils.js'
+import { isSessionBlocked } from './session-management.js'
 
 export const isAuthenticated = (req, res, next) => {
     if (!req.isAuthenticated()) {
@@ -50,9 +54,10 @@ export const captureSessionInfo = async (req, _, next) => {
             return
         }
         // Insert a new session
-        await database.push('sessions', sessionData, getSessionsDatabaseTableSchema())
+        await database.push(sessionsDBTable, sessionData, getSessionsDBTableSchema())
 
-        req.user.sessionID = sessionData.session_id
+        req.user.sessionID  = sessionData.session_id
+        req.session.blocked = await isSessionBlocked(req)
     }
     catch (error) {
         throw error
@@ -61,7 +66,7 @@ export const captureSessionInfo = async (req, _, next) => {
         req.session.passport.user = { 
             userID:    req.user.id,
             sessionID: req.user.sessionID 
-        };
+        }
         req.session.save()
         next()
     }
@@ -104,5 +109,37 @@ const getDeviceType = (ua) => {
     }
     else {
         return 'Unknown'
+    }
+}
+
+export const validateSession2FAState = async (req, _, next) => {
+    try {
+        if (!req.isAuthenticated()) {
+            return // User is not logged in...
+        }
+        const user = req.user
+
+        if (!user) {
+            return // User is not found...
+        }
+        const database = req.app.locals.database
+        const state    = await database.isUser2FAEnabled(user.id)
+
+        if (!state) {
+            return
+        }
+        const authState = req.session.AuthentificationState
+
+        if (authState === 3) /* <-- Fully authenticated */ {
+            return
+        }
+        req.session.AuthentificationState = 2 /* <-- Partially authenticated */
+        req.session.save()
+    }
+    catch (error) {
+        throw error
+    }
+    finally {
+        next()
     }
 }

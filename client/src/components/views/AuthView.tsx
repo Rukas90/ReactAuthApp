@@ -1,9 +1,9 @@
 import React from "react"
 import { useMediaQuery } from "react-responsive"
-import LanguageSwitcher from "../LanguageSwitcher"
-import Spacer from "../Templates/Spacer"
-import ErrorMessage from "../ErrorMessage"
-import { broadcast } from "../../contexts/MessageContext"
+import LanguageSwitcher from "Components/LanguageSwitcher"
+import Spacer from "Components/Spacer"
+import ErrorMessage from "Components/ErrorMessage"
+import { broadcast } from "Contexts/MessageContext"
 
 interface Props {
   formComponent: React.ReactNode // Prop to accept a form component (e.g., LoginForm, RegisterForm).

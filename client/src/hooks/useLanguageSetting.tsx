@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { useTranslation } from "react-i18next"
-import { useLanguage } from "../contexts/LanguageProvider"
+import { useLanguage } from "Contexts/LanguageProvider"
 
 /**
  * useLanguageSetting Hook

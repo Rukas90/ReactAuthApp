@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { useBusyContext } from "../contexts/BusyProvider"
+import { useBusyContext } from "Contexts/BusyProvider"
 
 /**
  * usePreventWindowUnload Custom Hook

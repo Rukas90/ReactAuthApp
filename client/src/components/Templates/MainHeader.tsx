@@ -1,8 +1,8 @@
 import React from "react"
 import { useMediaQuery } from "react-responsive"
-import Spacer from "./Spacer"
-import Logo from "img/icons/common/logo.png"
-import LogoutButton from "../LogoutButton"
+import Spacer from "Components/Spacer"
+import Logo from "Img/Icons/Common/logo.png"
+import LogoutButton from "Components/LogoutButton"
 
 const MainHeader = () => {
   const isMobile = useMediaQuery({ query: "(max-width: 429px)" })

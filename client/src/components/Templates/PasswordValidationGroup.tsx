@@ -4,9 +4,8 @@ import {
   HasUppercase,
   HasNumber,
   HasSpecialCharacter,
-} from "../../utils/Utilities"
-import ValidationGroup from "../ValidationGroup"
-import { useTranslation } from "react-i18next"
+} from "Utils/Utilities"
+import ValidationGroup from "Components/ValidationGroup"
 
 interface Props {
   password: string // The password to be validated
@@ -29,8 +28,6 @@ const PasswordValidationGroup = ({
   minLength = 12,
   onValidationStatusChange,
 }: Props) => {
-  const { t } = useTranslation() // Hook for internationalization
-
   return (
     <>
       <ValidationGroup<string>
@@ -38,23 +35,23 @@ const PasswordValidationGroup = ({
         conditions={[
           {
             evaluateFunc: HasLowercase,
-            conditionText: t("PASSWORD_LOWERCASE_CONDITION"),
+            conditionText: Translate("PASSWORD_LOWERCASE_CONDITION"),
           },
           {
             evaluateFunc: HasUppercase,
-            conditionText: t("PASSWORD_UPPERCASE_CONDITION"),
+            conditionText: Translate("PASSWORD_UPPERCASE_CONDITION"),
           },
           {
             evaluateFunc: HasNumber,
-            conditionText: t("PASSWORD_NUMBER_CONDITION"),
+            conditionText: Translate("PASSWORD_NUMBER_CONDITION"),
           },
           {
             evaluateFunc: HasSpecialCharacter,
-            conditionText: t("PASSWORD_SPECIAL_CHARACTER_CONDITION"),
+            conditionText: Translate("PASSWORD_SPECIAL_CHARACTER_CONDITION"),
           },
           {
             evaluateFunc: (password) => password.length >= minLength,
-            conditionText: t("PASSWORD_MINIMUM_CHARACTER_CONDITION", {
+            conditionText: Translate("PASSWORD_MINIMUM_CHARACTER_CONDITION", {
               count: minLength,
             }),
           },

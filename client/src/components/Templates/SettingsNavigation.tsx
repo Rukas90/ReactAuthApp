@@ -1,8 +1,13 @@
 import React from "react"
-import Navigation from "../Navigation"
-import { SecuritySettings, ActivitySettings } from "../Settings"
-import { Tab } from "../Navigation"
-import { useBusyContext } from "../../contexts/BusyProvider"
+import Navigation from "Components/Navigation"
+import {
+  SecuritySettings,
+  ActivitySettings,
+  PreferencesSettings,
+  AccountSettings,
+} from "Components/Settings"
+import { Tab } from "Components/Navigation"
+import { useBusyContext } from "Contexts/BusyProvider"
 
 interface Props {
   onTabChanged?: (tab: Tab) => void
@@ -24,11 +29,11 @@ const SettingsNavigation = ({ onTabChanged }: Props) => {
         },
         {
           name: "Preferences",
-          view: undefined,
+          view: <PreferencesSettings />,
         },
         {
           name: "Account",
-          view: undefined,
+          view: <AccountSettings />,
         },
       ]}
       disabled={isBusy()}

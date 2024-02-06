@@ -1,4 +1,4 @@
-import { DELETE, GET, POST } from "./Requests"
+import { DELETE, GET, PATCH, POST, MAKE_REQUEST } from "./Requests"
 import { Response } from "./Response"
 import { v4 as uuidv4 } from "uuid"
 import { CacheLocation, SetValue } from "./Cache"
@@ -19,22 +19,15 @@ interface AuthProps {
  * @returns {Promise<Response>} The response object indicating success or failure.
 */
 export const Register = async ({ email, password, csrfToken }: AuthProps) : Promise<Response> => {
+
     const authData = {
         email: email,
         password: password,
     }
-    let response = await POST('/auth/register', authData, {
-        headers: {
-            'csrf-token': csrfToken
-        }
-    })
-    if (response.status !== 200) {
-        return {
-            success: false,
-            error: "Failed to register user!",
-            data: response.data,
-            status: response.status
-        }
+    const response = await MAKE_REQUEST(POST, '/auth/register', csrfToken, authData)
+    
+    if (!response.success) {
+        return response
     }
     const loginProps = { email: email, password: password, csrfToken: csrfToken }
     return await Login(loginProps)
@@ -56,21 +49,7 @@ export const Login = async ({ email, password, csrfToken }: AuthProps) : Promise
         email: email,
         password: password,
     }
-    const response = await POST('/auth/login', authData, {
-        
-        headers: {
-            'csrf-token': csrfToken,
-            'auth-token': authToken
-        }
-    })
-    const success = response.status === 200
-
-    return {
-        success: success,
-        error: success ? undefined : "Failed to login user!",
-        data: response.data,
-        status: response.status
-    }
+    return await MAKE_REQUEST(POST, '/auth/login', csrfToken, authData, { headers: { 'auth-token': authToken } })
 }
 
 export const InitializeAuthToken = async () : Promise<string | null> => {
@@ -98,21 +77,8 @@ export const InitializeAuthToken = async () : Promise<string | null> => {
  * @returns {Promise<Response>} The response object indicating success or failure.
 */
 export const Verify = async (code : string, csrfToken: string) : Promise<Response> => {
-    const response = await POST('/auth/verify', {
-        code: code
-    }, {
-        headers: {
-            'csrf-token': csrfToken
-        }
-    })
-    const success = response.status === 200
 
-    return {
-        success: success,
-        error: success ? undefined : "Failed to verify user!",
-        data: response.data,
-        status: response.status
-    }
+    return await MAKE_REQUEST(POST, '/auth/verify', csrfToken, { code: code })
 }
 /**
  * Logout
@@ -121,19 +87,8 @@ export const Verify = async (code : string, csrfToken: string) : Promise<Respons
  * @returns {Promise<Response>} The response object indicating success or failure.
 */
 export const Logout = async (csrfToken: string) : Promise<Response> => {
-    const response = await POST('/auth/logout', {}, {
-        headers: {
-            'csrf-token': csrfToken
-        }
-    })
-    const success = response.status === 200
 
-    return {
-        success: success,
-        error: success ? undefined : "Failed to logout user!",
-        data: response.data,
-        status: response.status
-    }
+    return await MAKE_REQUEST(POST, '/auth/logout', csrfToken)
 }
 /**
  * Get2FAState
@@ -142,17 +97,8 @@ export const Logout = async (csrfToken: string) : Promise<Response> => {
  * @returns {Promise<Response>} The response object with 2FA state data.
 */
 export const Get2FAState = async () : Promise<Response> => {
-    const response = await GET('/auth/2fa/status')
 
-    const success = response.status === 200
-    const state = response.data.error ? false : response.data.state
-
-    return {
-        success: success,
-        error: success ? undefined : response.data.error,
-        data: state,
-        status: response.status
-    }
+    return await MAKE_REQUEST(GET, '/auth/2fa/status')
 }
 /**
  * Get2FAInitializeData
@@ -161,19 +107,28 @@ export const Get2FAState = async () : Promise<Response> => {
  * @returns {Promise<Response>} The response object with 2FA initialization data.
 */
 export const Get2FAInitializeData = async () : Promise<Response> => {
-    const response = await GET('/auth/2fa')
-    const success = response.status === 200
 
-    return {
-        success: success,
-        error: success ? undefined : response.data.error,
-        data: {
-            qr_code:   response.data.qr_link,
-            entry_key: response.data.entry_key
-        },
-        status: response.status
-    }
+    return await MAKE_REQUEST(GET, '/auth/2fa/data')
 }
+
+export const IdentifyAccount = async (email: string, csrfToken: string) : Promise<Response> => {
+
+    return await MAKE_REQUEST(POST, '/oauth/identify', csrfToken, { email: email })
+}
+
+export const SendVerificationCode = async (key: string, csrfToken: string) : Promise<Response> => {
+
+    return await MAKE_REQUEST(POST, '/verify/send-code', csrfToken, { key: key })
+}
+export const CheckVerificationCode = async (key: string, code: string, csrfToken: string) : Promise<Response> => {
+    
+    return await MAKE_REQUEST(POST, '/verify/check-code', csrfToken, { key: key, code: code })
+}
+export const CancelVerification = async (key: string, csrfToken: string) : Promise<Response> => {
+
+    return await MAKE_REQUEST(POST, '/verify/cancel', csrfToken, { key: key })
+}
+
 /**
  * Verify2FA
  * Verifies the provided 2FA code entered by the user.
@@ -181,23 +136,27 @@ export const Get2FAInitializeData = async () : Promise<Response> => {
  * @param {string} code - 2FA code.
  * @returns {Promise<Response>} The response object indicating success or failure.
 */
-export const Verify2FA = async (code: string, csrfToken: string) : Promise<Response> => {
-    const response = await POST('/auth/2fa', {
-        code: code
-    }, {
-        headers: {
-            'csrf-token': csrfToken
-        }
-    })
-    const success = response.status === 200
+export const Verify2FACode = async (code: string, csrfToken: string) : Promise<Response> => {
 
-    return {
-        success: success,
-        error: success ? undefined : "Failed to verify user!",
-        data: response.data,
-        status: response.status
-    }
+    return await MAKE_REQUEST(POST, '/auth/2fa/verify', csrfToken, { code: code })
 }
+/**
+ * Auth2FA
+ * Verifies the code and handles two-step authentication.
+ *
+ * @param {string} code - 2FA code.
+ * @returns {Promise<Response>} The response object indicating success or failure.
+*/
+export const Auth2FACode = async (code: string, csrfToken: string) : Promise<Response> => {
+
+    return await MAKE_REQUEST(POST, '/auth/2fa', csrfToken, { code: code })
+}
+
+export const GetAuthStatus = async () : Promise<Response> => {
+
+    return await MAKE_REQUEST(GET, '/auth/status')
+}
+
 /**
  * Deactivate2FA
  * Deactivates two-factor authentication for the current user.
@@ -205,29 +164,11 @@ export const Verify2FA = async (code: string, csrfToken: string) : Promise<Respo
  * @returns {Promise<Response>} The response object indicating success or failure.
 */
 export const Deactivate2FA = async (csrfToken: string) : Promise<Response> => {
-    const response = await DELETE('/auth/2fa', {
-        headers: {
-            'csrf-token': csrfToken
-        }
-    })
-    const success = response.status === 200
 
-    return {
-        success: success,
-        error: success ? undefined : "Failed to deactivate 2FA!",
-        data: response.data,
-        status: response.status
-    }
+    return await MAKE_REQUEST(DELETE, '/auth/2fa', csrfToken)
 }
 
 export const GetCSRFToken = async () : Promise<Response> => {
-    const response = await GET('/session/token')
-    const success = response.status === 200
 
-    return {
-        success: success,
-        error: success ? undefined : "Failed to get a CSRF token!",
-        data: response.data.csrfToken,
-        status: response.status
-    }
+    return await MAKE_REQUEST(GET, '/session/token')
 }

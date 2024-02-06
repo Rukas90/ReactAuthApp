@@ -1,9 +1,8 @@
 import React from "react"
-import GoogleLoginButton from "../Buttons/GoogleLoginButton"
-import XLoginButton from "../Buttons/XLoginButton"
+import GoogleLoginButton from "Components/Buttons/GoogleLoginButton"
+import GithubLoginButton from "Components/Buttons/GithubLoginButton"
 import LabelHorizontalSeparator from "./LabelHorizontalSeparator"
-import Spacer from "./Spacer"
-import { useTranslation } from "react-i18next"
+import Spacer from "Components/Spacer"
 
 interface Props {
   prompt?: boolean
@@ -15,15 +14,13 @@ interface Props {
  * Provides social media login options for authentication forms.
  */
 const AuthSocialButtons = ({ prompt = false }: Props) => {
-  const { t } = useTranslation()
-
   return (
     <>
       <GoogleLoginButton prompt={prompt} />
       <Spacer space={1.5} unit="rem" isVertical />
-      <XLoginButton prompt={prompt} />
+      <GithubLoginButton prompt={prompt} />
       <Spacer space={1.5} unit="rem" isVertical />
-      <LabelHorizontalSeparator label={t("OR")} />
+      <LabelHorizontalSeparator label={Translate("OR")} />
       <Spacer space={1.5} unit="rem" isVertical />
     </>
   )

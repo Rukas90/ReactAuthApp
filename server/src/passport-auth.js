@@ -2,6 +2,18 @@ import bcrypt                            from 'bcrypt'
 import passport                          from 'passport'
 import { Strategy as LocalStrategy }     from 'passport-local'
 import { Strategy as GoogleStrategy }    from 'passport-google-oauth20'
+import { Strategy as GitHubStrategy }    from 'passport-github2'
+import { oauth_authentication }          from './auth.js'
+
+export const passportStrategyCallback = (error, user, info, res, next) => {
+    if (error) {
+        return res.status(500).json({ error: error.message })
+    }
+    if (!user) {
+        return res.status(info.status).json({ error: info.error })
+    }
+    return next()
+}
 
 export class PassportAuth {
     constructor(server) {
@@ -14,7 +26,7 @@ export class PassportAuth {
         server.app.use(passport.initialize())
         server.app.use(passport.session())
 
-        passport.serializeUser((user, done) => {            
+        passport.serializeUser((user, done) => {
             done(null, {
                 userID: user.id,
                 sessionID: user.sessionID
@@ -45,17 +57,17 @@ export class PassportAuth {
                 const user = await database.getUserByEmail(email)
 
                 if (!user) {
-                    return done(null, false, { message: `User by the email ${email} does not exists!` })
+                    return done(null, false, { status: 404, error: `User by the email ${email} does not exists!` })
                 }
                 const userPassword = await database.getUserPassword(user.id)
 
                 if (!userPassword) {
-                    return done(null, false, { message: `User by the email ${email} does not have a password!` })
+                    return done(null, false, { status: 400, error: `User by the email ${email} does not have a password!` })
                 }
                 const isValid = await bcrypt.compare(password + process.env.PEPPER_KEY, userPassword)
         
                 if (!isValid) {
-                    return done(null, false, { message: 'Incorrect password.' })
+                    return done(null, false, { status: 401, error: 'Incorrect password.' })
                 }
                 return done(null, user)
             }
@@ -64,32 +76,32 @@ export class PassportAuth {
             }
         }))
 
+        const getGoogleProfile = (profile) => {
+            return {
+                username: profile.emails?.[0]?.value
+            }
+        }
         passport.use(new GoogleStrategy({
-            clientID: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: "/auth/google/callback"
+            clientID:           process.env.GOOGLE_CLIENT_ID,
+            clientSecret:       process.env.GOOGLE_CLIENT_SECRET,
+            callbackURL:        "/auth/google/callback",
+            passReqToCallback:  true
         },
-        async (accessToken, refreshToken, profile, done) => {
-            try {
-                const email        = profile.emails[0].value
-                const profileID    = profile.id
-                const existingUser = await database.getUserByEmail(email)
+        async (req, accessToken, refreshToken, profile, done) => 
+            oauth_authentication(req, profile, done, this.server, "Google", getGoogleProfile)))
 
-                if (existingUser) {
-
-                    existingUser.google_id = profileID
-
-                    await database.updateUser(existingUser.id, 'google_id', profileID)
-
-                    return done(null, existingUser)
-                }
-                const newUser = await database.createGoogleUser(email, profileID)
-
-                return done(null, newUser)
+        const getGithubProfile = (profile) => {
+            return {
+                username: profile.username
             }
-            catch (error) {
-                return done(error)
-            }
-        }))
+        }
+        passport.use(new GitHubStrategy({
+            clientID:           process.env.GITHUB_CLIENT_ID,
+            clientSecret:       process.env.GITHUB_CLIENT_SECRET,
+            callbackURL:        "/auth/github/callback",
+            passReqToCallback:  true
+        },
+        async (req, accessToken, refreshToken, profile, done) => 
+            oauth_authentication(req, profile, done, this.server, "Github", getGithubProfile)))
     }
 }

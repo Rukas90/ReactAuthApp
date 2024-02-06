@@ -1,4 +1,4 @@
-import Dialog from "../components/Dialog";
+import Dialog from "Components/Dialog";
 
 /**
  * DialogManager Class
@@ -17,7 +17,7 @@ class DialogManager {
     *
     * @param {Dialog} dialog - The Dialog instance to be added.
   */
-  Add(dialog: Dialog) {
+  Add(dialog: Dialog) { 
     const id = dialog.GetID()
 
     this.instances.set(id, dialog)

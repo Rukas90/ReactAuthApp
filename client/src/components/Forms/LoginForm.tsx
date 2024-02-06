@@ -1,13 +1,12 @@
-import React, { useState, useContext } from "react"
-import FormHeader from "../Templates/FormHeader"
-import Spacer from "../Templates/Spacer"
-import CustomButton from "../Buttons/CustomButton"
-import AuthSocialButtons from "../Templates/AuthSocialButtons"
-import AuthForm from "../Templates/AuthForm"
-import { useTranslation } from "react-i18next"
-import { Login } from "../../utils/Auth"
-import { broadcast } from "../../contexts/MessageContext"
-import { useCsrfToken } from "../../contexts/CsrfContext"
+import React, { useState } from "react"
+import FormHeader from "Templates/FormHeader"
+import Spacer from "Components/Spacer"
+import CustomButton from "Components/Buttons/CustomButton"
+import AuthSocialButtons from "Templates/AuthSocialButtons"
+import AuthForm from "Templates/AuthForm"
+import { Login } from "Utils/Auth"
+import { broadcast } from "Contexts/MessageContext"
+import { useCsrfToken } from "Contexts/CsrfContext"
 
 /**
  * LoginForm Component
@@ -19,7 +18,6 @@ const LoginForm = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
-  const { t } = useTranslation()
   const { broadcastMessage: broadcastMessage } = broadcast()
 
   const { fetchCsrfToken } = useCsrfToken()
@@ -29,19 +27,24 @@ const LoginForm = () => {
       broadcastMessage("Please fill in the login details")
       return
     }
-    await Login({
+    const response = await Login({
       email: email,
       password: password,
-      csrfToken: await fetchCsrfToken(),
+      csrfToken: await fetchCsrfToken(true),
     })
+    if (response.success) {
+      window.location.href = response.data.redirectUrl
+    }
+    if (response.error) {
+      broadcastMessage(response.error)
+    }
   }
-
   return (
     <div>
       <FormHeader
-        header={t("LOGIN")}
-        secondary={t("DONT_HAVE_AN_ACCOUNT")}
-        linkText={t("REGISTER")}
+        header={Translate("LOGIN")}
+        secondary={Translate("DONT_HAVE_AN_ACCOUNT")}
+        linkText={Translate("REGISTER")}
         linkHref="/register"
       />
       <div className="form-container w-100 mt-4 d-flex justify-content-center">
@@ -50,12 +53,12 @@ const LoginForm = () => {
           <AuthForm onEmailChange={setEmail} onPasswordChange={setPassword} />
           <span>
             <a href="#" className="link-light fw-light">
-              {t("FORGOT_THE_PASSWORD?")}
+              {Translate("FORGOT_THE_PASSWORD?")}
             </a>
           </span>
           <Spacer space={1.5} unit="rem" isVertical />
           <CustomButton
-            text={t("LOG_IN")}
+            text={Translate("LOG_IN")}
             icon=""
             action={HandleLogin}
             extendWidth

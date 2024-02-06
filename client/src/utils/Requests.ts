@@ -1,5 +1,6 @@
-import axios, { AxiosResponse, AxiosRequestConfig } from "axios"
+import axios, { AxiosResponse, AxiosRequestConfig, AxiosError } from "axios"
 import { API_URL } from "./Variables"
+import { Response } from "./Response"
 
 axios.defaults.withCredentials = true
 
@@ -14,22 +15,23 @@ export const BuildApiUrl = (url: string): string => {
 }
 
 const DefaultConfiguration = {
-    withCredentials: true
+    withCredentials: true,
+    timeout: 5000
 }
 
-export const GET = async <T = any>(url: string, config: AxiosRequestConfig = DefaultConfiguration): Promise<AxiosResponse<T>> => {
+export const GET = async <T = any>(url: string, _?: any, config: AxiosRequestConfig = DefaultConfiguration): Promise<AxiosResponse<T>> => {
     try {
         return await axios.get<T>(BuildApiUrl(url), config)
     } catch (error) {
-        throw error
+        return GetError<T>(error as Error)
     }
 }
 
-export const POST = async <T = any>(url: string, data?: any, config: AxiosRequestConfig = DefaultConfiguration): Promise<AxiosResponse<T>> => {
+export const POST = async <T = any>(url: string, data?: any, config: AxiosRequestConfig = DefaultConfiguration): Promise<AxiosResponse<T>> => {  
     try {
         return await axios.post<T>(BuildApiUrl(url), data, config)
     } catch (error) {
-        throw error
+        return GetError<T>(error as Error)
     }
 }
 
@@ -37,7 +39,7 @@ export const PUT = async <T = any>(url: string, data?: any, config: AxiosRequest
     try {
         return await axios.put<T>(BuildApiUrl(url), data, config)
     } catch (error) {
-        throw error
+        return GetError<T>(error as Error)
     }
 }
 
@@ -45,7 +47,7 @@ export const DELETE = async <T = any>(url: string, config: AxiosRequestConfig = 
     try {
         return await axios.delete<T>(BuildApiUrl(url), config)
     } catch (error) {
-        throw error
+        return GetError<T>(error as Error)
     }
 }
 
@@ -53,6 +55,55 @@ export const PATCH = async <T = any>(url: string, data?: any, config: AxiosReque
     try {
         return await axios.patch<T>(BuildApiUrl(url), data, config)
     } catch (error) {
-        throw error
+        return GetError<T>(error as Error)
     }
+}
+
+export const MAKE_REQUEST = async (
+    func: (url: string, data: any, config: AxiosRequestConfig) => Promise<AxiosResponse<any>>,
+    path: string,
+    csrfToken?: string,
+    data: any = {},
+    config: AxiosRequestConfig = {}
+    ): Promise<Response> => {
+        const headersConfig = {
+            headers: {
+                ...(csrfToken ? { 'csrf-token': csrfToken } : {}),
+                ...config.headers
+            }
+        }
+        const fullConfig = { ...config, ...headersConfig }
+
+        let response;
+
+        try {
+            response = await func(path, data, fullConfig)
+
+            const success = response.status === 200
+
+            return {
+                success: success,
+                error: success ? undefined : response.data.error,
+                data: response.data,
+                status: response.status
+            };
+        } catch (error) {
+            return {
+                success: false,
+                error: response ? response.data.error : (error as Error).message,
+                data: null,
+                status: response ? response.status : 500
+            };
+        }
+    
+    }
+
+const GetError = <T = any>(error: Error) : AxiosResponse<T> => {
+    
+    const axiosError = error as AxiosError<T, any>
+
+    if (axiosError && axiosError.response) {
+        return axiosError.response
+    }
+    throw error
 }

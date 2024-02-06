@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react"
-import { DialogProps } from "./props/DialogProps"
+import { DialogProps } from "./Props/DialogProps"
 import { v4 as uuidv4 } from "uuid"
-import DialogNode from "./Templates/DialogNode"
+import DialogNode from "Components/Templates/Dialog/DialogNode"
 
 /**
  * Dialog Class
@@ -12,8 +12,8 @@ export class Dialog {
   protected id: string = "" // Unique identifier for the dialog
   protected props: DialogProps = {
     // Default properties for the dialog
-    title: "No Title",
-    message: "No Message",
+    title: Localized("NO_TITLE"),
+    message: Localized("NO_MESSAGE"),
     showCancelBtn: true,
     confirmLabel: "Ok",
     cancelLabel: "Cancel",
@@ -59,16 +59,7 @@ export class Dialog {
    */
   CreateNode = (): ReactNode => (
     <>
-      <DialogNode
-        id={this.id}
-        title={this.props.title}
-        message={this.props.message}
-        showCancelBtn={this.props.showCancelBtn}
-        confirmLabel={this.props.confirmLabel}
-        cancelLabel={this.props.cancelLabel}
-        onConfirmCallback={this.props.onConfirmCallback}
-        onCancelCallback={this.props.onCancelCallback}
-      />
+      <DialogNode id={this.id} {...this.props} />
     </>
   )
 }

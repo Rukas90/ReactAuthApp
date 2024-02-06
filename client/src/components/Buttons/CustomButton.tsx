@@ -8,7 +8,7 @@ interface Props {
   extendWidth?: boolean
   disabled?: boolean
   classes?: string
-  style?: string | "light" | "dark" | "blank"
+  style?: string | "light" | "dark" | "danger" | "blank"
   padding?: boolean
   invertImg?: boolean
   underline?: boolean

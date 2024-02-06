@@ -1,11 +1,11 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
-import "./config/i18n" // Importing i18n configuration for internationalization
+import "./Config/i18n" // Importing i18n configuration for internationalization
 import App from "./App.js"
-import { BrowserRouter } from "react-router-dom" // Provides routing capabilities
+import { BrowserRouter } from "react-router-dom"
 import "./scss/main.css" // Global styles
-import { LanguageProvider } from "./contexts/LanguageProvider" // Context provider for language settings
-import { CsrfProvider } from "./contexts/CsrfContext"
+import { LanguageProvider } from "./Contexts/LanguageProvider" // Context provider for language settings
+import { CsrfProvider } from "./Contexts/CsrfContext"
 import "leaflet/dist/leaflet.css" // Import leaflet styling
 
 // Find the root element in the HTML to mount the React application

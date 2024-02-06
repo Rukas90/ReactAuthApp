@@ -1,16 +1,16 @@
 import React from "react"
 import CustomButton from "./Buttons/CustomButton"
-import { useTranslation } from "react-i18next"
-import { Logout } from "../utils/Auth"
+import { Logout } from "Utils/Auth"
 import { useNavigate } from "react-router-dom"
-import { useBusyContext } from "../contexts/BusyProvider"
-import { useCsrfToken } from "../contexts/CsrfContext"
+import { useBusyContext } from "Contexts/BusyProvider"
+import { useCsrfToken } from "Contexts/CsrfContext"
+import { useDialog } from "Contexts/DialogContext"
 
 const LogoutButton = () => {
-  const { t } = useTranslation()
   const navigate = useNavigate()
   const { isBusy } = useBusyContext()
   const { fetchCsrfToken } = useCsrfToken()
+  const { showDialog } = useDialog()
 
   const handleLogout = async () => {
     const response = await Logout(await fetchCsrfToken())
@@ -24,9 +24,15 @@ const LogoutButton = () => {
   return (
     <div>
       <CustomButton
-        text={t("LOG_OUT")}
+        text={Translate("LOG_OUT")}
         icon=""
-        action={handleLogout}
+        action={() => {
+          showDialog({
+            title: Localized("LOGOUT_DIALOG_TITLE"),
+            message: Localized("LOGOUT_DIALOG_MESSAGE"),
+            onConfirmCallback: handleLogout,
+          })
+        }}
         extendWidth={false}
         disabled={isBusy()}
       />

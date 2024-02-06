@@ -1,13 +1,6 @@
 import { useEffect, useState } from "react"
-import axios from "axios"
 import { useNavigate } from "react-router-dom"
-import { API_URL } from "../utils/Variables"
-
-enum AuthState {
-  Authenticated,
-  NotVerified,
-  NotLoggedIn,
-}
+import { GetAuthStatus } from "Utils/Auth"
 
 /**
  * useAuthCheck Hook
@@ -27,41 +20,56 @@ enum AuthState {
  * - isLoading (boolean): True if the authentication check is in progress, false otherwise.
  */
 const useAuthCheck = () => {
-  const [authStatus, setAuthStatus] = useState({
-    isLoading: true,
-    status: AuthState.NotLoggedIn,
-  })
+  const [isLoading, setIsLoading] = useState(true)
+  const [authorized, setAuthorized] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => {
-    // Function to check auth status and handle redirection
-    axios
-      .get(`${API_URL}/auth/status`, { withCredentials: true })
-      .then((res) => {
-        const newStatus = res.data.isVerified
-          ? AuthState.Authenticated
-          : AuthState.NotVerified
+    const validate = async () => {
+      try {
+        setAuthorized(false)
+        setIsLoading(true)
 
-        setAuthStatus({
-          isLoading: false,
-          status: newStatus,
-        })
-        if (!res.data.authenticated || newStatus !== AuthState.Authenticated) {
-          navigate(res.data.authenticated ? "/verify" : "/login")
+        const response = await GetAuthStatus()
+
+        if (!response.success) {
+          navigate("/login")
+
+          console.error("Auth check error:", response.error)
+          return
         }
-      })
-      .catch((error) => {
-        console.error("Error checking auth status: ", error)
+        const authStatus = response.data
 
-        setAuthStatus({
-          isLoading: false,
-          status: AuthState.NotLoggedIn,
-        })
-        navigate("/login") // Redirect on error
-      })
+        if (authStatus.authState === 1) {
+          navigate("/oauth-identify")
+          return
+        }
+        if (!authStatus.authenticated) {
+          navigate("/login")
+          return
+        }
+        if (!authStatus.isVerified) {
+          navigate("/verify")
+          return
+        }
+        if (authStatus === 2) {
+          navigate("/verify-2fa")
+          return
+        }
+        setAuthorized(true)
+      } catch (error) {
+        throw error
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    validate()
   }, [navigate])
 
-  return authStatus // Return the loading state
+  return {
+    isLoading: isLoading,
+    authorized: authorized,
+  }
 }
 
 export default useAuthCheck

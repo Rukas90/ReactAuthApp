@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useCallback } from "react"
-import Dialog from "../components/Dialog"
-import { DialogProps } from "../components/props/DialogProps"
-import DialogManager from "../utils/DialogManager"
+import Dialog from "Components/Dialog"
+import { DialogProps } from "Components/Props/DialogProps"
+import DialogManager from "Utils/DialogManager"
 
 // Type definition for the dialog context
 interface DialogContextType {

@@ -1,8 +1,9 @@
 import React from "react"
-import { ColorOption } from "../../utils/ColorOption"
-import { TextSizeOption } from "../../utils/TextSizeOption"
-import { SpacerProps } from "../props/SpacerProps"
-import Spacer from "./Spacer"
+import { ColorOption } from "Utils/Types/ColorOption"
+import { TextSizeOption } from "Utils/Types/TextSizeOption"
+import { SpacerProps } from "Components/Props/SpacerProps"
+import Spacer from "Components/Spacer"
+import { HorizontalAlignment } from "Utils/Types/HorizontalAlignment"
 
 interface Props {
   label: string
@@ -11,6 +12,7 @@ interface Props {
   textSize?: TextSizeOption
   topSpacer?: SpacerProps
   bottomSpacer?: SpacerProps
+  alignment?: HorizontalAlignment
 }
 
 /**
@@ -33,6 +35,7 @@ const LabelHorizontalSeparator = ({
   textSize = TextSizeOption.Regular,
   topSpacer = undefined,
   bottomSpacer = undefined,
+  alignment = HorizontalAlignment.Middle,
 }: Props) => {
   return (
     <>
@@ -44,13 +47,15 @@ const LabelHorizontalSeparator = ({
         />
       )}
       <div className="hstack d-flex">
-        <hr className={`flex-grow-1 my-0 border-${borderColor}`} />
-        <p
-          className={`text-center align-middle mx-4 text-${textColor} my-0 fs-${textSize}`}
-        >
-          {label}
-        </p>
-        <hr className={`flex-grow-1 my-0 border-${borderColor}`} />
+        {(alignment === HorizontalAlignment.Middle ||
+          alignment === HorizontalAlignment.End) && (
+          <hr className={`flex-grow-1 my-0 border-${borderColor}`} />
+        )}
+        <p className={`mx-4 text-${textColor} my-0 fs-${textSize}`}>{label}</p>
+        {(alignment === HorizontalAlignment.Middle ||
+          alignment === HorizontalAlignment.Start) && (
+          <hr className={`flex-grow-1 my-0 border-${borderColor}`} />
+        )}
       </div>
       {bottomSpacer && (
         <Spacer

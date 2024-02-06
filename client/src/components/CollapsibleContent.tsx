@@ -1,14 +1,13 @@
 import React, { useState, useEffect, ReactNode, useRef } from "react"
-import Spacer from "./Templates/Spacer"
-import { Clamp01 } from "../utils/Math"
-import Checkbox from "./Checkbox"
-import { OnValueChangeValidationHook } from "../utils/Utilities"
+import Spacer from "./Spacer"
+import { Clamp01 } from "Utils/Math"
+import { OnValueChangeValidationHook } from "Utils/Types/OnValueChangeValidationHook"
 
 interface Props {
   node: ReactNode // Content to display when the collapsible is expanded
   id: string // Identifier for the collapsible element
   label?: ReactNode // Label for the collapsible content
-  state?: boolean // Controlled state of collapsible (expanded/collapsed)
+  state: boolean // Controlled state of collapsible (expanded/collapsed)
   onStateChange?: (newState: boolean) => void // Callback when state changes
   onBeforeStateChange?: OnValueChangeValidationHook<boolean> // Hook to intercept state change
   readonly?: boolean // If true, prevents interaction with the collapsible
@@ -54,8 +53,6 @@ const CollapsibleContent = ({
       )
     }
   }
-
-  // Update internal state when the external state changes
   useEffect(() => {
     setEnabled(state)
     updateFadeEffect()

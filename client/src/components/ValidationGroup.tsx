@@ -1,7 +1,6 @@
 import React, { useEffect } from "react"
-import Spacer from "./Templates/Spacer"
 import ConditionalItem from "./ConditionalItem"
-import { ValidationGroupCondition } from "../utils/ValidationGroupCondition"
+import { ValidationGroupCondition } from "Utils/ValidationGroupCondition"
 
 interface Props<T> {
   value: T // Current value to be evaluated
@@ -50,7 +49,6 @@ const ValidationGroup = <T,>({
           ))}
         </ul>
       </div>
-      <Spacer space={1.5} unit="rem" isVertical />
     </>
   )
 }

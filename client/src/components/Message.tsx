@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react"
-import InfoIcon from "../img/icons/common/info.svg"
-import Spacer from "./Templates/Spacer"
-import useVisualEffect, { EffectProperties } from "../hooks/useVisualEffect"
-import { ColorOption } from "../utils/ColorOption"
+import React from "react"
+import InfoIcon from "Img/Icons/Common/info.svg"
+import useVisualEffect, { EffectProperties } from "Hooks/useVisualEffect"
+import { ColorOption } from "Utils/Types/ColorOption"
 
 interface Props extends EffectProperties {
   header?: string
@@ -27,18 +26,19 @@ const Message = ({
   const effectStyle = useVisualEffect(effectProps)
 
   return (
-    <div className={`w-100 p-4 bg-${bgColor} hstack`} style={effectStyle()}>
+    <div
+      className={`d-flex w-100 p-4 bg-${bgColor} flex-col flex-md-row gap-3 align-items-end align-items-md-center`}
+      style={effectStyle()}
+    >
       {icon && (
         <>
-          <img src={icon} className={`${invertIcon ? "invert" : ""}`} />
-          <Spacer space={1.0} unit="rem" isVertical={false} />
+          <img src={icon} className={`icon ${invertIcon ? "invert" : ""}`} />
         </>
       )}
-      <div className="vstack">
+      <div className="vstack gap-3">
         {header && (
           <>
             <span className={`text-${headerColor} fw-semibold`}>{header}</span>
-            <Spacer space={0.25} unit="rem" isVertical />
           </>
         )}
         <span className={`text-${textColor}`}>{content}</span>

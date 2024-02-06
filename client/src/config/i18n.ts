@@ -1,8 +1,8 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
-import en from '../locales/en/translation.json';
-import lt from '../locales/lt/translation.json';
+import en from '../Locales/EN/translation.json';
+import lt from '../Locales/LT/translation.json';
 
 interface Language {
   code: string;

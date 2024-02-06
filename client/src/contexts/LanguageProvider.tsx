@@ -6,7 +6,8 @@ import React, {
   ReactNode,
 } from "react"
 import { useTranslation } from "react-i18next"
-import useLanguageSetting from "../hooks/useLanguageSetting"
+import useLanguageSetting from "../Hooks/useLanguageSetting"
+import { useLocalizedText as T } from "Hooks/useLocalizedText"
 
 // Defines the shape of the language context data
 type LanguageContextType = {
@@ -47,6 +48,22 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({
   useEffect(() => {
     setCurrentLanguage(i18n.language)
   }, [i18n.language])
+
+  const Localized = (text: string): LocalizedTextID => {
+    return { value: text, _type: "LocalizedTextID" } as LocalizedTextID
+  }
+  window.Localized = Localized
+
+  const translate = (
+    id: LocalizableText | string,
+    options?: TranslationOptions
+  ): string => {
+    if (typeof id === "object" && "_type" in id) {
+      return T(id, options)
+    }
+    return T(Localized(id), options)
+  }
+  window.Translate = translate
 
   // Providing language state and setter function through context
   return (
