@@ -11,10 +11,10 @@ lerna-debug.log*
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # SCSS Compiled CSS file
-/src/scss/main.css
-/src/scss/main.css.map
-/src/scss/variables.css
-/src/scss/variables.css.map
+/src/Scss/main.css
+/src/Scss/main.css.map
+/src/Scss/variables.css
+/src/Scss/variables.css.map
 
 # Runtime data
 pids
