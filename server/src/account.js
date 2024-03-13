@@ -53,13 +53,16 @@ export const verifyUserPassword = async (req, res) => {
 }
 export const deleteUserAccount = async (req, res) => {
     if (!userSessionValidation(req, res)) {
-        return
+        return res.status(401)
     }
     if (await isSessionBlocked(req)) {
         return res.status(403).json({ error: 'Access is temporary blocked. Try again later.' })
     }
     const user     = req.user
     const database = req.app.locals.database
+
+    let status;
+    let data;
 
     const operation = async (client) => {
         try {
@@ -69,12 +72,17 @@ export const deleteUserAccount = async (req, res) => {
 
             req.session.destroy()
 
-            return res.status(200)
+            status = 200;
+            data   = { message: "Account was deleted successfully!" }
         }
         catch {
             console.error(`Failed deleting the user account`, error)
-            return res.status(400).json({ error: "Internal Server Error!" })
+
+            status = 400;
+            data   = { error: "Internal Server Error!" }
         }
     }
     await database.transaction(operation)
+
+    return res.status(status).json(data)
 }

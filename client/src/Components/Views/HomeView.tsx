@@ -1,25 +1,15 @@
 import React, { useState, ReactNode } from "react"
-import useAuthCheck from "Hooks/useAuthCheck"
-import Spinner from "Components/Spinner"
-import Spacer from "Components/Spacer"
+import Spacer from "Components/UI/Spacer"
 import SettingsNavigation from "Templates/SettingsNavigation"
 import MainHeader from "Templates/MainHeader"
 import LabelHorizontalSeparator from "Templates/LabelHorizontalSeparator"
-import { TextSizeOption } from "Utils/Types/TextSizeOption"
+import { TextSizeOption } from "Data/TextSizeOption"
 import { SpacerProps } from "Components/Props/SpacerProps"
 
 const HomeView = () => {
   const [settings, setSettings] = useState<ReactNode>(null)
-  const auth = useAuthCheck()
 
   const settingsLabel = Translate("SETTINGS")
-
-  if (auth.isLoading) {
-    return <Spinner />
-  }
-  if (!auth.authorized) {
-    return <></>
-  }
 
   const headerSpacer: SpacerProps = {
     space: 1.5,

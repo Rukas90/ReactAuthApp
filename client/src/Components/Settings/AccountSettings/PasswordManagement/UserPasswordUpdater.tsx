@@ -19,12 +19,15 @@ const UserPasswordUpdater = ({
         currentPassword,
         await fetchCsrfToken()
       )
-      if (response.data.status) {
+      if (response.success && response.data.status) {
         args.SetSecondaryIndicator(false)
         return true
       }
       args.SetSecondaryIndicator(true)
-      notifications.error(response.error || "Failed to verify password!")
+
+      if (!response.success) {
+        notifications.error(response.error || "Failed to verify password!")
+      }
       return false
     } catch (error) {
       return false

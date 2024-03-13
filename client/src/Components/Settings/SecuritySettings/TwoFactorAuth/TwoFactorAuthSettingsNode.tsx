@@ -1,6 +1,6 @@
 import React, { useState } from "react"
-import Spacer from "Components/Spacer"
-import InputField from "Components/InputField"
+import Spacer from "Components/UI/Spacer"
+import InputField from "Components/UI/InputField"
 import CustomButton from "Components/Buttons/CustomButton"
 import { useBusyContext } from "Contexts/BusyProvider"
 

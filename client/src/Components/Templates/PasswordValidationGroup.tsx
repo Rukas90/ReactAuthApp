@@ -5,7 +5,7 @@ import {
   HasNumber,
   HasSpecialCharacter,
 } from "Utils/Utilities"
-import ValidationGroup from "Components/ValidationGroup"
+import ValidationGroup from "Components/UI/ValidationGroup"
 
 interface Props {
   password: string // The password to be validated

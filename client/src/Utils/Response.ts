@@ -1,6 +1,11 @@
-export interface Response<T = any> {
-    success?: boolean
-    error?: string
-    data?: T
-    status?: number
+export type SucessResponse<T = any> = {
+    success: true
+    data: T
 }
+export type ErrorResponse = {
+    success: false
+    error: string
+    status: number
+}
+
+export type Response<T = any> = SucessResponse<T> | ErrorResponse

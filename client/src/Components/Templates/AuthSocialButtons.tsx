@@ -2,7 +2,7 @@ import React from "react"
 import GoogleLoginButton from "Components/Buttons/GoogleLoginButton"
 import GithubLoginButton from "Components/Buttons/GithubLoginButton"
 import LabelHorizontalSeparator from "./LabelHorizontalSeparator"
-import Spacer from "Components/Spacer"
+import Spacer from "Components/UI/Spacer"
 
 interface Props {
   prompt?: boolean

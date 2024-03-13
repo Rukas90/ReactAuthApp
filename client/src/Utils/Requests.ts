@@ -1,5 +1,5 @@
 import axios, { AxiosResponse, AxiosRequestConfig, AxiosError } from "axios"
-import { API_URL } from "./Variables"
+import { API_URL } from "../Data/Variables"
 import { Response } from "./Response"
 
 axios.defaults.withCredentials = true
@@ -81,17 +81,18 @@ export const MAKE_REQUEST = async (
 
             const success = response.status === 200
 
-            return {
-                success: success,
+            return success ? {
+                success: true,
+                data: response.data
+            } : {
+                success: false,
                 error: success ? undefined : response.data.error,
-                data: response.data,
                 status: response.status
-            };
+            }
         } catch (error) {
             return {
                 success: false,
                 error: response ? response.data.error : (error as Error).message,
-                data: null,
                 status: response ? response.status : 500
             };
         }

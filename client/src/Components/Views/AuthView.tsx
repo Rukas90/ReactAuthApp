@@ -1,8 +1,8 @@
 import React from "react"
 import { useMediaQuery } from "react-responsive"
-import LanguageSwitcher from "Components/LanguageSwitcher"
-import Spacer from "Components/Spacer"
-import ErrorMessage from "Components/ErrorMessage"
+import LanguageSwitcher from "Components/UI/LanguageSwitcher"
+import Spacer from "Components/UI/Spacer"
+import ErrorMessage from "Components/UI/ErrorMessage"
 import { broadcast } from "Contexts/MessageContext"
 
 interface Props {

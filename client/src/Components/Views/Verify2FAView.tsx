@@ -1,6 +1,6 @@
 import React from "react"
 import AuthView from "./AuthView"
-import Verify2FAForm from "Components/Forms/Verify2FAForm"
+import Verify2FAForm from "Components/Templates/Forms/Verify2FAForm"
 
 const VerifyView = () => {
   return <AuthView formComponent={<Verify2FAForm />} />

@@ -50,7 +50,7 @@ const PasswordUpdateManagement = ({
     try {
       const response = await SetUserPassword(password, await fetchCsrfToken())
 
-      if (response.error) {
+      if (!response.success) {
         notifications.error(response.error)
         return
       }

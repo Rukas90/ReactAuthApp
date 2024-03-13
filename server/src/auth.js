@@ -200,28 +200,25 @@ export const oauthIdentify = async (req, res, server) => {
         console.error('Error (oauthIdentify): No database found!')
         return res.status(500).json({ error: "Internal Server Error!" })
     }
-    const operation = async (client) => {
-        try {
-            const email = req.body.email
+    try {
+        const email = req.body.email
 
-            if (!email) {
-                return res.status(400).json({ error: "Could not identify user. Email is invalid!" })
-            }
-            const existingUser = await database.getUserByEmail(email, client, false)
-            let   user         = existingUser
-
-            if (!existingUser) {
-                user = await database.createLinkedNewUser(email, client, false)
-            }
-            if (!await database.validateOAuthProvider(user.id, provider.name, provider.id, client, false)) {
-                return res.status(400).json({ error: "Invalid provider's identification token" })
-            }
-            return res.status(200).json({ message: "Identified successfully!", authRedirect: provider.name })
+        if (!email) {
+            return res.status(400).json({ error: "Could not identify user. Email is invalid!" })
         }
-        catch (error) {
-            console.error(`Failed identifying ${provider.name} provider`, error)
-            return res.status(500).json({ error: "Internal Server Error!" })
+        const existingUser = await database.getUserByEmail(email)
+        let   user         = existingUser
+    
+        if (!existingUser) {
+            user = await database.createLinkedNewUser(email)
         }
+        if (!await database.validateOAuthProvider(user.id, provider.name, provider.id)) {
+            return res.status(400).json({ error: "Invalid provider's identification token" })
+        }
+        return res.status(200).json({ message: "Identified successfully!", authRedirect: provider.name })
     }
-    await database.transaction(operation)
+    catch (error) {
+        console.error(`Failed identifying ${provider.name} provider`, error)
+        return res.status(500).json({ error: "Internal Server Error!" })
+    }
 }

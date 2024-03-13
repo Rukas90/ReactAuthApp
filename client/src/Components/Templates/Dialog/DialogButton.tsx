@@ -1,4 +1,4 @@
-import { ColorOption } from "Utils/Types/ColorOption"
+import { ColorOption } from "Data/ColorOption"
 import React from "react"
 
 interface Props {

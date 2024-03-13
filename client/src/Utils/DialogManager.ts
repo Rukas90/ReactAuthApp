@@ -1,4 +1,4 @@
-import Dialog from "Components/Dialog";
+import Dialog from "Components/UI/Dialog";
 
 /**
  * DialogManager Class

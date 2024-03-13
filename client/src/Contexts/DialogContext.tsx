@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useCallback } from "react"
-import Dialog from "Components/Dialog"
+import Dialog from "Components/UI/Dialog"
 import { DialogProps } from "Components/Props/DialogProps"
 import DialogManager from "Utils/DialogManager"
 

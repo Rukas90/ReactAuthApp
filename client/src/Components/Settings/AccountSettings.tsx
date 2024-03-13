@@ -1,7 +1,7 @@
 import UserPasswordManagement from "./AccountSettings/PasswordManagement/UserPasswordManagement"
 import LinkedLoginMethods from "./AccountSettings/OAuthProviders/LinkedLoginMethods"
 import React from "react"
-import Spacer from "Components/Spacer"
+import Spacer from "Components/UI/Spacer"
 import UserAccountDeletion from "./AccountSettings/AccountDeletion/UserAccountDeletion"
 
 const AccountSettings = () => {

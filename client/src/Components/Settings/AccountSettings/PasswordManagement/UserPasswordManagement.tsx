@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react"
-import Spinner from "Components/Spinner"
+import Spinner from "Components/UI/Spinner"
 import { GET } from "Utils/Requests"
-import Spacer from "Components/Spacer"
+import Spacer from "Components/UI/Spacer"
 import UserPasswordUpdater from "./UserPasswordUpdater"
 import UserPasswordSetter from "./UserPasswordSetter"
-import { TextSizeOption } from "Utils/Types/TextSizeOption"
-import { HorizontalAlignment } from "Utils/Types/HorizontalAlignment"
+import { TextSizeOption } from "Data/TextSizeOption"
+import { HorizontalAlignment } from "Data/HorizontalAlignment"
 import LabelHorizontalSeparator from "Templates/LabelHorizontalSeparator"
 import withNotifications, {
   WithNotificationsProps,

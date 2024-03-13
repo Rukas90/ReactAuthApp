@@ -50,14 +50,20 @@ export class Database {
      * @returns {Promise<object>} A promise that resolves with the query result.
     */
     query = async (text, params, log = true, connection = null, releaseClientAfter = true) => {
-        const client = connection ?? await this.#connectToAvailableClient()
+        let client = connection
 
+        if (!client) {
+            client = await this.#connectToAvailableClient()
+        }
+        if (!client) {
+            throw new Error("Internal Database Error!");
+        }
         try {
             return await client.query(text, params)
         } catch (error) {
 
             if (log) {
-                cserror('Database query error', error.stack)
+                cserror('Database query', error.stack)
                 throw error
             }
 
@@ -278,8 +284,8 @@ export class Database {
         }
         const providers = data.rows.map(provider => {
             return {
-                id:   provider.id,
-                name: provider.provider_name,
+                id:      provider.id,
+                name:    provider.provider_name,
                 profile: provider.profile
             }
         })

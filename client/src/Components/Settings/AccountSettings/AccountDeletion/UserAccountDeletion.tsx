@@ -1,7 +1,7 @@
 import CustomButton from "Components/Buttons/CustomButton"
 import LabelHorizontalSeparator from "Components/Templates/LabelHorizontalSeparator"
-import { TextSizeOption } from "Utils/Types/TextSizeOption"
-import { HorizontalAlignment } from "Utils/Types/HorizontalAlignment"
+import { TextSizeOption } from "Data/TextSizeOption"
+import { HorizontalAlignment } from "Data/HorizontalAlignment"
 import React from "react"
 import { useDialog } from "Contexts/DialogContext"
 import withNotifications, {
@@ -41,12 +41,19 @@ const UserAccountDeletion = ({ notifications }: WithNotificationsProps) => {
     })
   }
   const deleteAccount = async () => {
+    console.log("DELETE ACCOUNT")
+
     const response = await DeleteAccount(await fetchCsrfToken())
 
-    if (!response.success && response.error) {
+    console.log("ACCOUNT DELETED")
+
+    if (!response.success) {
       return notifications.error(response.error)
     }
+    console.log("REFRESH TOKEN")
     await fetchCsrfToken(true)
+
+    console.log("BACK TO LOGIN")
 
     navigate("/login")
   }

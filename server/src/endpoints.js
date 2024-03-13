@@ -48,7 +48,7 @@ export class Endpoints {
         // Basic Auth
         
         this.server.app.post('/auth/register', cSRFTokenVerification, async (req, res) => await register_user(req, res, this.server))
-        this.server.app.post('/auth/login',    cSRFTokenVerification, passport.authenticate('local', (error, user, info) => passportStrategyCallback(error, user, info, res)), syncCSRFSecret, captureSessionInfo, validateSession2FAState, 
+        this.server.app.post('/auth/login',    cSRFTokenVerification, passport.authenticate('local'), syncCSRFSecret, captureSessionInfo, validateSession2FAState, 
             async (req, res) => res
                 .status(200)
                 .cookie('X-CSRF-Token', this.server.tokens.create(req.session.csrfSecret), { httpOnly: true, sameSite: process.env.SAME_SITE })
@@ -124,7 +124,9 @@ export class Endpoints {
 
         this.server.app.post('/user/password/verify', cSRFTokenVerification, isAuthenticated, async (req, res) => await verifyUserPassword(req, res))
         this.server.app.post('/user/password/update', cSRFTokenVerification, isAuthenticated, async (req, res) => await updateUserPassword(req, res))
-        this.server.app.post('/user/delete', cSRFTokenVerification, isAuthenticated, async (req, res) => await deleteUserAccount(req, res))
+        this.server.app.post('/user/delete', cSRFTokenVerification, isAuthenticated, async (req, res) => {
+            return await deleteUserAccount(req, res)
+        })
     
         // Utils
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom"
 import { GetAuthStatus } from "Utils/Auth"
 
 /**
@@ -22,7 +22,29 @@ import { GetAuthStatus } from "Utils/Auth"
 const useAuthCheck = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [authorized, setAuthorized] = useState(false)
+
   const navigate = useNavigate()
+  const location = useLocation()
+
+  /* AREA FOR IMPROVEMENT */
+  const authRedirectSlugs = [
+    "/login",
+    "/register",
+    "/oauth-identify",
+    "/verify",
+    "/verify-2fa",
+  ]
+  /* AREA FOR IMPROVEMENT */
+
+  const redirect = (slug: string, additional?: string[]) => {
+    if (
+      location.pathname === slug ||
+      (additional && additional.includes(location.pathname))
+    ) {
+      return
+    }
+    navigate(slug)
+  }
 
   useEffect(() => {
     const validate = async () => {
@@ -33,7 +55,7 @@ const useAuthCheck = () => {
         const response = await GetAuthStatus()
 
         if (!response.success) {
-          navigate("/login")
+          redirect("/login", ["/register"])
 
           console.error("Auth check error:", response.error)
           return
@@ -41,22 +63,26 @@ const useAuthCheck = () => {
         const authStatus = response.data
 
         if (authStatus.authState === 1) {
-          navigate("/oauth-identify")
+          redirect("/oauth-identify")
           return
         }
         if (!authStatus.authenticated) {
-          navigate("/login")
+          redirect("/login", ["/register"])
           return
         }
         if (!authStatus.isVerified) {
-          navigate("/verify")
+          redirect("/verify")
           return
         }
-        if (authStatus === 2) {
-          navigate("/verify-2fa")
+        if (authStatus.authState === 2) {
+          redirect("/verify-2fa")
           return
         }
         setAuthorized(true)
+
+        if (authRedirectSlugs.includes(location.pathname)) {
+          redirect("/")
+        }
       } catch (error) {
         throw error
       } finally {

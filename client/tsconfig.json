@@ -15,6 +15,7 @@
     "jsx": "react", // Support JSX in .tsx files
     "baseUrl": ".",
     "paths": {
+      "Data/*": ["src/Data/*"],
       "Utils/*": ["src/Utils/*"],
       "Img/*": ["src/Img/*"],
       "Components/*": ["src/Components/*"],

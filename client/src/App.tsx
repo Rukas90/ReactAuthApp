@@ -1,4 +1,4 @@
-import React from "react"
+import React, { ReactElement } from "react"
 import { Routes, Route } from "react-router-dom"
 import {
   HomeView,
@@ -14,6 +14,7 @@ import { MessageProvider } from "./Contexts/MessageContext"
 import { BusyProvider } from "./Contexts/BusyProvider"
 import { DialogProvider } from "./Contexts/DialogContext"
 import { NotificationsProvider } from "Contexts/NotificationsContexts"
+import { AuthProvider } from "Contexts/AuthContext"
 
 /**
  * App Component
@@ -30,22 +31,27 @@ const App = () => {
 
   return (
     <>
-      <MessageProvider>
-        <NotificationsProvider>
-          <DialogProvider>
-            <BusyProvider>
-              <Routes>
-                <Route path="/" element={<HomeView />} />
-                <Route path="/login" element={<LoginView />} />
-                <Route path="/register" element={<RegisterView />} />
-                <Route path="/verify" element={<VerifyView />} />
-                <Route path="/oauth-identify" element={<OAuthIdentifyView />} />
-                <Route path="/verify-2fa" element={<Verify2FAView />} />
-              </Routes>
-            </BusyProvider>
-          </DialogProvider>
-        </NotificationsProvider>
-      </MessageProvider>
+      <AuthProvider>
+        <MessageProvider>
+          <NotificationsProvider>
+            <DialogProvider>
+              <BusyProvider>
+                <Routes>
+                  <Route path="/" element={<HomeView />} />
+                  <Route path="/login" element={<LoginView />} />
+                  <Route path="/register" element={<RegisterView />} />
+                  <Route path="/verify" element={<VerifyView />} />
+                  <Route
+                    path="/oauth-identify"
+                    element={<OAuthIdentifyView />}
+                  />
+                  <Route path="/verify-2fa" element={<Verify2FAView />} />
+                </Routes>
+              </BusyProvider>
+            </DialogProvider>
+          </NotificationsProvider>
+        </MessageProvider>
+      </AuthProvider>
     </>
   )
 }

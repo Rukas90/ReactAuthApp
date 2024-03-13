@@ -1,8 +1,8 @@
 import CustomButton from "Components/Buttons/CustomButton"
-import InputField from "Components/InputField"
+import InputField from "Components/UI/InputField"
 import React, { useState } from "react"
 import PasswordValidationGroup from "../../../Templates/PasswordValidationGroup"
-import Spacer from "../../../Spacer"
+import Spacer from "../../../UI/Spacer"
 import { PasswordManagementProps } from "./UserPasswordManagement"
 import FoldableContent from "../../../Templates/FoldableContent"
 

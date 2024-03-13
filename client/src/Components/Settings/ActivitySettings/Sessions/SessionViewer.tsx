@@ -1,9 +1,9 @@
 import React from "react"
-import { SessionData } from "Utils/SessionData"
+import { SessionData } from "Data/SessionData"
 import CustomButton from "Components/Buttons/CustomButton"
 import ArrowLeft from "Img/Icons/Common/arrow-left.svg"
-import Session from "Components/Session"
-import Spacer from "Components/Spacer"
+import Session from "Components/UI/Session"
+import Spacer from "Components/UI/Spacer"
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet"
 import moment from "moment"
 

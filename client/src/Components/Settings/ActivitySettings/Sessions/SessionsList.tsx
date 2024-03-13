@@ -1,6 +1,6 @@
 import React from "react"
-import Session from "Components/Session"
-import { SessionData } from "Utils/SessionData"
+import Session from "Components/UI/Session"
+import { SessionData } from "Data/SessionData"
 
 interface Props {
   sessions: SessionData[] | null

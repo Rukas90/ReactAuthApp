@@ -1,4 +1,4 @@
-import InputField from "Components/InputField"
+import InputField from "Components/UI/InputField"
 import { DialogProps } from "Components/Props/DialogProps"
 import React from "react"
 import DialogButton from "./DialogButton"

@@ -1,11 +1,11 @@
-import { OAuthProviderData } from "Utils/Types/OAuthProviderData"
+import { OAuthProviderData } from "Data/OAuthProviderData"
 import { GET } from "Utils/Requests"
 import React, { useEffect, useState } from "react"
 import LabelHorizontalSeparator from "Components/Templates/LabelHorizontalSeparator"
-import { TextSizeOption } from "Utils/Types/TextSizeOption"
-import { HorizontalAlignment } from "Utils/Types/HorizontalAlignment"
-import Spacer from "Components/Spacer"
-import Spinner from "Components/Spinner"
+import { TextSizeOption } from "Data/TextSizeOption"
+import { HorizontalAlignment } from "Data/HorizontalAlignment"
+import Spacer from "Components/UI/Spacer"
+import Spinner from "Components/UI/Spinner"
 import GoogleOAuthProvider from "./GoogleOAuthProvider"
 import GithubOAuthProvider from "./GithubOAuthProvider"
 
@@ -36,11 +36,13 @@ const LinkedLoginMethods = () => {
 
       const response = await GET("/oauth/providers")
 
-      if (response && response.data) {
+      if (response && response.data && response.data.providers) {
         const providersArray: OAuthProviderData[] = Object.values(
           response.data.providers
         )
         setProviders(providersArray)
+      } else {
+        setProviders([])
       }
       setLoading(false)
     }
@@ -59,11 +61,19 @@ const LinkedLoginMethods = () => {
         <Spinner />
       ) : (
         <div className="row g-3">
-          {providers.map((provider) => (
-            <React.Fragment key={provider.id}>
-              {RenderProviderNode(provider)}
-            </React.Fragment>
-          ))}
+          {providers && providers.length > 0 ? (
+            providers.map((provider) => (
+              <React.Fragment key={provider.id}>
+                {RenderProviderNode(provider)}
+              </React.Fragment>
+            ))
+          ) : (
+            <div className="w-auto text-center mx-auto">
+              <p className="text-secondary px-4 py-2 bg-secondary-subtle rounded-2 fw-medium">
+                No linked OAuth Providers found
+              </p>
+            </div>
+          )}
         </div>
       )}
     </>

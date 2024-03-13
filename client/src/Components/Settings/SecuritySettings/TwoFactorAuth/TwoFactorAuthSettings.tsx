@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useMediaQuery } from "react-responsive"
 import { MobileMediaQuery } from "Utils/Utilities"
-import CollapsibleContent from "Components/CollapsibleContent"
+import CollapsibleContent from "Components/UI/CollapsibleContent"
 import {
   // Utility functions for 2FA operations
   Get2FAState,

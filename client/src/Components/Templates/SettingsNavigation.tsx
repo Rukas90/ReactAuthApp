@@ -1,12 +1,12 @@
 import React from "react"
-import Navigation from "Components/Navigation"
+import Navigation from "Components/Templates/Navigation"
 import {
   SecuritySettings,
   ActivitySettings,
   PreferencesSettings,
   AccountSettings,
 } from "Components/Settings"
-import { Tab } from "Components/Navigation"
+import { Tab } from "Components/Templates/Navigation"
 import { useBusyContext } from "Contexts/BusyProvider"
 
 interface Props {

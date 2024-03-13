@@ -30,6 +30,8 @@ const DialogNode = ({
       onConfirmCallback()
     }
   }
+  const messageText = T(message)
+
   return (
     <div
       className={`overlay position-absolute top-0 left-0 d-flex flex-grow-1 w-100 h-100`}
@@ -41,9 +43,9 @@ const DialogNode = ({
         >
           <DialogHeader title={title} onCancelCallback={onCancelCallback} />
           <div className="dialog-content text-secondary p-4">
-            <p className="overflow-hidden m-0">
-              {body !== null ? body : T(message)}
-            </p>
+            <div className="overflow-hidden m-0">
+              {body !== null ? body : messageText}
+            </div>
           </div>
           {requiresInputField ? (
             <DialogInputFooter

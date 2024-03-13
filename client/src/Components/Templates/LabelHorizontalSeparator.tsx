@@ -1,9 +1,9 @@
 import React from "react"
-import { ColorOption } from "Utils/Types/ColorOption"
-import { TextSizeOption } from "Utils/Types/TextSizeOption"
+import { ColorOption } from "Data/ColorOption"
+import { TextSizeOption } from "Data/TextSizeOption"
 import { SpacerProps } from "Components/Props/SpacerProps"
-import Spacer from "Components/Spacer"
-import { HorizontalAlignment } from "Utils/Types/HorizontalAlignment"
+import Spacer from "Components/UI/Spacer"
+import { HorizontalAlignment } from "Data/HorizontalAlignment"
 
 interface Props {
   label: string

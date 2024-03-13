@@ -33,6 +33,9 @@ export const CsrfProvider: React.FC<CsrfProviderProps> = ({ children }) => {
       if (refresh || !csrfToken) {
         const response = await GetCSRFToken()
 
+        if (!response.success) {
+          return null
+        }
         const token = response.data.csrfToken
 
         setCsrfToken(token)

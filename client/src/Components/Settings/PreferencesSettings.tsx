@@ -1,6 +1,6 @@
 import React from "react"
-import LanguageSwitcher from "Components/LanguageSwitcher"
-import WrappedLabeledNode from "Components/WrappedLabeledNode"
+import LanguageSwitcher from "Components/UI/LanguageSwitcher"
+import WrappedLabeledNode from "Components/UI/WrappedLabeledNode"
 
 const PreferencesSettings = () => {
   return (

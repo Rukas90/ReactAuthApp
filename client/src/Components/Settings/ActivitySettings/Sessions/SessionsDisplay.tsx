@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react"
-import { SessionData } from "Utils/SessionData"
+import { SessionData } from "Data/SessionData"
 import { GET } from "Utils/Requests"
 import SessionViewer from "./SessionViewer"
 import SessionsList from "./SessionsList"
-import Spinner from "Components/Spinner"
+import Spinner from "Components/UI/Spinner"
 
 const SessionsDisplay = () => {
   const [sessions, setSessions] = useState<SessionData[] | null>(null)

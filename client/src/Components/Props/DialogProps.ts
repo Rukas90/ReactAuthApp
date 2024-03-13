@@ -1,4 +1,4 @@
-import { ColorOption } from "Utils/Types/ColorOption"
+import { ColorOption } from "Data/ColorOption"
 import { ReactNode } from "react"
 
 export interface DialogProps {

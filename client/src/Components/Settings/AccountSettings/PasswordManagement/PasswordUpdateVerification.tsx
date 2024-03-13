@@ -1,7 +1,7 @@
 import CustomButton from "Components/Buttons/CustomButton"
-import Countdown from "Components/Countdown"
-import InputField from "Components/InputField"
-import Message from "Components/Message"
+import Countdown from "Components/UI/Countdown"
+import InputField from "Components/UI/InputField"
+import Message from "Components/UI/Message"
 import { useCsrfToken } from "Contexts/CsrfContext"
 import { useDialog } from "Contexts/DialogContext"
 import { CancelVerification, CheckVerificationCode } from "Utils/Auth"
@@ -37,9 +37,7 @@ const PasswordUpdateVerification = ({
       code,
       await fetchCsrfToken()
     )
-    console.log(response)
-
-    if (!response.success && response.error) {
+    if (!response.success) {
       notifications.error(response.error)
       return
     }
