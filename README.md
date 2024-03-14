@@ -179,6 +179,7 @@ touch .env
       > **Notice:** The client origin in the env file must be the same as your actual client origin
     - `SAME_SITE=Strict`
 
-> **Note:** To generate a random key you can use this online service - https://www.avast.com/random-password-generator
+> **Note:** To generate a random key you can use this online service:
+> https://www.avast.com/random-password-generator
 
 </div>
