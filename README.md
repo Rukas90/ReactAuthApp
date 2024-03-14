@@ -180,6 +180,6 @@ touch .env
     - `SAME_SITE=Strict`
 
 > **Note:** To generate a random key you can use this online service:
-> https://www.avast.com/random-password-generator
+> &nbsp;https://www.avast.com/random-password-generator
 
 </div>
