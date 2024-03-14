@@ -43,17 +43,17 @@ The purpose of this project was to experiment with various authentication securi
 
 1. **Clone this repository**
 
-```h
+```bash
   git clone https://github.com/Rukas90/ReactAuthApp.git
 ```
 
 2. Install client packages
 
-```h
+```bash
   cd client
 ```
 
-```h
+```bash
   npm i
 ```
 
@@ -64,27 +64,27 @@ The purpose of this project was to experiment with various authentication securi
 
 4. Create `.env.development` file in the `client` directory
 
-```h
+```bash
 cd client
 ```
 
-```h
+```bash
 touch .env.development
 ```
 
 5. Add the server url to the `.env` file
 
-```h
+```bash
 VITE_API_URL=http://localhost:3000
 ```
 
 6. Create `.env` file in the `server` directory
 
-```h
+```bash
 cd server
 ```
 
-```h
+```bash
 touch .env
 ```
 
@@ -139,7 +139,7 @@ touch .env
 
      - Database (name): `can be anything`
      - Rest leave as is ...
-       <br>
+       &nbsp;
        > **Notice:** All tables will be initialized automatically when the server will start
 
    - Add the database details to the `.env` server file:
@@ -155,7 +155,7 @@ touch .env
 
     - `SENDER_MAIL_SERVICE=gmail`
     - `SENDER_EMAIL_ADDRESS=[YourGmailEmailAddress]`
-      <br>
+      &nbsp;
       > **Notice:** It is recommended to create a new Google noreply email account
     - `SENDER_EMAIL_PASSWORD=[YourAppPassword]`
       To create an app password, follow these steps:
@@ -175,7 +175,7 @@ touch .env
     - `TWOFA_SECRET_KEY=[GenerateRandomKey]`
     - `CLIENT_ORIGIN=http://localhost:5174`
       `If your client uses a different port then  replace the default 5174 port number with the new port number.`
-      <br>
+      &nbsp;
       > **Notice:** The client origin in the env file must be the same as your actual client origin
     - `SAME_SITE=Strict`
 
