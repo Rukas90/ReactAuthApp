@@ -123,15 +123,15 @@ touch .env
 
    - Download and Install **pgAdmin 4**
 
-   ```bash
-    https://www.pgadmin.org/download/
-   ```
+     ```bash
+      https://www.pgadmin.org/download/
+     ```
 
    - Download and Install **PostgresSQL 16**
 
-   ```bash
-    https://www.enterprisedb.com/download-postgresql-binaries
-   ```
+     ```bash
+      https://www.enterprisedb.com/  download-postgresql-binaries
+     ```
 
    - Open **pgAdmin 4**
    - Right click on `PostgresSQL 16 > Create > Database`
@@ -175,7 +175,7 @@ touch .env
     - `TWOFA_SECRET_KEY=[GenerateRandomKey]`
     - `CLIENT_ORIGIN=http://localhost:5174`
       `If your client uses a different port then  replace the default 5174 port number with the new port number.`
-      &nbsp;
+      &nbsp;&nbsp;
       > **Notice:** The client origin in the env file must be the same as your actual client origin
     - `SAME_SITE=Strict`
 
