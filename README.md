@@ -174,12 +174,12 @@ touch .env
     - `SERVER_PORT=3000`
     - `TWOFA_SECRET_KEY=[GenerateRandomKey]`
     - `CLIENT_ORIGIN=http://localhost:5174`
-      `If your client uses a different port then  replace the default 5174 port number with the new port number.`
-      &nbsp;&nbsp;
+      ```
+        If your client uses a different port then  replace the default 5174 port number with the new port number.
+      ```
       > **Notice:** The client origin in the env file must be the same as your actual client origin
     - `SAME_SITE=Strict`
 
-> **Note:** To generate a random key you can use this online service:
-> &nbsp;https://www.avast.com/random-password-generator
+> **Note:** To generate a random key you can use this online service: https://www.avast.com/random-password-generator
 
 </div>
