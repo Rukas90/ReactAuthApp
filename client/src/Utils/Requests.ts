@@ -43,7 +43,7 @@ export const PUT = async <T = any>(url: string, data?: any, config: AxiosRequest
     }
 }
 
-export const DELETE = async <T = any>(url: string, config: AxiosRequestConfig = DefaultConfiguration): Promise<AxiosResponse<T>> => {
+export const DELETE = async <T = any>(url: string, _?: any, config: AxiosRequestConfig = DefaultConfiguration): Promise<AxiosResponse<T>> => {
     try {
         return await axios.delete<T>(BuildApiUrl(url), config)
     } catch (error) {
@@ -56,7 +56,7 @@ export const PATCH = async <T = any>(url: string, data?: any, config: AxiosReque
         return await axios.patch<T>(BuildApiUrl(url), data, config)
     } catch (error) {
         return GetError<T>(error as Error)
-    }
+    } 
 }
 
 export const MAKE_REQUEST = async (
@@ -96,7 +96,6 @@ export const MAKE_REQUEST = async (
                 status: response ? response.status : 500
             };
         }
-    
     }
 
 const GetError = <T = any>(error: Error) : AxiosResponse<T> => {

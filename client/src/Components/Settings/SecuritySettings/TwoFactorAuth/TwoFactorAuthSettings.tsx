@@ -66,7 +66,13 @@ const TwoFactorAuthSettings = ({ notifications }: WithNotificationsProps) => {
 
   // Function to deactivate 2FA
   const deactivate = async () => {
-    const response = await Deactivate2FA(await fetchCsrfToken())
+    const csrfToken = await fetchCsrfToken(true)
+
+    console.log("deactivate Token", csrfToken)
+
+    const response = await Deactivate2FA(csrfToken)
+
+    console.log("deactivate")
 
     if (response.success) {
       setActive(false)
@@ -103,7 +109,7 @@ const TwoFactorAuthSettings = ({ notifications }: WithNotificationsProps) => {
         notifications.error(Localized("PLEASE_ENTER_VERIFICATION_CODE"))
         return false
       }
-      const response = await Verify2FACode(code, await fetchCsrfToken())
+      const response = await Verify2FACode(code, await fetchCsrfToken(true))
 
       if (response.success) {
         setActive(true)

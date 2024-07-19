@@ -47,7 +47,7 @@ const RegisterForm = () => {
     const response = await Register({
       email: email,
       password: password,
-      csrfToken: await fetchCsrfToken(),
+      csrfToken: await fetchCsrfToken(true),
     })
     if (response.success) {
       navigate("/verify")

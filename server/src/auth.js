@@ -6,6 +6,7 @@ import {
 }                              from './utils.js'
 import { hashPassword }        from './security.js'
 import { isSessionBlocked }    from "./session-management.js"
+import { mail }                from "./mailer.js"
 
 /**
  * Retrieves the authentication status of the current user.
@@ -46,10 +47,17 @@ export const register_user = async (req, res, server) => {
         if (user.rowCount > 0) {
             return res.status(409).json({ error: 'User already exists' })
         }
-        await database.createUser(email, await hashPassword(password))
-        
+        const newUser = await database.createUser(email, await hashPassword(password))
+
+        if (!newUser.is_verified) {
+            await mail({
+                recipient: email,
+                subject: 'Account Verification Code',
+                body: `The code is ${newUser.verification_code}`
+            })
+        }
         res.status(200).json({ message: "User registered successfully" })
-    } catch (error) {
+    } catch (error) { 
         console.error('Error (register_user):', error)
         res.status(500).json({ error: 'Internal Server Error' })
     }

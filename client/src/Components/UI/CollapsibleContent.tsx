@@ -84,6 +84,8 @@ const CollapsibleContent = ({
     // Call the onBeforeStateChange hook if provided
     if (onBeforeStateChange) {
       onBeforeStateChange(newState, (status) => {
+        console.log("newState", newState)
+        console.log("status", status)
         if (!status) {
           setEnabled(!newState)
           return

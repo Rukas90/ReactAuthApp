@@ -130,7 +130,7 @@ touch .env
    - Download and Install **PostgresSQL 16**
 
      ```bash
-      https://www.enterprisedb.com/  download-postgresql-binaries
+      https://www.enterprisedb.com/download-postgresql-binaries
      ```
 
    - Open **pgAdmin 4**
@@ -174,10 +174,9 @@ touch .env
     - `SERVER_PORT=3000`
     - `TWOFA_SECRET_KEY=[GenerateRandomKey]`
     - `CLIENT_ORIGIN=http://localhost:5174`
-      ```
-        If your client uses a different port then  replace the default 5174 port number with the new port number.
-      ```
-      > **Notice:** The client origin in the env file must be the same as your actual client origin
+      &nbsp;
+      > **Notice:** If your client uses a different port then replace the default 5174 port number with the new port number.&nbsp;
+      > The client origin in the env file must be the same as your actual client origin
     - `SAME_SITE=Strict`
 
 > **Note:** To generate a random key you can use this online service: https://www.avast.com/random-password-generator

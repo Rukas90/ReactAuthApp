@@ -17,7 +17,7 @@ const Verify2FAForm = () => {
   const { fetchCsrfToken } = useCsrfToken()
 
   const authenticateCode = async () => {
-    const csrfToken = await fetchCsrfToken()
+    const csrfToken = await fetchCsrfToken(true)
     const response = await Auth2FACode(code, csrfToken)
 
     if (!response.success) {

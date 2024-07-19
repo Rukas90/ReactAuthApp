@@ -44,6 +44,7 @@ export class Server {
     }
     #setupMiddleware() {
         this.app.use(cors({
+            allowedHeaders: ['csrf-token', 'Content-Type'],
             origin: (origin, callback) => {
                 if (!origin || origin === process.env.CLIENT_ORIGIN || origin === process.env.CLIENT_ORIGIN+'/') {
                     callback(null, true)
@@ -106,12 +107,11 @@ export class Server {
     }
     cSRFTokenVerification = (req, res, next) => {
         try {
-            const token = req.headers['csrf-token']
+            const token = req.headers["csrf-token"]
     
             if (!req.session || !this.tokens.verify(req.session.csrfSecret, token)) {
                 console.error("Invalid CSRF token")
                 return res.status(400).json({ error: "Invalid CSRF token" })
-                
             }
             next()
         }
