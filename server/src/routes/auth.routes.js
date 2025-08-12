@@ -1,20 +1,20 @@
 import { 
     captureSessionInfoMiddleware, 
     validateSession2FAStateMiddleware
-}                                 from '#middleware/session.middleware.js'
+}                                             from '#middleware/session.middleware.js'
 import { 
     syncCSRFSecretMiddleware,
-}                                 from '#middleware/csrf.middleware.js'
+}                                             from '#middleware/csrf.middleware.js'
 import { 
     validateHCaptchaTokenMiddleware 
-}                                 from '#middleware/captcha.middleware.js'
+}                                             from '#middleware/captcha.middleware.js'
 import { 
   loginLocalMiddleware,
   logoutUserMiddleware, 
   registerUserMiddleware 
-}                                 from '#middleware/auth.middleware.js'
-import { sendAuthRedirect, sendAuthResponse }       from '#responses/auth.response.js'
-import { getAuthStatus }          from '#controllers/auth.controller.js'
+}                                             from '#middleware/auth.middleware.js'
+import { sendAuthRedirect, sendAuthResponse } from '#responses/auth.response.js'
+import { getAuthStatus }                      from '#controllers/auth.controller.js'
 
 export const registerAuthRoutes = (server) => {
 
@@ -27,7 +27,7 @@ export const registerAuthRoutes = (server) => {
     loginLocalMiddleware, 
     syncCSRFSecretMiddleware, 
     captureSessionInfoMiddleware, 
-    sendAuthResponse('User registered successfully'))
+    sendAuthResponse('Registered successfully!', '/verify-account'))
 
   server.app.post('/auth/login', 
       validateHCaptchaTokenMiddleware, 
@@ -35,10 +35,10 @@ export const registerAuthRoutes = (server) => {
       syncCSRFSecretMiddleware,
       captureSessionInfoMiddleware,
       validateSession2FAStateMiddleware,
-      sendAuthResponse('Authentication successful'))
+      sendAuthResponse('Login successful!', '/'))
 
   server.app.post('/auth/logout', 
     logoutUserMiddleware, 
     syncCSRFSecretMiddleware, 
-    sendAuthRedirect(process.env.CLIENT_ORIGIN))
+    sendAuthResponse('Logged out successfully!', '/login'))
 }

@@ -5,6 +5,7 @@ import CustomButton from "Components/Buttons/CustomButton"
 import InputField from "Components/UI/InputField"
 import { VerificationTemplate } from "Utils/Verifications"
 import { useVerification } from "Hooks/useVerification"
+import LogoutButton from "Components/UI/LogoutButton"
 
 const VerifyAccountVerificationTemplate: VerificationTemplate = {
   settings: {
@@ -46,12 +47,13 @@ const VerifyForm = () => {
             text={Translate("CONTINUE")}
             icon=""
             action={async () => {
-              const response = await verify(code)
-              console.log(response)
+              await verify(code)
             }}
             extendWidth
             disabled={loading || verifying}
           />
+          <Spacer space={0.5} unit="rem" isVertical />
+          <LogoutButton extendWidth />
           <Spacer space={1.5} unit="rem" isVertical />
         </div>
       </div>

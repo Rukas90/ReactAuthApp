@@ -5,20 +5,23 @@ import { useNavigate } from "react-router-dom"
 import { useBusyContext } from "Contexts/BusyProvider"
 import { useDialog } from "Contexts/DialogContext"
 
-const LogoutButton = () => {
+interface Props {
+  extendWidth?: boolean
+}
+const LogoutButton = ({ extendWidth = false }: Props) => {
   const navigate = useNavigate()
   const { isBusy } = useBusyContext()
   const { showDialog } = useDialog()
 
   const handleLogout = async () => {
     const response = await Logout()
-
+    console.log("logged out response" + response)
     if (response.success) {
-      navigate("/login")
+      navigate(response.data.redirect)
     }
   }
   return (
-    <div>
+    <div className={extendWidth ? "w-100" : ""}>
       <CustomButton
         text={Translate("LOG_OUT")}
         icon=""
@@ -29,7 +32,7 @@ const LogoutButton = () => {
             onConfirmCallback: handleLogout,
           })
         }}
-        extendWidth={false}
+        extendWidth={extendWidth}
         disabled={isBusy()}
       />
     </div>

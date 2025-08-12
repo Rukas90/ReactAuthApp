@@ -18,11 +18,9 @@ export const useVerification = (
 
   const verify = useCallback(
     async (code: string) => {
-      console.log("verify?")
       if (verificationID === null) {
         return
       }
-      console.log("verifying")
       try {
         setVerifying(true)
         return await VerifyCode(verificationID, code)
@@ -59,6 +57,7 @@ export const useVerification = (
   }, [template, findByType])
 
   useEffect(() => {
+    // TODO :: Fix redirect re-establish infinite loop issue
     setVerificationID(null)
     setError(null)
   }, [template, findByType])

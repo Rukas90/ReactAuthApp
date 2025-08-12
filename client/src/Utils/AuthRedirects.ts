@@ -1,4 +1,3 @@
-import { Console } from "console"
 import { AuthContextState, AuthMode, AuthRequirement, ROUTE_CONFIG } from "Types/authTypes"
 
 export const GetRequiredRedirect = (
@@ -50,7 +49,12 @@ export const GetRequiredRedirect = (
   if (!state.isVerified && currentPath !== '/verify-account') {
     return '/verify-account'
   }
-  
+  else if (state.isVerified && currentPath !== '/verify-account') {
+    return '/'
+  }
+  if (state.mode === AuthMode.FullyAuthenticated && currentPath !== '/') {
+    return '/'
+  }
   if (requirement === AuthRequirement.COMPLETE) {
     if (state.mode !== AuthMode.FullyAuthenticated) {
 

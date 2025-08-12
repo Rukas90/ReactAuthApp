@@ -9,6 +9,8 @@ export const validateCorsMiddleware = () => {
         'http://localhost:5173/',
         process.env.CLIENT_ORIGIN,
         process.env.CLIENT_ORIGIN + '/',
+        'http://192.168.1.119:5173',
+        'http://192.168.1.119:5173/',
     ]
     const allowedHeaders = [
         'X-CSRF-Token', 
@@ -16,7 +18,7 @@ export const validateCorsMiddleware = () => {
         'Content-Type'
     ]
     return cors({
-        origin: (origin, callback) => {
+        origin: true /*(origin, callback) => {
 
             const nOrigin   = normalizeOrigin(origin)
             const isAllowed = !origin || allowedOrigins.includes(nOrigin)
@@ -29,7 +31,8 @@ export const validateCorsMiddleware = () => {
             else {
                 callback(new Error('Not allowed by CORS'))
             }
-        },
+        }*/,
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
         allowedHeaders: allowedHeaders,
         credentials: true  // To allow sending of cookies with requests
     })

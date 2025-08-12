@@ -7,6 +7,7 @@ import AuthForm from "Components/Templates/Forms/AuthForm"
 import { Login } from "Utils/Auth"
 import { broadcast } from "Contexts/MessageContext"
 import Captcha from "../Captcha"
+import { useNavigate } from "react-router-dom"
 
 /**
  * LoginForm Component
@@ -17,6 +18,7 @@ import Captcha from "../Captcha"
 const LoginForm = () => {
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
+  const navigate = useNavigate()
 
   const { broadcastMessage: broadcastMessage } = broadcast()
   const [hCaptchaToken, setHCaptchaToken] = useState<string | null>(null)
@@ -42,7 +44,7 @@ const LoginForm = () => {
       hcaptchaToken: hCaptchaToken,
     })
     if (response.success) {
-      window.location.href = response.data.redirectUrl
+      navigate(response.data.redirect)
     } else {
       broadcastMessage(response.error ?? "Failed to login! Try again.")
     }
