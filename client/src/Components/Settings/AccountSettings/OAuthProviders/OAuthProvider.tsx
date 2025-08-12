@@ -22,7 +22,7 @@ const OAuthProvider = ({ data, icon, invertIcon }: Props) => {
           className={`icon ${invertIcon && "invert"}`}
         />
         <div className="d-flex flex-col overflow-hidden pe-3">
-          <span>{data?.name}</span>
+          <span>{data?.provider_name}</span>
           <div className="overflow-scroll hide-scrollbar">
             <span className="fs-7">{username}</span>
           </div>

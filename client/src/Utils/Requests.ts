@@ -6,7 +6,7 @@ axios.defaults.withCredentials = true
 
 export const BuildApiUrl = (url: string): string => {
     const path = url.startsWith('/') ? url : `/${url}`
-
+    
     if (!API_URL) {
         console.error('API_URL is not defined');
         return path // Return the path as-is if API_URL is not defined
@@ -62,41 +62,36 @@ export const PATCH = async <T = any>(url: string, data?: any, config: AxiosReque
 export const MAKE_REQUEST = async (
     func: (url: string, data: any, config: AxiosRequestConfig) => Promise<AxiosResponse<any>>,
     path: string,
-    csrfToken?: string,
     data: any = {},
-    config: AxiosRequestConfig = {}
-    ): Promise<Response> => {
-        const headersConfig = {
-            headers: {
-                ...(csrfToken ? { 'csrf-token': csrfToken } : {}),
-                ...config.headers
-            }
-        }
-        const fullConfig = { ...config, ...headersConfig }
-
-        let response;
-
-        try {
-            response = await func(path, data, fullConfig)
-
-            const success = response.status === 200
-
-            return success ? {
-                success: true,
-                data: response.data
-            } : {
-                success: false,
-                error: success ? undefined : response.data.error,
-                status: response.status
-            }
-        } catch (error) {
-            return {
-                success: false,
-                error: response ? response.data.error : (error as Error).message,
-                status: response ? response.status : 500
-            };
+    config: AxiosRequestConfig = DefaultConfiguration
+    
+): Promise<Response> => {
+    const headersConfig = {
+        headers: {
+            ...config.headers
         }
     }
+    const fullConfig = { ...config, ...headersConfig }
+    let response;
+    try {
+        response = await func(path, data, fullConfig)
+        const success = response.status === 200
+        return success ? {
+            success: true,
+            data:    response.data
+        } : {
+            success: false,
+            error:   success ? undefined : response.data.error,
+            status:  response.status
+        }
+    } catch (error) {
+        return {
+            success: false,
+            error:   response ? response.data.error : (error as Error).message,
+            status:  response ? response.status : 500
+        };
+    }
+}
 
 const GetError = <T = any>(error: Error) : AxiosResponse<T> => {
     

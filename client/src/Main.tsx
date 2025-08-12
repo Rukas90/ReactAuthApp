@@ -3,9 +3,8 @@ import ReactDOM from "react-dom/client"
 import "./Config/i18n" // Importing i18n configuration for internationalization
 import App from "./App.js"
 import { BrowserRouter } from "react-router-dom"
-import "./scss/main.css" // Global styles
+import "./Scss/main.css" // Global styles
 import { LanguageProvider } from "./Contexts/LanguageProvider" // Context provider for language settings
-import { CsrfProvider } from "./Contexts/CsrfContext"
 import "leaflet/dist/leaflet.css" // Import leaflet styling
 
 // Find the root element in the HTML to mount the React application
@@ -16,11 +15,9 @@ if (element != null) {
   ReactDOM.createRoot(element).render(
     <React.StrictMode>
       <BrowserRouter>
-        <CsrfProvider>
-          <LanguageProvider>
-            <App />
-          </LanguageProvider>
-        </CsrfProvider>
+        <LanguageProvider>
+          <App />
+        </LanguageProvider>
       </BrowserRouter>
     </React.StrictMode>
   )

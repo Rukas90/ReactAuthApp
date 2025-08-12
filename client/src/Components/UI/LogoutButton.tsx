@@ -3,21 +3,17 @@ import CustomButton from "../Buttons/CustomButton"
 import { Logout } from "Utils/Auth"
 import { useNavigate } from "react-router-dom"
 import { useBusyContext } from "Contexts/BusyProvider"
-import { useCsrfToken } from "Contexts/CsrfContext"
 import { useDialog } from "Contexts/DialogContext"
 
 const LogoutButton = () => {
   const navigate = useNavigate()
   const { isBusy } = useBusyContext()
-  const { fetchCsrfToken } = useCsrfToken()
   const { showDialog } = useDialog()
 
   const handleLogout = async () => {
-    const response = await Logout(await fetchCsrfToken())
+    const response = await Logout()
 
     if (response.success) {
-      await fetchCsrfToken(true) // Refresh the token from the server
-
       navigate("/login")
     }
   }

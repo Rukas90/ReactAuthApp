@@ -3,24 +3,28 @@ import FormHeader from "Templates/FormHeader"
 import Spacer from "Components/UI/Spacer"
 import CustomButton from "Components/Buttons/CustomButton"
 import InputField from "Components/UI/InputField"
-import { Verify } from "Utils/Auth"
-import { useNavigate } from "react-router-dom"
-import { useCsrfToken } from "Contexts/CsrfContext"
+import { VerificationTemplate } from "Utils/Verifications"
+import { useVerification } from "Hooks/useVerification"
 
+const VerifyAccountVerificationTemplate: VerificationTemplate = {
+  settings: {
+    type: "VERIFY_ACCOUNT",
+    dispatch: {
+      command: "VERIFY_ACCOUNT",
+      payload: {},
+    },
+  },
+  email: {
+    title: "Activate your account",
+  },
+}
 const VerifyForm = () => {
   const [code, setCode] = useState("")
+  const { loading, verifying, verify } = useVerification(
+    VerifyAccountVerificationTemplate,
+    true
+  )
 
-  const navigate = useNavigate()
-
-  const { fetchCsrfToken } = useCsrfToken()
-
-  const verifyAccount = async () => {
-    const response = await Verify(code, await fetchCsrfToken(true))
-
-    if (response.success) {
-      navigate("/")
-    }
-  }
   return (
     <div>
       <FormHeader
@@ -41,8 +45,12 @@ const VerifyForm = () => {
           <CustomButton
             text={Translate("CONTINUE")}
             icon=""
-            action={verifyAccount}
+            action={async () => {
+              const response = await verify(code)
+              console.log(response)
+            }}
             extendWidth
+            disabled={loading || verifying}
           />
           <Spacer space={1.5} unit="rem" isVertical />
         </div>

@@ -21,7 +21,8 @@
       "Components/*": ["src/Components/*"],
       "Contexts/*": ["src/Contexts/*"],
       "Hooks/*": ["src/Hooks/*"],
-      "Templates/*": ["src/Components/Templates/*"]
+      "Templates/*": ["src/Components/Templates/*"],
+      "Types/*": ["src/Types/*"]
     },
     "noEmit": true // Do not emit outputs (if using with Babel)
   },

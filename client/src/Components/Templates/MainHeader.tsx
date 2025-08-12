@@ -18,9 +18,7 @@ const MainHeader = () => {
           {!isMobile && (
             <>
               <Spacer space={1.0} unit="rem" isVertical={false} />
-              <span className="fs-5 fw-light text-light">
-                OVector Technologies
-              </span>
+              <span className="fs-5 text-light">Authentification App</span>
             </>
           )}
         </div>

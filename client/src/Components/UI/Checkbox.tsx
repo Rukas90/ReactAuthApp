@@ -63,7 +63,7 @@ const Checkbox = ({
   return (
     <input
       id={id}
-      className={`form-check-input ${classes}`}
+      className={`form-check-input appearance-none ${classes}`}
       type="checkbox"
       role={role}
       value=""

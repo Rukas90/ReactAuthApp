@@ -3,10 +3,6 @@ import CustomButton from "./CustomButton"
 import GithubIcon from "Img/Icons/Social/github.svg"
 import { BuildApiUrl } from "Utils/Requests"
 
-interface Props {
-  prompt?: boolean
-}
-
 /**
  * GithubLoginButton Component
  *
@@ -14,8 +10,8 @@ interface Props {
  *
  * Utilizes the CustomButton component to create a specialized button for Github login.
  */
-const GithubLoginButton = ({ prompt = false }: Props) => {
-  const url = BuildApiUrl(`/auth/github${prompt ? "/register" : ""}`)
+const GithubLoginButton = () => {
+  const url = BuildApiUrl(`/auth/github`)
 
   return (
     <>

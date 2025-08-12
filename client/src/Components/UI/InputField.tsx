@@ -3,6 +3,7 @@ import VisibilityOn from "Img/Icons/Common/visibility-on.svg"
 import VisibilityOff from "Img/Icons/Common/visibility-off.svg"
 import Checkbox from "./Checkbox"
 import { RoundnessOption } from "Data/RoundnessOption"
+import IconCheckbox from "./IconCheckbox"
 
 interface Props {
   type?: string | "text" | "email" | "password"
@@ -110,7 +111,7 @@ const InputField = forwardRef<HTMLInputElement, Props>(
             readOnly={readonly}
           />
           {hideable && (
-            <Checkbox
+            <IconCheckbox
               onIcon={VisibilityOn}
               offIcon={VisibilityOff}
               checked={isVisible}

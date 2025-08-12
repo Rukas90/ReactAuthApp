@@ -9,7 +9,7 @@ import PasswordValidationGroup from "Templates/PasswordValidationGroup"
 import { Register } from "Utils/Auth"
 import { broadcast } from "Contexts/MessageContext"
 import Spacer from "Components/UI/Spacer"
-import { useCsrfToken } from "Contexts/CsrfContext"
+import Captcha from "../Captcha"
 
 /**
  * RegisterForm Component
@@ -20,37 +20,51 @@ const RegisterForm = () => {
   const emailRef = useRef<HTMLInputElement>(null)
   const [password, setPassword] = useState<string>("")
   const [passwordState, setPasswordState] = useState(false)
-
-  const { fetchCsrfToken } = useCsrfToken()
+  const [hCaptchaToken, setHCaptchaToken] = useState<string | null>(null)
 
   const navigate = useNavigate()
-  const { broadcastMessage: broadcastMessage } = broadcast()
+  const { broadcastMessage: broadcastMessage, clearMessage } = broadcast()
 
   const RegisterSubmit = async () => {
-    if (!emailRef.current) {
-      return
-    }
-    const email = emailRef.current.value
+    try {
+      if (!emailRef.current) {
+        return
+      }
 
-    if (!email) {
-      broadcastMessage("Please enter the email")
-      return
-    }
-    if (!IsValidEmail(email)) {
-      broadcastMessage("Email is invalid")
-      return
-    }
-    if (!passwordState) {
-      broadcastMessage("Password does not meet the required criteria")
-      return
-    }
-    const response = await Register({
-      email: email,
-      password: password,
-      csrfToken: await fetchCsrfToken(true),
-    })
-    if (response.success) {
-      navigate("/verify")
+      const email = emailRef.current.value
+
+      if (!email) {
+        broadcastMessage("Please enter the email")
+        return
+      }
+
+      if (!IsValidEmail(email)) {
+        broadcastMessage("Email is invalid")
+        return
+      }
+
+      if (!passwordState) {
+        broadcastMessage("Password does not meet the required criteria")
+        return
+      }
+
+      if (!hCaptchaToken) {
+        broadcastMessage("Please complete the hCaptcha")
+        return
+      }
+      clearMessage()
+
+      const response = await Register({
+        email,
+        password,
+        hcaptchaToken: hCaptchaToken,
+      })
+      if (response.success) {
+        navigate("/")
+      }
+    } catch (error) {
+      console.error("Error during registration:", error)
+      broadcastMessage("Something went wrong during registration")
     }
   }
 
@@ -78,6 +92,8 @@ const RegisterForm = () => {
             extendWidth
           />
           <Spacer space={1.5} unit="rem" isVertical />
+          <Captcha setToken={setHCaptchaToken} />
+          <Spacer space={1.0} unit="rem" isVertical />
         </div>
       </div>
     </div>

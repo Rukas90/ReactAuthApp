@@ -12,7 +12,6 @@ import {
 import TwoFactorAuthSettingsNode from "./TwoFactorAuthSettingsNode"
 import { useBusyContext } from "Contexts/BusyProvider" // Context for managing busy state
 import { useDialog } from "Contexts/DialogContext" // Context for managing dialog display
-import { useCsrfToken } from "Contexts/CsrfContext"
 import withNotifications, {
   WithNotificationsProps,
 } from "Contexts/NotificationsContexts"
@@ -35,8 +34,6 @@ const TwoFactorAuthSettings = ({ notifications }: WithNotificationsProps) => {
   const [key, setKey] = useState("")
   const [loading, setLoading] = useState(false)
   const isMobile = useMediaQuery(MobileMediaQuery)
-
-  const { fetchCsrfToken } = useCsrfToken()
 
   // Consuming contexts for setting busy state and showing dialog
   const { setBusy } = useBusyContext()
@@ -66,13 +63,7 @@ const TwoFactorAuthSettings = ({ notifications }: WithNotificationsProps) => {
 
   // Function to deactivate 2FA
   const deactivate = async () => {
-    const csrfToken = await fetchCsrfToken(true)
-
-    console.log("deactivate Token", csrfToken)
-
-    const response = await Deactivate2FA(csrfToken)
-
-    console.log("deactivate")
+    const response = await Deactivate2FA()
 
     if (response.success) {
       setActive(false)
@@ -109,7 +100,7 @@ const TwoFactorAuthSettings = ({ notifications }: WithNotificationsProps) => {
         notifications.error(Localized("PLEASE_ENTER_VERIFICATION_CODE"))
         return false
       }
-      const response = await Verify2FACode(code, await fetchCsrfToken(true))
+      const response = await Verify2FACode(code)
 
       if (response.success) {
         setActive(true)

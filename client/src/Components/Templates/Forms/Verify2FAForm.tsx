@@ -5,7 +5,6 @@ import CustomButton from "Components/Buttons/CustomButton"
 import DigitField from "Components/UI/DigitField"
 import { Auth2FACode } from "Utils/Auth"
 import { useNavigate } from "react-router-dom"
-import { useCsrfToken } from "Contexts/CsrfContext"
 import { MessageType, broadcast } from "Contexts/MessageContext"
 
 const Verify2FAForm = () => {
@@ -14,18 +13,13 @@ const Verify2FAForm = () => {
   const navigate = useNavigate()
   const { broadcastMessage } = broadcast()
 
-  const { fetchCsrfToken } = useCsrfToken()
-
   const authenticateCode = async () => {
-    const csrfToken = await fetchCsrfToken(true)
-    const response = await Auth2FACode(code, csrfToken)
+    const response = await Auth2FACode(code)
 
     if (!response.success) {
       broadcastMessage(response.error, MessageType.Error)
       return
     }
-    await fetchCsrfToken(true) // Refresh the csrf token
-
     navigate("/")
   }
   return (

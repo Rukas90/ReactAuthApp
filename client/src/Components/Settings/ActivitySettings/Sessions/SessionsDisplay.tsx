@@ -36,6 +36,8 @@ const SessionsDisplay = () => {
       try {
         const response = await GET("/sessions")
 
+        console.log(response.data)
+
         if (response && response.data) {
           const sessionsArray: SessionData[] = Object.values(
             response.data.sessions

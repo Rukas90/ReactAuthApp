@@ -18,7 +18,7 @@ const AuthSocialButtons = ({ prompt = false }: Props) => {
     <>
       <GoogleLoginButton prompt={prompt} />
       <Spacer space={1.5} unit="rem" isVertical />
-      <GithubLoginButton prompt={prompt} />
+      <GithubLoginButton />
       <Spacer space={1.5} unit="rem" isVertical />
       <LabelHorizontalSeparator label={Translate("OR")} />
       <Spacer space={1.5} unit="rem" isVertical />

@@ -1,8 +1,7 @@
 export type OAuthProviderData = {
     id: string
-    name: string
+    provider_name: string
     profile: {
-        id: string
         username: string
     }
 }

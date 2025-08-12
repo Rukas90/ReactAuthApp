@@ -7,7 +7,7 @@ import { SessionAuthTokenKey } from "./Utilities"
 interface AuthProps {
     email: string,
     password: string
-    csrfToken: string
+    hcaptchaToken: string
 }
 
 /**
@@ -18,19 +18,14 @@ interface AuthProps {
  * @param {AuthProps} AuthProps - Email and password for registration.
  * @returns {Promise<Response>} The response object indicating success or failure.
 */
-export const Register = async ({ email, password, csrfToken }: AuthProps) : Promise<Response> => {
+export const Register = async ({ email, password, hcaptchaToken }: AuthProps) : Promise<Response> => {
 
     const authData = {
-        email: email,
-        password: password,
+        email,
+        password,
+        hcaptchaToken
     }
-    const response = await MAKE_REQUEST(POST, '/auth/register', csrfToken, authData)
-    
-    if (!response.success) {
-        return response
-    }
-    const loginProps = { email: email, password: password, csrfToken: csrfToken }
-    return await Login(loginProps)
+    return await MAKE_REQUEST(POST, '/auth/register', authData)
 }
 /**
  * Login
@@ -39,17 +34,18 @@ export const Register = async ({ email, password, csrfToken }: AuthProps) : Prom
  * @param {AuthProps} AuthProps - Email and password for login.
  * @returns {Promise<Response>} The response object indicating success or failure.
 */
-export const Login = async ({ email, password, csrfToken }: AuthProps) : Promise<Response> => {
+export const Login = async ({ email, password, hcaptchaToken }: AuthProps) : Promise<Response> => {
     const authToken = await InitializeAuthToken()
   
     if (!authToken) {
         throw "Unable to initialize auth token"
     }
     const authData = {
-        email: email,
-        password: password,
+        email,
+        password,
+        hcaptchaToken
     }
-    return await MAKE_REQUEST(POST, '/auth/login', csrfToken, authData, { headers: { 'auth-token': authToken } })
+    return await MAKE_REQUEST(POST, '/auth/login', authData, { headers: { 'auth-token': authToken } })
 }
 
 export const InitializeAuthToken = async () : Promise<string | null> => {
@@ -70,25 +66,14 @@ export const InitializeAuthToken = async () : Promise<string | null> => {
 }
 
 /**
- * Verify
- * Verifies a user with a provided verification code.
- *
- * @param {string} code - Verification code.
- * @returns {Promise<Response>} The response object indicating success or failure.
-*/
-export const Verify = async (code : string, csrfToken: string) : Promise<Response> => {
-
-    return await MAKE_REQUEST(POST, '/auth/verify', csrfToken, { code: code })
-}
-/**
  * Logout
  * Logs out the current user.
  *
  * @returns {Promise<Response>} The response object indicating success or failure.
 */
-export const Logout = async (csrfToken: string) : Promise<Response> => {
+export const Logout = async () : Promise<Response> => {
 
-    return await MAKE_REQUEST(POST, '/auth/logout', csrfToken)
+    return await MAKE_REQUEST(POST, '/auth/logout')
 }
 /**
  * Get2FAState
@@ -111,22 +96,22 @@ export const Get2FAInitializeData = async () : Promise<Response> => {
     return await MAKE_REQUEST(GET, '/auth/2fa/data')
 }
 
-export const IdentifyAccount = async (email: string, csrfToken: string) : Promise<Response> => {
+export const IdentifyAccount = async (email: string) : Promise<Response> => {
 
-    return await MAKE_REQUEST(POST, '/oauth/identify', csrfToken, { email: email })
+    return await MAKE_REQUEST(POST, '/oauth/identify', { email: email })
 }
 
-export const SendVerificationCode = async (key: string, csrfToken: string) : Promise<Response> => {
+export const SendVerificationCode = async (key: string) : Promise<Response> => {
 
-    return await MAKE_REQUEST(POST, '/verify/send-code', csrfToken, { key: key })
+    return await MAKE_REQUEST(POST, '/verify/send-code', { key: key })
 }
-export const CheckVerificationCode = async (key: string, code: string, csrfToken: string) : Promise<Response> => {
+export const CheckVerificationCode = async (key: string, code: string) : Promise<Response> => {
     
-    return await MAKE_REQUEST(POST, '/verify/check-code', csrfToken, { key: key, code: code })
+    return await MAKE_REQUEST(POST, '/verify/check-code', { key: key, code: code })
 }
-export const CancelVerification = async (key: string, csrfToken: string) : Promise<Response> => {
+export const CancelVerification = async (key: string) : Promise<Response> => {
 
-    return await MAKE_REQUEST(POST, '/verify/cancel', csrfToken, { key: key })
+    return await MAKE_REQUEST(POST, '/verify/cancel', { key: key })
 }
 
 /**
@@ -136,9 +121,9 @@ export const CancelVerification = async (key: string, csrfToken: string) : Promi
  * @param {string} code - 2FA code.
  * @returns {Promise<Response>} The response object indicating success or failure.
 */
-export const Verify2FACode = async (code: string, csrfToken: string) : Promise<Response> => {
+export const Verify2FACode = async (code: string) : Promise<Response> => {
 
-    return await MAKE_REQUEST(POST, '/auth/2fa/verify', csrfToken, { code: code })
+    return await MAKE_REQUEST(POST, '/auth/2fa/verify', { code: code })
 }
 /**
  * Auth2FA
@@ -147,9 +132,9 @@ export const Verify2FACode = async (code: string, csrfToken: string) : Promise<R
  * @param {string} code - 2FA code.
  * @returns {Promise<Response>} The response object indicating success or failure.
 */
-export const Auth2FACode = async (code: string, csrfToken: string) : Promise<Response> => {
+export const Auth2FACode = async (code: string) : Promise<Response> => {
 
-    return await MAKE_REQUEST(POST, '/auth/2fa', csrfToken, { code: code })
+    return await MAKE_REQUEST(POST, '/auth/2fa', { code: code })
 }
 
 export const GetAuthStatus = async () : Promise<Response> => {
@@ -163,12 +148,7 @@ export const GetAuthStatus = async () : Promise<Response> => {
  *
  * @returns {Promise<Response>} The response object indicating success or failure.
 */
-export const Deactivate2FA = async (csrfToken: string) : Promise<Response> => {
+export const Deactivate2FA = async () : Promise<Response> => {
 
-    return await MAKE_REQUEST(DELETE, '/auth/2fa', csrfToken)
-}
-
-export const GetCSRFToken = async () : Promise<Response> => {
-
-    return await MAKE_REQUEST(GET, '/session/token')
+    return await MAKE_REQUEST(DELETE, '/auth/2fa')
 }

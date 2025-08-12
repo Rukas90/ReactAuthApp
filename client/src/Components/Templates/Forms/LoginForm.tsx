@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import FormHeader from "Templates/FormHeader"
 import Spacer from "Components/UI/Spacer"
 import CustomButton from "Components/Buttons/CustomButton"
@@ -6,7 +6,7 @@ import AuthSocialButtons from "Templates/AuthSocialButtons"
 import AuthForm from "Components/Templates/Forms/AuthForm"
 import { Login } from "Utils/Auth"
 import { broadcast } from "Contexts/MessageContext"
-import { useCsrfToken } from "Contexts/CsrfContext"
+import Captcha from "../Captcha"
 
 /**
  * LoginForm Component
@@ -19,8 +19,7 @@ const LoginForm = () => {
   const passwordRef = useRef<HTMLInputElement>(null)
 
   const { broadcastMessage: broadcastMessage } = broadcast()
-
-  const { fetchCsrfToken } = useCsrfToken()
+  const [hCaptchaToken, setHCaptchaToken] = useState<string | null>(null)
 
   const HandleLogin = async () => {
     if (!emailRef.current || !passwordRef.current) {
@@ -33,10 +32,14 @@ const LoginForm = () => {
       broadcastMessage("Please fill in the login details")
       return
     }
+    if (!hCaptchaToken) {
+      broadcastMessage("Please complete the hCaptcha")
+      return
+    }
     const response = await Login({
       email: email,
       password: password,
-      csrfToken: await fetchCsrfToken(true),
+      hcaptchaToken: hCaptchaToken,
     })
     if (response.success) {
       window.location.href = response.data.redirectUrl
@@ -69,6 +72,8 @@ const LoginForm = () => {
             extendWidth
           />
           <Spacer space={1.5} unit="rem" isVertical />
+          <Captcha setToken={setHCaptchaToken} />
+          <Spacer space={1.0} unit="rem" isVertical />
         </div>
       </div>
     </div>

@@ -2,7 +2,6 @@ import React, { useState } from "react"
 import PasswordUpdateForm from "./PasswordUpdateForm"
 import PasswordUpdateVerification from "./PasswordUpdateVerification"
 import { SendVerificationCode } from "Utils/Auth"
-import { useCsrfToken } from "Contexts/CsrfContext"
 import { SetUserPassword } from "Utils/Account"
 import { PasswordManagementProps } from "./UserPasswordManagement"
 
@@ -28,11 +27,10 @@ const PasswordUpdateManagement = ({
 }: Props) => {
   const [password, setPassword] = useState<string | null>(null)
   const [time, setTime] = useState<Date>(new Date())
-  const { fetchCsrfToken } = useCsrfToken()
 
   const onSubmitPassword = async (password: string) => {
     try {
-      await SendVerificationCode(operationKey, await fetchCsrfToken())
+      await SendVerificationCode(operationKey)
 
       setTime(new Date())
       setPassword(password)
@@ -48,7 +46,7 @@ const PasswordUpdateManagement = ({
       return
     }
     try {
-      const response = await SetUserPassword(password, await fetchCsrfToken())
+      const response = await SetUserPassword(password)
 
       if (!response.success) {
         notifications.error(response.error)

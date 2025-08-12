@@ -4,8 +4,23 @@
   "description": "",
   "main": "app.js",
   "type": "module",
+  "imports": {
+    "#commands/*": "./src/commands/*",
+    "#config/*": "./src/config/*",
+    "#controllers/*": "./src/controllers/*",
+    "#middleware/*": "./src/middleware/*",
+    "#routes/*": "./src/routes/*",
+    "#services/*": "./src/services/*",
+    "#setup/*": "./src/setup/*",
+    "#utils/*": "./src/utils/*",
+    "#validators/*": "./src/validators/*",
+    "#queries/*": "./src/queries/*",
+    "#models/*": "./src/models/*",
+    "#responses/*": "./src/responses/*"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node src/app.js"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +30,7 @@
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "connect-pg-simple": "^9.0.1",
+    "connect-redis": "^9.0.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "crypto-js": "^4.2.0",
@@ -25,6 +41,7 @@
     "express-session": "^1.17.3",
     "express-useragent": "^1.0.15",
     "geoip-lite": "^1.4.9",
+    "module-alias": "^2.2.3",
     "moment": "^2.30.1",
     "nodemailer": "^6.9.8",
     "passport": "^0.6.0",
@@ -35,10 +52,17 @@
     "pg": "^8.11.3",
     "qrcode": "^1.5.3",
     "query-string": "^8.1.0",
+    "redis": "^5.8.0",
     "speakeasy": "^2.0.0",
     "string-hash": "^1.1.3",
     "util.promisify": "^1.1.2",
     "uuid": "^9.0.1",
     "ws": "^8.16.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.33.0",
+    "eslint": "^9.33.0",
+    "eslint-plugin-import": "^2.32.0",
+    "globals": "^16.3.0"
   }
 }

@@ -4,7 +4,6 @@ import Spacer from "Components/UI/Spacer"
 import CustomButton from "Components/Buttons/CustomButton"
 import InputField from "Components/UI/InputField"
 import { IdentifyAccount } from "Utils/Auth"
-import { useCsrfToken } from "Contexts/CsrfContext"
 import { MessageType, broadcast } from "Contexts/MessageContext"
 import { BuildApiUrl } from "Utils/Requests"
 
@@ -12,23 +11,17 @@ const OAuthIdentificationForm = () => {
   const emailRef = useRef<HTMLInputElement>(null)
 
   const { broadcastMessage } = broadcast()
-  const { fetchCsrfToken } = useCsrfToken()
 
   const identifyAccount = async () => {
     if (!emailRef.current) {
       return
     }
-    const response = await IdentifyAccount(
-      emailRef.current.value,
-      await fetchCsrfToken(true)
-    )
+    const response = await IdentifyAccount(emailRef.current.value)
 
     if (!response.success) {
       broadcastMessage(response.error, MessageType.Error)
       return
     }
-    await fetchCsrfToken(true) // Refresh the csrf token
-
     if (!response.success) {
       return
     }

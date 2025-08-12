@@ -18,7 +18,7 @@ const RenderProviderNode = (data: OAuthProviderData) => {
     google: GoogleOAuthProvider,
     github: GithubOAuthProvider,
   }
-  const Component = nodes[data.name.toLowerCase()] || undefined
+  const Component = nodes[data.provider_name.toLowerCase()] || undefined
 
   if (!Component) {
     return

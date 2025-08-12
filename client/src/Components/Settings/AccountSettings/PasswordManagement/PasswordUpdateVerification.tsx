@@ -2,7 +2,6 @@ import CustomButton from "Components/Buttons/CustomButton"
 import Countdown from "Components/UI/Countdown"
 import InputField from "Components/UI/InputField"
 import Message from "Components/UI/Message"
-import { useCsrfToken } from "Contexts/CsrfContext"
 import { useDialog } from "Contexts/DialogContext"
 import { CancelVerification, CheckVerificationCode } from "Utils/Auth"
 import React, { useState } from "react"
@@ -24,7 +23,6 @@ const PasswordUpdateVerification = ({
   notifications,
 }: Props) => {
   const [code, setCode] = useState("")
-  const { fetchCsrfToken } = useCsrfToken()
   const { showDialog } = useDialog()
 
   const verifyCode = async () => {
@@ -32,11 +30,7 @@ const PasswordUpdateVerification = ({
       notifications.error("Please enter the verification code!")
       return
     }
-    const response = await CheckVerificationCode(
-      operationKey,
-      code,
-      await fetchCsrfToken()
-    )
+    const response = await CheckVerificationCode(operationKey, code)
     if (!response.success) {
       notifications.error(response.error)
       return
@@ -45,7 +39,7 @@ const PasswordUpdateVerification = ({
     onCodeVerified()
   }
   const cancelOperation = async () => {
-    await CancelVerification(operationKey, await fetchCsrfToken())
+    await CancelVerification(operationKey)
 
     setCode("")
     onOperationCanceled()

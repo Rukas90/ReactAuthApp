@@ -8,13 +8,10 @@ import withNotifications, {
   WithNotificationsProps,
 } from "Contexts/NotificationsContexts"
 import { DeleteAccount } from "Utils/Account"
-import { useCsrfToken } from "Contexts/CsrfContext"
 import { useNavigate } from "react-router-dom"
 
 const UserAccountDeletion = ({ notifications }: WithNotificationsProps) => {
   const { showDialog } = useDialog()
-  const { fetchCsrfToken } = useCsrfToken()
-
   const navigate = useNavigate()
 
   const displayDialog = () => {
@@ -41,20 +38,11 @@ const UserAccountDeletion = ({ notifications }: WithNotificationsProps) => {
     })
   }
   const deleteAccount = async () => {
-    console.log("DELETE ACCOUNT")
-
-    const response = await DeleteAccount(await fetchCsrfToken())
-
-    console.log("ACCOUNT DELETED")
+    const response = await DeleteAccount()
 
     if (!response.success) {
       return notifications.error(response.error)
     }
-    console.log("REFRESH TOKEN")
-    await fetchCsrfToken(true)
-
-    console.log("BACK TO LOGIN")
-
     navigate("/login")
   }
 

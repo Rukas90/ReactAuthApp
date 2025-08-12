@@ -1,24 +1,18 @@
 import React from "react"
 import PasswordUpdateManagement from "./PasswordUpdateManagement"
 import { PasswordManagementProps } from "./UserPasswordManagement"
-import { useCsrfToken } from "Contexts/CsrfContext"
 import { ValidatePassword } from "Utils/Account"
 
 const UserPasswordUpdater = ({
   args,
   notifications,
 }: PasswordManagementProps) => {
-  const { fetchCsrfToken } = useCsrfToken()
-
   const validate = async (
     _: string,
     currentPassword: string
   ): Promise<boolean> => {
     try {
-      const response = await ValidatePassword(
-        currentPassword,
-        await fetchCsrfToken()
-      )
+      const response = await ValidatePassword(currentPassword)
       if (response.success && response.data.status) {
         args.SetSecondaryIndicator(false)
         return true
