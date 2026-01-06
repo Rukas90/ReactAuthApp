@@ -1,0 +1,9 @@
+.horizontal_label_line {
+    height: 1px !important;
+    background-color: var(--line);
+}
+.horizontal_label_text {
+    color: rgb(185, 185, 185);
+    padding: 0; margin: 0;
+    font-weight: 400;
+}

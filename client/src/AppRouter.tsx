@@ -1,27 +1,15 @@
-import { AuthGuard } from "Components/AuthGuard"
-import {
-  HomeView,
-  LoginView,
-  RegisterView,
-  VerifyView,
-  OAuthIdentifyView,
-  Verify2FAView,
-} from "Components/Views"
-import React from "react"
-import { Routes, Route } from "react-router-dom"
+import { Route, Routes } from "react-router-dom"
+import LoginView from "#views/auth/LoginView"
+import RegisterView from "#views/auth/RegisterView"
+import DashboardView from "#views/dashboard/DashboardView"
 
-export const AppRouter = () => {
+const AppRouter = () => {
   return (
-    <AuthGuard>
-      <Routes>
-        <Route path="/" element={<HomeView />} />
-        <Route path="/login" element={<LoginView />} />
-        <Route path="/register" element={<RegisterView />} />
-        <Route path="/verify-account" element={<VerifyView />} />
-        <Route path="/oauth-identify" element={<OAuthIdentifyView />} />
-        <Route path="/verify-2fa" element={<Verify2FAView />} />
-      </Routes>
-    </AuthGuard>
+    <Routes>
+      <Route path="/login" element={<LoginView />} />
+      <Route path="/register" element={<RegisterView />} />
+      <Route path="/dashboard" element={<DashboardView />} />
+    </Routes>
   )
 }
 export default AppRouter

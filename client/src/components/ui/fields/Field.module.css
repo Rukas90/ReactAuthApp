@@ -1,0 +1,79 @@
+.input-placeholder-active {
+  top: 8px;
+}
+
+.input_field_container {
+  position: relative;
+  display: flex;
+  background-color: rgb(15, 15, 15);
+  height: 48px;
+  align-items: center;
+  padding: 8px 12px 8px 12px;
+  transition-property: background-color, height;
+  transition-timing-function: ease;
+  transition-duration: 0.15s;
+}
+.input_field_container:hover {
+  background-color: rgb(20, 20, 20);
+}
+.input_field_container:focus {
+  border: 1px rgb(185, 185, 185) solid;
+}
+
+.input_field_container__error {
+  border: 1px rgb(136, 31, 31) solid;
+}
+
+.input_field_container__expanded {
+  height: 60px;
+}
+
+.input_field {
+  background-color: rgba(0, 0, 0, 0);
+  border: 0;
+  outline: 0;
+  height: auto;
+  color: rgb(225, 225, 225);
+  padding: 0;
+  margin: 0;
+}
+
+.input_field_container__expanded > .input_field {
+  padding-top: 20px;
+}
+
+.input_field_placeholder {
+  position: absolute;
+  font-size: 1rem;
+  color: rgb(128, 128, 128);
+  top: 50%;
+  transform: translateY(-50%);
+  left: 12px;
+  pointer-events: none;
+  transition: all 0.15s ease;
+}
+
+.input_field_container__expanded > .input_field_placeholder {
+  top: 6px;
+  font-size: 0.85rem;
+  color: rgb(64, 64, 64);
+  transform: translateY(0);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+textarea:-webkit-autofill:active,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus,
+select:-webkit-autofill:active,
+input:-internal-autofill-selected,
+input:-internal-autofill-previewed {
+  background-color: rgba(0, 0, 0, 0) !important;
+  color: rgb(225, 225, 225) !important;
+}/*# sourceMappingURL=Field.module.css.map */

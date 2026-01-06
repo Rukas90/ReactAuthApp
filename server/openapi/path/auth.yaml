@@ -1,0 +1,55 @@
+/login:
+  post:
+    summary: Login with credentials
+    tags:
+      - Auth
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/auth.schemas.yaml#/LoginRequest'
+    responses:
+      '200':
+        description: Logged in successfully
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/auth.schemas.yaml#/AuthResponse'
+      '403':
+        description: Invalid credentials
+
+/register:
+  post:
+    summary: Register a new user
+    tags:
+      - Auth
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/auth.schemas.yaml#/RegisterRequest'
+    responses:
+      '200':
+        description: Registered and logged in successfully
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/auth.schemas.yaml#/AuthResponse'
+
+/logout:
+  post:
+    summary: Logout the current user
+    tags:
+      - Auth
+    responses:
+      '200':
+        description: Logged out successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string

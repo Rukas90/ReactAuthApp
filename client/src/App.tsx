@@ -1,32 +1,14 @@
-import React from "react"
-import useLanguageSetting from "./Hooks/useLanguageSetting"
-import { usePreventWindowUnload } from "./Hooks/usePreventWindowUnload"
-import { MessageProvider } from "./Contexts/MessageContext"
-import { BusyProvider } from "./Contexts/BusyProvider"
-import { DialogProvider } from "./Contexts/DialogContext"
-import { NotificationsProvider } from "Contexts/NotificationsContexts"
-import { AuthProvider } from "Contexts/AuthContext"
+import { AuthProvider } from "#contexts/AuthContext"
+import useLanguageSetting from "#hooks/useLanguageSetting"
 import AppRouter from "./AppRouter"
 
 const App = () => {
-  useLanguageSetting() // Initialize language settings
-  usePreventWindowUnload()
+  useLanguageSetting()
 
   return (
-    <>
-      <AuthProvider>
-        <MessageProvider>
-          <NotificationsProvider>
-            <DialogProvider>
-              <BusyProvider>
-                <AppRouter />
-              </BusyProvider>
-            </DialogProvider>
-          </NotificationsProvider>
-        </MessageProvider>
-      </AuthProvider>
-    </>
+    <AuthProvider>
+      <AppRouter />
+    </AuthProvider>
   )
 }
-
 export default App

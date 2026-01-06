@@ -1,0 +1,42 @@
+@mixin flex-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.background {
+    position: relative;
+    
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    height: auto;
+    min-height: 100%;
+
+    background-color: #29373a;
+    background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1744&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+    background-size: cover;
+}
+.auth_form { 
+    @include flex-container;
+}
+.field_container {
+    min-width: 550px;
+    width: 50%;
+    padding: 64px;
+    flex-grow: 1;
+
+    background-color: black;
+}
+.field_container__content {
+    max-width: 425px;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    @include flex-container;
+
+    align-items: center;
+    text-align: center;
+}

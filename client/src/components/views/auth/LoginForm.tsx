@@ -1,0 +1,37 @@
+import InputField from "#fields/InputField"
+import { useTranslation } from "react-i18next"
+import AuthForm from "./AuthForm"
+
+interface Props {
+  onSubmit: (form: FormData) => void
+  fieldErrors: Set<string>
+}
+const LoginForm = ({ onSubmit, fieldErrors }: Props) => {
+  const { t } = useTranslation()
+
+  return (
+    <AuthForm onSubmit={onSubmit} submitText={t("LOGIN")}>
+      <InputField
+        id="email"
+        name="email"
+        type="email"
+        placeholder={t("EMAIL")}
+        autocomplete="email"
+        extendWidth
+        indicateError={fieldErrors.has("email")}
+      />
+      <InputField
+        id="password"
+        name="password"
+        type="text"
+        placeholder={t("PASSWORD")}
+        autocomplete="password"
+        extendWidth
+        hideable
+        isHidden
+        indicateError={fieldErrors.has("password")}
+      />
+    </AuthForm>
+  )
+}
+export default LoginForm

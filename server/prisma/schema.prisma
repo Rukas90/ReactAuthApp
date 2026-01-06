@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client"
+  output   = "./generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  password_hash String
+  is_verified   Boolean
+  created_at    DateTime @default(now())
+
+  refreshTokens RefreshToken[]
+  oauths        OAuth[]
+  verifications Verification[]
+  sessions      Session[]
+}
+
+model RefreshToken {
+  id          String   @id @default(uuid())
+  family_id   String
+  token_hash  String   @unique
+  lookup_hash String   @unique
+  created_at  DateTime @default(now())
+  expires_at  DateTime
+  revoked     Boolean
+  user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id     String
+
+  @@index([user_id])
+  @@index([family_id])
+  @@index([lookup_hash])
+}
+
+model OAuth {
+  id            String @id @default(uuid())
+  provider_id   String
+  provider_name String
+  profile       Json
+  user          User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id       String
+
+  @@index([user_id])
+}
+
+model Session {
+  session_id         String    @id @default(uuid())
+  ip_address         String
+  device_type        String
+  location           String
+  login_time         DateTime
+  last_activity_time DateTime
+  source             String
+  user               User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id            String
+
+  @@index([user_id])
+	@@map("UserSession")
+}
+
+model BlockedSession {
+  session_id       String   @id @default(uuid())
+  block_reason     String
+  block_start_time DateTime @default(now())
+  block_end_time   DateTime
+}
+
+model Verification {
+  id            String   @id @default(uuid())
+  type          String
+  code_hash     String   @unique
+  dispatch      String
+  created_at    DateTime @default(now())
+  expires_at    DateTime
+  attempts_left Int      @default(5)
+  user          User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id       String
+
+  @@index([user_id])
+}

@@ -1,0 +1,18 @@
+openapi: 3.0.3
+info:
+  title: API
+  version: 1.0.0
+
+servers:
+  - url: /v1
+
+paths:
+  /auth:
+    $ref: './path/auth.yaml'
+  /user:
+    $ref: './path/user.yaml'
+
+components:
+  schemas:
+    $ref: './schemas/auth.schema.yaml'
+    $ref: './schemas/user.schema.yaml'

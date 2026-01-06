@@ -1,0 +1,24 @@
+.message_box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95rem;
+    background-color: rgb(109, 32, 32);
+    color: rgb(215, 215, 215);
+    width: 100%;
+    padding: 16px;
+    transition: all 0.15s ease;
+}
+.message_box_hidden {
+    opacity: 0;
+    transform: translateY(-100%);
+}
+.message_box > p {
+    padding: 0;
+    margin: 2px 0 0 0;
+}
+.message_box_icon {
+    width: 24px;
+    height: 24px;
+    opacity: 0.9;
+}

@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "outDir": "dist",
+    "baseUrl": ".",
+    "types": ["node"],
+    "paths": {
+      "#prisma/client": ["./prisma/generated/client.ts"],
+      "#lib/*": ["src/lib/*"],
+      "#features/*": ["src/feature/*"]
+    },
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "useUnknownInCatchVariables": true,
+    "skipLibCheck": true,
+  },
+  "include": ["src/**/*", "src/**/*.d.ts", "src/**/*.ts", "prisma/**/*", "."],
+  "exclude": ["node_modules", "dist"]
+}
