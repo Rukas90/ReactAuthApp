@@ -1,51 +1,82 @@
-import axios, { type AxiosRequestConfig, type AxiosResponse } from "axios"
+import axios, { type AxiosRequestConfig } from "axios"
+import { MAKE_REQUEST } from "./Requests"
+import type { ApiResult } from "./Response"
+import Cookies from "js-cookie"
 
-export const GET = async <T = any>(
-  api: string,
-  url: string,
-  _?: any,
-  config: AxiosRequestConfig = {}
-): Promise<AxiosResponse<T>> => {
-  return axios.get<T>(buildApiUrl(api, url), config)
+export const HTTP = {
+  async GET<T>(
+    api: string,
+    url: string,
+    config: AxiosRequestConfig = {}
+  ): Promise<ApiResult<T>> {
+    return MAKE_REQUEST(
+      axios.get<T>(buildApiUrl(api, url), SETUP_CONFIG(config)),
+      url
+    )
+  },
+  async POST<T>(
+    api: string,
+    url: string,
+    data?: any,
+    config: AxiosRequestConfig = {}
+  ): Promise<ApiResult<T>> {
+    return MAKE_REQUEST(
+      axios.post<T>(buildApiUrl(api, url), data, SETUP_CONFIG(config)),
+      url
+    )
+  },
+  async PUT<T>(
+    api: string,
+    url: string,
+    data?: any,
+    config: AxiosRequestConfig = {}
+  ): Promise<ApiResult<T>> {
+    return MAKE_REQUEST(
+      axios.put<T>(buildApiUrl(api, url), data, SETUP_CONFIG(config)),
+      url
+    )
+  },
+  async DELETE<T>(
+    api: string,
+    url: string,
+    config: AxiosRequestConfig = {}
+  ): Promise<ApiResult<T>> {
+    return MAKE_REQUEST(
+      axios.delete<T>(buildApiUrl(api, url), SETUP_CONFIG(config)),
+      url
+    )
+  },
+  async PATCH<T>(
+    api: string,
+    url: string,
+    data?: any,
+    config: AxiosRequestConfig = {}
+  ): Promise<ApiResult<T>> {
+    return MAKE_REQUEST(
+      axios.patch<T>(buildApiUrl(api, url), data, SETUP_CONFIG(config)),
+      url
+    )
+  },
 }
 
-export const POST = async <T = any>(
-  api: string,
-  url: string,
-  data?: any,
+export const SETUP_CONFIG = (
   config: AxiosRequestConfig = {}
-): Promise<AxiosResponse<T>> => {
-  return axios.post<T>(buildApiUrl(api, url), data, config)
+): AxiosRequestConfig => {
+  const csrfCookie = Cookies.get("csrf-token")
+  const headers = {
+    "Content-Type": "application/json",
+    ...(csrfCookie ? { "X-CSRF-TOKEN": csrfCookie } : {}),
+    ...config.headers,
+  }
+  return {
+    ...config,
+    withCredentials: true,
+    timeout: config.timeout ?? 5000,
+    headers,
+  }
 }
 
-export const PUT = async <T = any>(
-  api: string,
-  url: string,
-  data?: any,
-  config: AxiosRequestConfig = {}
-): Promise<AxiosResponse<T>> => {
-  return axios.put<T>(buildApiUrl(api, url), data, config)
-}
-
-export const DELETE = async <T = any>(
-  api: string,
-  url: string,
-  _?: any,
-  config: AxiosRequestConfig = {}
-): Promise<AxiosResponse<T>> => {
-  return axios.delete<T>(buildApiUrl(api, url), config)
-}
-
-export const PATCH = async <T = any>(
-  api: string,
-  url: string,
-  data?: any,
-  config: AxiosRequestConfig = {}
-): Promise<AxiosResponse<T>> => {
-  return axios.patch<T>(buildApiUrl(api, url), data, config)
-}
-
-export const buildApiUrl = (api: string, url: string): string => {
+const buildApiUrl = (api: string, url: string): string => {
   const path = url.startsWith("/") ? url : `/${url}`
 
   if (!api) {

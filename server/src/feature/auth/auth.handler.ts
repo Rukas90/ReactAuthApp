@@ -10,34 +10,33 @@ import {
   revokeRefreshToken,
 } from "#lib/token/refresh.service.js"
 import { Result } from "#lib/common/result.js"
+import { asyncRoute } from "#lib/util/express.error.handler.js"
 
-export const loginHandler = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const result = await login(
-    req.body.email,
-    req.body.password,
-    req.cookies?.refreshToken
-  )
+export const loginHandler = asyncRoute(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = await login(
+      req.body.email,
+      req.body.password,
+      req.cookies?.refreshToken
+    )
+    if (!result.ok) {
+      return next(result.error)
+    }
+    setResponseTokenCookies(res, result.data)
+    res.ok("Logged in successfully")
+  }
+)
 
-  Result.tap(
-    result,
-    (tokens) => {
-      setResponseTokenCookies(res, tokens)
-      res.ok("Logged in successfully")
-    },
-    (error) => next(error)
-  )
-}
-export const registerHandler = async (req: Request, res: Response) => {
-  const tokens = await register(req.body.email, req.body.password)
+export const registerHandler = asyncRoute(
+  async (req: Request, res: Response) => {
+    const tokens = await register(req.body.email, req.body.password)
 
-  setResponseTokenCookies(res, tokens)
-  res.ok("Registered and logged in successfully")
-}
-export const logoutHandler = async (req: Request, res: Response) => {
+    setResponseTokenCookies(res, tokens)
+    res.ok("Registered and logged in successfully")
+  }
+)
+
+export const logoutHandler = asyncRoute(async (req: Request, res: Response) => {
   const currentRefreshToken = req.cookies?.refreshToken
 
   if (currentRefreshToken) {
@@ -47,16 +46,16 @@ export const logoutHandler = async (req: Request, res: Response) => {
   }
   clearResponseTokenCookies(res)
   res.ok("Logged out successfully")
-}
-export const authStatusHandler = async (
-  req: Request,
-  res: Response
-): Promise<Result<string>> => {
-  const refreshCookie = req.cookies.refreshToken
+})
 
-  if (!refreshCookie) {
+export const authStatusHandler = asyncRoute(
+  async (req: Request, res: Response): Promise<Result<string>> => {
+    const refreshCookie = req.cookies.refreshToken
+
+    if (!refreshCookie) {
+    }
+    const accessCookie = req.cookies.accessToken
+
+    return Result.success("Yo")
   }
-  const accessCookie = req.cookies.accessToken
-
-  return Result.success("Yo")
-}
+)

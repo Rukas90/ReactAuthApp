@@ -7,9 +7,11 @@ export const validateCaptchaToken = asyncRoute(
     const token = req.body.captchaToken
 
     if (token === null) {
-      throw new ResourceMissingError(
-        "Captcha token is not provided!",
-        "INVALID_CAPTCHA"
+      return next(
+        new ResourceMissingError(
+          "Captcha token is not provided!",
+          "INVALID_CAPTCHA"
+        )
       )
     }
     next()

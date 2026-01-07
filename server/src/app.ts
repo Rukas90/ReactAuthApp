@@ -16,7 +16,6 @@ server.initialize()
 const app = server.app
 const port = Number.parseInt(process.env.SERVER_PORT ?? "3000", 10)
 
-app.use(endpointErrorHandler)
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(
@@ -30,6 +29,8 @@ app.use(
 
 useUserRoutes(app)
 useAuthRoutes(app)
+
+app.use(endpointErrorHandler)
 
 if (isDevelopment()) {
   useSwaggerDocs(app)

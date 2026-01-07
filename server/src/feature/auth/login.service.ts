@@ -11,9 +11,10 @@ import {
 import { TokenPair } from "./auth.type"
 import { Result } from "#lib/common/result.js"
 
-const INVALID_CREDENTIALS_ERROR = Result.error(
-  new AccessDeniedError("Invalid credentials", "INVALID_CREDENTIALS")
-)
+const INVALID_CREDENTIALS_ERROR = () =>
+  Result.error(
+    new AccessDeniedError("Invalid credentials", "INVALID_CREDENTIALS")
+  )
 
 export const login = async (
   email: string,
@@ -33,6 +34,7 @@ export const login = async (
   const tokens = await generateLoginTokens(user)
   return Result.success(tokens)
 }
+
 export const generateLoginTokens = async (user: User) => {
   const accessToken = generateAccessToken(user)
   const refreshToken = await generateRefreshToken(user)
@@ -53,26 +55,28 @@ const validateRefreshTokenReuse = async (
     return await revokeUserRefreshTokens(user.id)
   }
 }
+
 const loginWithCredentials = async (
   email: string,
   password: string
 ): Promise<Result<User, AccessDeniedError>> => {
   if (!email || !password) {
-    return INVALID_CREDENTIALS_ERROR
+    return INVALID_CREDENTIALS_ERROR()
   }
   const result = await getUserByEmail(email)
 
   if (!result.ok) {
-    return INVALID_CREDENTIALS_ERROR
+    return INVALID_CREDENTIALS_ERROR()
   }
   const user = result.data
   const isPasswordValid = await validatePassword(password, user.password_hash)
 
   if (!isPasswordValid) {
-    return INVALID_CREDENTIALS_ERROR
+    return INVALID_CREDENTIALS_ERROR()
   }
   return Result.success(user)
 }
+
 const validatePassword = async (
   input: string,
   hashedPassword: string

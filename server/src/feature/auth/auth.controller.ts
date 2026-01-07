@@ -1,6 +1,5 @@
 import { Express } from "express"
 import { Router } from "express"
-import { syncRoute, asyncRoute } from "#lib/util/express.error.handler.js"
 import {
   authStatusHandler,
   loginHandler,
@@ -16,16 +15,16 @@ export const useAuthRoutes = (app: Express) => {
 }
 const authRouter = Router()
 
-authRouter.post("/login", validateCaptchaToken, asyncRoute(loginHandler))
+authRouter.post("/login", validateCaptchaToken, loginHandler)
 
 authRouter.post(
   "/register",
   validateRegisterEmail,
   validateRegisterPassword,
   validateCaptchaToken,
-  asyncRoute(registerHandler)
+  registerHandler
 )
 
-authRouter.post("/logout", asyncRoute(logoutHandler))
+authRouter.post("/logout", logoutHandler)
 
-authRouter.get("status", syncRoute(authStatusHandler))
+authRouter.get("status", authStatusHandler)
