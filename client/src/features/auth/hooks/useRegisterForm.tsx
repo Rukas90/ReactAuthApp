@@ -2,15 +2,21 @@ import { VoidResult } from "#lib/Result"
 import { RegisterSchema, type RegisterData } from "#auth/db/RegisterSchema"
 import type z from "zod"
 import useAuthForm from "./useAuthForm"
+import { useRegister } from "../contexts/AuthContext"
 
-const useRegister = () => {
-  const handleLogin = async (
-    data: RegisterData,
-    captchaToken: string
+const useRegisterForm = () => {
+  const register = useRegister()
+
+  const handleRegister = async (
+    data: RegisterData
   ): Promise<VoidResult<string>> => {
-    console.log(data)
+    const result = await register(data)
+    if (!result.ok) {
+      return VoidResult.error(result.error.detail)
+    }
     return VoidResult.ok()
   }
+
   const getValidationError = (
     form: FormData,
     validationError: z.ZodSafeParseError<RegisterData>
@@ -20,13 +26,15 @@ const useRegister = () => {
     }
     return validationError.error.issues[0].message
   }
-  const auth = useAuthForm({
+
+  const form = useAuthForm({
     schema: RegisterSchema,
-    onAuth: handleLogin,
+    onAuth: handleRegister,
     getValidationError,
   })
+
   return {
-    ...auth,
+    ...form,
   }
 }
-export default useRegister
+export default useRegisterForm

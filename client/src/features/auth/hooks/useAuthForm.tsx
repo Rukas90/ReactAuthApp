@@ -5,8 +5,11 @@ import { z } from "zod"
 interface UseAuthOptions<TSchema extends z.ZodSchema> {
   schema: TSchema
   onAuth: (
-    data: z.infer<TSchema>,
-    captchaToken: string
+    data:
+      | z.infer<TSchema>
+      | {
+          captchaToken: string
+        }
   ) => Promise<VoidResult<string>>
   getValidationError: (
     form: FormData,
@@ -37,10 +40,7 @@ const useAuthForm = <TSchema extends z.ZodSchema>({
         return
       }
       var result = validation.data
-      const auth = await onAuth(
-        { ...result.data!, captchaToken },
-        captchaToken!
-      )
+      const auth = await onAuth({ ...result.data!, captchaToken })
 
       if (!auth.ok) {
         setError(auth.error)

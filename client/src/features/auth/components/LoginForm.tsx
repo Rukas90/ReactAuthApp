@@ -16,7 +16,7 @@ const LoginForm = ({ onSubmit, fieldErrors }: Props) => {
         name="email"
         type="email"
         placeholder={t("EMAIL")}
-        autocomplete="email"
+        autocomplete="off"
         extendWidth
         indicateError={fieldErrors.has("email")}
       />
@@ -25,7 +25,7 @@ const LoginForm = ({ onSubmit, fieldErrors }: Props) => {
         name="password"
         type="text"
         placeholder={t("PASSWORD")}
-        autocomplete="password"
+        autocomplete="off"
         extendWidth
         hideable
         isHidden

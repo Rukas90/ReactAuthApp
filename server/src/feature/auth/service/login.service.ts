@@ -1,5 +1,4 @@
-import { getUserByEmail } from "src/feature/user/user.service"
-import { AccessDeniedError } from "#lib/common/domain.error.js"
+import { getUserByEmail } from "#features/user/service/user.service"
 import { hashing } from "#lib/security/hasher.service.js"
 import { User } from "#prisma/client"
 import { generateAccessToken } from "#lib/token/jwt.service.js"
@@ -8,19 +7,15 @@ import {
   revokeUserRefreshTokens,
   validateRefreshToken,
 } from "#lib/token/refresh.service.js"
-import { TokenPair } from "./auth.type"
+import { TokenAuthState, TokenPair } from "../utils/auth.type"
 import { Result } from "#lib/common/result.js"
-
-const INVALID_CREDENTIALS_ERROR = () =>
-  Result.error(
-    new AccessDeniedError("Invalid credentials", "INVALID_CREDENTIALS")
-  )
+import { InvalidCredentialsError } from "#lib/common/business.error.js"
 
 export const login = async (
   email: string,
   password: string,
   existingRefreshToken?: string
-): Promise<Result<TokenPair, AccessDeniedError>> => {
+): Promise<Result<TokenPair, InvalidCredentialsError>> => {
   const result = await loginWithCredentials(email, password)
 
   if (!result.ok) {
@@ -31,12 +26,18 @@ export const login = async (
   if (existingRefreshToken) {
     await validateRefreshTokenReuse(user, existingRefreshToken)
   }
-  const tokens = await generateLoginTokens(user)
+  const tokens = await generateLoginTokens(
+    user,
+    user.tfa_active ? "2fa-pending" : "authenticated"
+  )
   return Result.success(tokens)
 }
 
-export const generateLoginTokens = async (user: User) => {
-  const accessToken = generateAccessToken(user)
+export const generateLoginTokens = async (
+  user: User,
+  state: TokenAuthState
+) => {
+  const accessToken = await generateAccessToken(user, state)
   const refreshToken = await generateRefreshToken(user)
 
   return {
@@ -59,20 +60,20 @@ const validateRefreshTokenReuse = async (
 const loginWithCredentials = async (
   email: string,
   password: string
-): Promise<Result<User, AccessDeniedError>> => {
+): Promise<Result<User, InvalidCredentialsError>> => {
   if (!email || !password) {
-    return INVALID_CREDENTIALS_ERROR()
+    return Result.error(new InvalidCredentialsError())
   }
   const result = await getUserByEmail(email)
 
   if (!result.ok) {
-    return INVALID_CREDENTIALS_ERROR()
+    return Result.error(new InvalidCredentialsError())
   }
   const user = result.data
   const isPasswordValid = await validatePassword(password, user.password_hash)
 
   if (!isPasswordValid) {
-    return INVALID_CREDENTIALS_ERROR()
+    return Result.error(new InvalidCredentialsError())
   }
   return Result.success(user)
 }

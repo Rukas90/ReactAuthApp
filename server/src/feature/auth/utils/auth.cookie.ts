@@ -3,7 +3,7 @@ import { TokenPair } from "./auth.type"
 import {
   ACCESS_TOKEN_COOKIE_OPTIONS,
   REFRESH_TOKEN_COOKIE_OPTIONS,
-} from "./login.config"
+} from "../config/login.config"
 
 export const setResponseTokenCookies = (res: Response, tokens: TokenPair) => {
   clearResponseTokenCookies(res)

@@ -1,38 +1,49 @@
-import jwt, { JwtPayload } from 'jsonwebtoken'
+import { JWTPayload, SignJWT, jwtVerify } from "jose"
 import { User } from "#prisma/client"
+import { Result } from "#lib/common/result.js"
+import { JOSEError } from "jose/errors"
+import { UnexpectedError } from "#lib/common/domain.error.js"
+import { TokenAuthState } from "#features/auth/utils/auth.type"
 
-export const JWT_SECRET   = () => process.env.JWT_SECRET!
-export const JWT_ISSUER   = () => process.env.API_URL
-export const JWT_AUDIENCE = () => process.env.CLIENT_URL
+const ENCODER = new TextEncoder()
+const SECRET = ENCODER.encode(process.env.JWT_SECRET!)
 
-const createPayload = (user: User): JwtPayload => {
-    const current_time = Math.floor(Date.now() / 1000)
-    const expiration_time = current_time + 864000
+export interface AccessTokenPayload extends JWTPayload {
+  acr: TokenAuthState
+  isVerified: boolean
+}
+export const generateAccessToken = (
+  user: User,
+  state: TokenAuthState
+): Promise<string> => {
+  const expiration = state === "2fa-pending" ? "5m" : "15m"
 
-    return {
-        iss: JWT_ISSUER(),
-        aud: JWT_AUDIENCE(),
-        sub: user.id,
-        exp: expiration_time
+  return new SignJWT({ acr: state, isVerified: user.is_verified })
+    .setIssuer(process.env.API_URL!)
+    .setAudience(process.env.CLIENT_URL!)
+    .setSubject(user.id)
+    .setIssuedAt()
+    .setExpirationTime(expiration)
+    .sign(SECRET)
+}
+export const validateAccessToken = async (
+  token: string
+): Promise<Result<AccessTokenPayload, Error>> => {
+  try {
+    const result = await jwtVerify<AccessTokenPayload>(token, SECRET, {
+      issuer: process.env.API_URL!,
+      audience: process.env.CLIENT_URL!,
+    })
+    return Result.success(result.payload)
+  } catch (error) {
+    if (error instanceof JOSEError) {
+      return Result.error(error)
     }
-}
-export const generateAccessToken = (user: User): string => {
-    return jwt.sign(createPayload(user), JWT_SECRET(), {
-        algorithm: 'HS256'
-    })
-}
-export const validateAccessToken = (token: string): Promise<JwtPayload> => {
-    return new Promise((resolve, reject) => {
-        jwt.verify(token, JWT_SECRET(), (error, decoded) =>{
-            if (error) {
-                reject(error)
-            }
-            else if (decoded && typeof decoded !== 'string') {
-                resolve(decoded as JwtPayload)
-            }
-            else {
-                reject(new Error('Invalid token payload'))
-            }
-        })
-    })
+    return Result.error(
+      new UnexpectedError(
+        "Unexpected error when verifying access token.",
+        "UNEXPECTED_ERROR"
+      )
+    )
+  }
 }

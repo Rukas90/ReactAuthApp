@@ -16,7 +16,7 @@ const RegisterForm = ({ onSubmit, fieldErrors }: Props) => {
         name="email"
         type="email"
         placeholder={t("EMAIL")}
-        autocomplete="email"
+        autocomplete="off"
         extendWidth
         indicateError={fieldErrors.has("email")}
       />
@@ -25,7 +25,7 @@ const RegisterForm = ({ onSubmit, fieldErrors }: Props) => {
         name="password"
         type="text"
         placeholder={t("PASSWORD")}
-        autocomplete="password"
+        autocomplete="off"
         extendWidth
         hideable
         isHidden
@@ -36,6 +36,7 @@ const RegisterForm = ({ onSubmit, fieldErrors }: Props) => {
         name="confirmPassword"
         type="text"
         placeholder={t("CONFIRM_PASSWORD")}
+        autocomplete="off"
         extendWidth
         hideable
         isHidden

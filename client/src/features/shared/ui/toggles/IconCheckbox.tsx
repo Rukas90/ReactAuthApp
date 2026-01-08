@@ -18,11 +18,9 @@ const IconCheckbox = ({
   const icon = checked ? checkedIcon : uncheckedIcon
 
   const onChangeCallback = () => {
-    setChecked((current) => {
-      const newState = !current
-      onValueChanged?.(newState)
-      return newState
-    })
+    const newState = !checked
+    setChecked(newState)
+    onValueChanged?.(newState)
   }
   return (
     <label className={styles.icon_toggle}>

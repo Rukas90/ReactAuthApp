@@ -1,50 +1,119 @@
 import type { LoginData } from "#auth/db/LoginSchema"
 import type { RegisterData } from "#auth/db/RegisterSchema"
-import type { ReactChildrenProps } from "#types/ui.types"
-import { createContext, useContext, useState } from "react"
+import {
+  createContext,
+  useContext,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+} from "react"
 import { AuthService } from "#services/api/AuthService"
+import { type AuthStatus } from "#types/auth.types"
 
-export type AuthState = {
-  isAuthenticated: boolean
+interface AuthContextData {
+  isLoading: boolean
+  setLoading: Dispatch<SetStateAction<boolean>>
+  status: AuthStatus
+  setStatus: Dispatch<SetStateAction<AuthStatus>>
 }
-const DEFAULT_AUTH_STATE: AuthState = {
-  isAuthenticated: false,
-}
-const AuthContext = createContext<AuthState | undefined>(undefined)
+const AuthContext = createContext<AuthContextData | undefined>(undefined)
 
-export const AuthProvider = ({ children }: ReactChildrenProps) => {
+const UNAUTHENTICATED: AuthStatus = {
+  state: "unauthenticated",
+  isVerified: false,
+}
+
+export const AuthProvider = ({ children }: React.ComponentProps<"div">) => {
   const [isLoading, setLoading] = useState<boolean>(false)
-  const [state, setState] = useState<AuthState>(DEFAULT_AUTH_STATE)
-
-  return <AuthContext value={state}>{children}</AuthContext>
+  const [status, setStatus] = useState<AuthStatus>(UNAUTHENTICATED)
+  return (
+    <AuthContext.Provider
+      value={{
+        isLoading,
+        setLoading,
+        status,
+        setStatus,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  )
 }
 
 export const useAuthContext = () => {
-  const auth = useContext(AuthContext)
+  const ctx = useContext(AuthContext)
+  if (!ctx) throw new Error("useAuthContext must be used within AuthProvider")
+  return ctx
+}
 
-  if (auth === undefined) {
-    throw new Error("useAuthContext must be used within a AuthContext")
-  }
-  const signIn = async (data: LoginData) => {
-    const result = await AuthService.login(data)
-    console.log(result)
-    return result
-  }
-  const register = async (data: RegisterData) => {
-    const result = await AuthService.register(data)
-    console.log(result)
-    return result
-  }
-  const signOut = async () => {
-    const result = await AuthService.logout()
-    console.log(result)
-    return result
-  }
+export const useLogin = () => {
+  const { setStatus, setLoading } = useAuthContext()
 
-  return {
-    signIn,
-    register,
-    signOut,
-    state: auth,
+  const handle = async (data: LoginData) => {
+    setLoading(true)
+    try {
+      const result = await AuthService.login(data)
+      if (result.ok) {
+        setStatus(result.data.status)
+      }
+      return result
+    } finally {
+      setLoading(false)
+    }
   }
+  return handle
+}
+
+export const useRegister = () => {
+  const { setStatus, setLoading } = useAuthContext()
+
+  const handle = async (data: RegisterData) => {
+    setLoading(true)
+    try {
+      const result = await AuthService.register(data)
+      if (result.ok) {
+        setStatus(result.data.status)
+      }
+      return result
+    } finally {
+      setLoading(false)
+    }
+  }
+  return handle
+}
+
+export const useLogout = () => {
+  const { setStatus, setLoading } = useAuthContext()
+
+  const handle = async () => {
+    setLoading(true)
+    try {
+      const result = await AuthService.logout()
+      if (result.ok) {
+        setStatus(UNAUTHENTICATED)
+      }
+      return result
+    } finally {
+      setLoading(false)
+    }
+  }
+  return handle
+}
+
+export const useCheckStatus = () => {
+  const { setStatus, setLoading } = useAuthContext()
+
+  const handle = async () => {
+    setLoading(true)
+    try {
+      const result = await AuthService.status()
+      if (result.ok) {
+        setStatus(result.data)
+      }
+      return result
+    } finally {
+      setLoading(false)
+    }
+  }
+  return handle
 }

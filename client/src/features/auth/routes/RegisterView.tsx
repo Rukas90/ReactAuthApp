@@ -4,25 +4,25 @@ import AuthView from "./AuthView"
 import HeaderText from "#ui/texts/HeaderText"
 import SocialLoginButtons from "#auth/components/SocialLoginButtons"
 import { useTranslation } from "react-i18next"
-import useRegister from "#auth/hooks/useRegister"
+import useRegisterForm from "#features/auth/hooks/useRegisterForm"
 import RegisterForm from "#auth/components/RegisterForm"
 import PlainText from "#ui/texts/PlainText"
 import LinkText from "#ui/texts/LinkText"
 
 const RegisterView = () => {
   const { t } = useTranslation()
-  const login = useRegister()
+  const form = useRegisterForm()
 
   return (
-    <AuthView error={login.error}>
+    <AuthView error={form.error}>
       <HeaderText>{t("REGISTER")}</HeaderText>
       <PlainText>
         Already have an account? <LinkText href="/login">Login</LinkText>
       </PlainText>
       <SocialLoginButtons />
       <HorizontalLineLabel className="py-4">{t("OR")}</HorizontalLineLabel>
-      <RegisterForm onSubmit={login.onSubmit} fieldErrors={login.fieldErrors} />
-      <Captcha setToken={login.setCaptchaToken} />
+      <RegisterForm onSubmit={form.onSubmit} fieldErrors={form.fieldErrors} />
+      <Captcha setToken={form.setCaptchaToken} />
     </AuthView>
   )
 }

@@ -1,16 +1,18 @@
 import { NextFunction, Request, Response } from "express"
-import { login } from "./login.service"
+import { login } from "../service/login.service"
 import {
   clearResponseTokenCookies,
   setResponseTokenCookies,
-} from "./auth.cookie"
-import { register } from "./register.service"
+} from "../utils/auth.cookie"
+import { register } from "../service/register.service"
 import {
   generateLookupHash,
   revokeRefreshToken,
 } from "#lib/token/refresh.service.js"
 import { Result } from "#lib/common/result.js"
 import { asyncRoute } from "#lib/util/express.error.handler.js"
+import { AuthStatus } from "#features/auth/utils/auth.type"
+import { getAuthStatus } from "../service/auth.service"
 
 export const loginHandler = asyncRoute(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -28,10 +30,13 @@ export const loginHandler = asyncRoute(
 )
 
 export const registerHandler = asyncRoute(
-  async (req: Request, res: Response) => {
-    const tokens = await register(req.body.email, req.body.password)
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = await register(req.body.email, req.body.password)
 
-    setResponseTokenCookies(res, tokens)
+    if (!result.ok) {
+      return next(result.error)
+    }
+    setResponseTokenCookies(res, result.data)
     res.ok("Registered and logged in successfully")
   }
 )
@@ -49,13 +54,11 @@ export const logoutHandler = asyncRoute(async (req: Request, res: Response) => {
 })
 
 export const authStatusHandler = asyncRoute(
-  async (req: Request, res: Response): Promise<Result<string>> => {
-    const refreshCookie = req.cookies.refreshToken
-
-    if (!refreshCookie) {
-    }
-    const accessCookie = req.cookies.accessToken
-
-    return Result.success("Yo")
+  async (req: Request, res: Response) => {
+    const status = await getAuthStatus(
+      req.cookies.accessToken,
+      req.cookies.refreshToken
+    )
+    res.ok(status)
   }
 )

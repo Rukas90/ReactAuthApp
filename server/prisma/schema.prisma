@@ -13,6 +13,7 @@ model User {
   password_hash String
   is_verified   Boolean
   created_at    DateTime @default(now())
+  tfa_active    Boolean  @default(false)
 
   refreshTokens RefreshToken[]
   oauths        OAuth[]
@@ -48,18 +49,18 @@ model OAuth {
 }
 
 model Session {
-  session_id         String    @id @default(uuid())
+  session_id         String   @id @default(uuid())
   ip_address         String
   device_type        String
   location           String
   login_time         DateTime
   last_activity_time DateTime
   source             String
-  user               User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user               User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id            String
 
   @@index([user_id])
-	@@map("UserSession")
+  @@map("UserSession")
 }
 
 model BlockedSession {

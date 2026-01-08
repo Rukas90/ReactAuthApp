@@ -30,6 +30,7 @@ export type UserMinAggregateOutputType = {
   password_hash: string | null
   is_verified: boolean | null
   created_at: Date | null
+  tfa_active: boolean | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -38,6 +39,7 @@ export type UserMaxAggregateOutputType = {
   password_hash: string | null
   is_verified: boolean | null
   created_at: Date | null
+  tfa_active: boolean | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -46,6 +48,7 @@ export type UserCountAggregateOutputType = {
   password_hash: number
   is_verified: number
   created_at: number
+  tfa_active: number
   _all: number
 }
 
@@ -56,6 +59,7 @@ export type UserMinAggregateInputType = {
   password_hash?: true
   is_verified?: true
   created_at?: true
+  tfa_active?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -64,6 +68,7 @@ export type UserMaxAggregateInputType = {
   password_hash?: true
   is_verified?: true
   created_at?: true
+  tfa_active?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -72,6 +77,7 @@ export type UserCountAggregateInputType = {
   password_hash?: true
   is_verified?: true
   created_at?: true
+  tfa_active?: true
   _all?: true
 }
 
@@ -153,6 +159,7 @@ export type UserGroupByOutputType = {
   password_hash: string
   is_verified: boolean
   created_at: Date
+  tfa_active: boolean
   _count: UserCountAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
@@ -182,6 +189,7 @@ export type UserWhereInput = {
   password_hash?: Prisma.StringFilter<"User"> | string
   is_verified?: Prisma.BoolFilter<"User"> | boolean
   created_at?: Prisma.DateTimeFilter<"User"> | Date | string
+  tfa_active?: Prisma.BoolFilter<"User"> | boolean
   refreshTokens?: Prisma.RefreshTokenListRelationFilter
   oauths?: Prisma.OAuthListRelationFilter
   verifications?: Prisma.VerificationListRelationFilter
@@ -194,6 +202,7 @@ export type UserOrderByWithRelationInput = {
   password_hash?: Prisma.SortOrder
   is_verified?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  tfa_active?: Prisma.SortOrder
   refreshTokens?: Prisma.RefreshTokenOrderByRelationAggregateInput
   oauths?: Prisma.OAuthOrderByRelationAggregateInput
   verifications?: Prisma.VerificationOrderByRelationAggregateInput
@@ -209,6 +218,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   password_hash?: Prisma.StringFilter<"User"> | string
   is_verified?: Prisma.BoolFilter<"User"> | boolean
   created_at?: Prisma.DateTimeFilter<"User"> | Date | string
+  tfa_active?: Prisma.BoolFilter<"User"> | boolean
   refreshTokens?: Prisma.RefreshTokenListRelationFilter
   oauths?: Prisma.OAuthListRelationFilter
   verifications?: Prisma.VerificationListRelationFilter
@@ -221,6 +231,7 @@ export type UserOrderByWithAggregationInput = {
   password_hash?: Prisma.SortOrder
   is_verified?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  tfa_active?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
@@ -235,6 +246,7 @@ export type UserScalarWhereWithAggregatesInput = {
   password_hash?: Prisma.StringWithAggregatesFilter<"User"> | string
   is_verified?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   created_at?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
+  tfa_active?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
 }
 
 export type UserCreateInput = {
@@ -243,6 +255,7 @@ export type UserCreateInput = {
   password_hash: string
   is_verified: boolean
   created_at?: Date | string
+  tfa_active?: boolean
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   oauths?: Prisma.OAuthCreateNestedManyWithoutUserInput
   verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
@@ -255,6 +268,7 @@ export type UserUncheckedCreateInput = {
   password_hash: string
   is_verified: boolean
   created_at?: Date | string
+  tfa_active?: boolean
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   oauths?: Prisma.OAuthUncheckedCreateNestedManyWithoutUserInput
   verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
@@ -267,6 +281,7 @@ export type UserUpdateInput = {
   password_hash?: Prisma.StringFieldUpdateOperationsInput | string
   is_verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tfa_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   oauths?: Prisma.OAuthUpdateManyWithoutUserNestedInput
   verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
@@ -279,6 +294,7 @@ export type UserUncheckedUpdateInput = {
   password_hash?: Prisma.StringFieldUpdateOperationsInput | string
   is_verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tfa_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   oauths?: Prisma.OAuthUncheckedUpdateManyWithoutUserNestedInput
   verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
@@ -291,6 +307,7 @@ export type UserCreateManyInput = {
   password_hash: string
   is_verified: boolean
   created_at?: Date | string
+  tfa_active?: boolean
 }
 
 export type UserUpdateManyMutationInput = {
@@ -299,6 +316,7 @@ export type UserUpdateManyMutationInput = {
   password_hash?: Prisma.StringFieldUpdateOperationsInput | string
   is_verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tfa_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -307,6 +325,7 @@ export type UserUncheckedUpdateManyInput = {
   password_hash?: Prisma.StringFieldUpdateOperationsInput | string
   is_verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tfa_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -315,6 +334,7 @@ export type UserCountOrderByAggregateInput = {
   password_hash?: Prisma.SortOrder
   is_verified?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  tfa_active?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -323,6 +343,7 @@ export type UserMaxOrderByAggregateInput = {
   password_hash?: Prisma.SortOrder
   is_verified?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  tfa_active?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -331,6 +352,7 @@ export type UserMinOrderByAggregateInput = {
   password_hash?: Prisma.SortOrder
   is_verified?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  tfa_active?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
@@ -412,6 +434,7 @@ export type UserCreateWithoutRefreshTokensInput = {
   password_hash: string
   is_verified: boolean
   created_at?: Date | string
+  tfa_active?: boolean
   oauths?: Prisma.OAuthCreateNestedManyWithoutUserInput
   verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -423,6 +446,7 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
   password_hash: string
   is_verified: boolean
   created_at?: Date | string
+  tfa_active?: boolean
   oauths?: Prisma.OAuthUncheckedCreateNestedManyWithoutUserInput
   verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -450,6 +474,7 @@ export type UserUpdateWithoutRefreshTokensInput = {
   password_hash?: Prisma.StringFieldUpdateOperationsInput | string
   is_verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tfa_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   oauths?: Prisma.OAuthUpdateManyWithoutUserNestedInput
   verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -461,6 +486,7 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
   password_hash?: Prisma.StringFieldUpdateOperationsInput | string
   is_verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tfa_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   oauths?: Prisma.OAuthUncheckedUpdateManyWithoutUserNestedInput
   verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -472,6 +498,7 @@ export type UserCreateWithoutOauthsInput = {
   password_hash: string
   is_verified: boolean
   created_at?: Date | string
+  tfa_active?: boolean
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -483,6 +510,7 @@ export type UserUncheckedCreateWithoutOauthsInput = {
   password_hash: string
   is_verified: boolean
   created_at?: Date | string
+  tfa_active?: boolean
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -510,6 +538,7 @@ export type UserUpdateWithoutOauthsInput = {
   password_hash?: Prisma.StringFieldUpdateOperationsInput | string
   is_verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tfa_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -521,6 +550,7 @@ export type UserUncheckedUpdateWithoutOauthsInput = {
   password_hash?: Prisma.StringFieldUpdateOperationsInput | string
   is_verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tfa_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -532,6 +562,7 @@ export type UserCreateWithoutSessionsInput = {
   password_hash: string
   is_verified: boolean
   created_at?: Date | string
+  tfa_active?: boolean
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   oauths?: Prisma.OAuthCreateNestedManyWithoutUserInput
   verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
@@ -543,6 +574,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   password_hash: string
   is_verified: boolean
   created_at?: Date | string
+  tfa_active?: boolean
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   oauths?: Prisma.OAuthUncheckedCreateNestedManyWithoutUserInput
   verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
@@ -570,6 +602,7 @@ export type UserUpdateWithoutSessionsInput = {
   password_hash?: Prisma.StringFieldUpdateOperationsInput | string
   is_verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tfa_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   oauths?: Prisma.OAuthUpdateManyWithoutUserNestedInput
   verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
@@ -581,6 +614,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   password_hash?: Prisma.StringFieldUpdateOperationsInput | string
   is_verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tfa_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   oauths?: Prisma.OAuthUncheckedUpdateManyWithoutUserNestedInput
   verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
@@ -592,6 +626,7 @@ export type UserCreateWithoutVerificationsInput = {
   password_hash: string
   is_verified: boolean
   created_at?: Date | string
+  tfa_active?: boolean
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   oauths?: Prisma.OAuthCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -603,6 +638,7 @@ export type UserUncheckedCreateWithoutVerificationsInput = {
   password_hash: string
   is_verified: boolean
   created_at?: Date | string
+  tfa_active?: boolean
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   oauths?: Prisma.OAuthUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -630,6 +666,7 @@ export type UserUpdateWithoutVerificationsInput = {
   password_hash?: Prisma.StringFieldUpdateOperationsInput | string
   is_verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tfa_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   oauths?: Prisma.OAuthUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -641,6 +678,7 @@ export type UserUncheckedUpdateWithoutVerificationsInput = {
   password_hash?: Prisma.StringFieldUpdateOperationsInput | string
   is_verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tfa_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   oauths?: Prisma.OAuthUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -710,6 +748,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   password_hash?: boolean
   is_verified?: boolean
   created_at?: boolean
+  tfa_active?: boolean
   refreshTokens?: boolean | Prisma.User$refreshTokensArgs<ExtArgs>
   oauths?: boolean | Prisma.User$oauthsArgs<ExtArgs>
   verifications?: boolean | Prisma.User$verificationsArgs<ExtArgs>
@@ -723,6 +762,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   password_hash?: boolean
   is_verified?: boolean
   created_at?: boolean
+  tfa_active?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -731,6 +771,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   password_hash?: boolean
   is_verified?: boolean
   created_at?: boolean
+  tfa_active?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -739,9 +780,10 @@ export type UserSelectScalar = {
   password_hash?: boolean
   is_verified?: boolean
   created_at?: boolean
+  tfa_active?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password_hash" | "is_verified" | "created_at", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password_hash" | "is_verified" | "created_at" | "tfa_active", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   refreshTokens?: boolean | Prisma.User$refreshTokensArgs<ExtArgs>
   oauths?: boolean | Prisma.User$oauthsArgs<ExtArgs>
@@ -766,6 +808,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     password_hash: string
     is_verified: boolean
     created_at: Date
+    tfa_active: boolean
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -1198,6 +1241,7 @@ export interface UserFieldRefs {
   readonly password_hash: Prisma.FieldRef<"User", 'String'>
   readonly is_verified: Prisma.FieldRef<"User", 'Boolean'>
   readonly created_at: Prisma.FieldRef<"User", 'DateTime'>
+  readonly tfa_active: Prisma.FieldRef<"User", 'Boolean'>
 }
     
 

@@ -27,4 +27,4 @@ authRouter.post(
 
 authRouter.post("/logout", logoutHandler)
 
-authRouter.get("status", authStatusHandler)
+authRouter.get("/status", authStatusHandler)
