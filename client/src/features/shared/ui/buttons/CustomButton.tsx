@@ -1,7 +1,7 @@
-import type { GeneralProps } from "#types/ui.types"
-import styles from "./Button.module.css"
+import styles from "./styles/Button.module.css"
 
-interface CustomButtonProps extends GeneralProps {
+interface CustomButtonProps
+  extends Pick<React.ComponentProps<"div">, "className"> {
   text?: string
   icon?: string
 

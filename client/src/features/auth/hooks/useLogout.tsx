@@ -1,9 +1,9 @@
-import { AuthService } from "#services/api/AuthService"
-import type { ApiResult } from "#services/api/Response"
-import { useAuthContext } from "../contexts/AuthContext"
-import type { LogoutResponseDto } from "../dto/AuthResponse"
+import type { LogoutResponseDto } from "@auth/dto"
+import { AuthService } from "@auth/services"
+import type { ApiResult } from "src/lib/api/Response"
+import useAuthContext from "./useAuthContext"
 
-export const useLogout = () => {
+const useLogout = () => {
   const { track, setUser } = useAuthContext()
 
   const handle = () =>
@@ -17,3 +17,4 @@ export const useLogout = () => {
     )
   return handle
 }
+export default useLogout

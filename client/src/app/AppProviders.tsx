@@ -1,9 +1,10 @@
-import { AuthProvider } from "#features/auth/contexts/AuthContext"
-import { AuthInitializer } from "#features/auth/contexts/AuthInitializer"
-import { LanguageProvider } from "#features/shared/contexts/LanguageContext"
-import LanguageInitializer from "#features/shared/contexts/LanguageInitializer"
+import { AuthProvider, AuthInitializer } from "@auth/providers"
+import { LanguageInitializer } from "@localization/components"
+import { LanguageProvider } from "@localization/providers"
 
-const AppProviders = ({ children }: React.ComponentProps<"div">) => {
+const AppProviders = ({
+  children,
+}: Pick<React.ComponentProps<"div">, "children">) => {
   return (
     <LanguageProvider>
       <LanguageInitializer>

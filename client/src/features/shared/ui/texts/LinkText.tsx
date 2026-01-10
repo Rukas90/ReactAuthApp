@@ -1,9 +1,12 @@
-import type { GeneralProps, ReactChildrenProps } from "#types/ui.types"
 import type { HTMLAttributeAnchorTarget } from "react"
-import styles from "./Text.module.css"
+import styles from "./styles/Text.module.css"
 import { Link } from "react-router-dom"
 
-interface Props extends ReactChildrenProps, GeneralProps {
+interface Props
+  extends Pick<
+    React.ComponentProps<"div">,
+    "children" | "className" | "id" | "style"
+  > {
   to: string
   target?: HTMLAttributeAnchorTarget | undefined
 }

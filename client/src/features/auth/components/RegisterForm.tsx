@@ -1,4 +1,4 @@
-import InputField from "#ui/fields/InputField"
+import InputField from "@shared/ui/fields/InputField"
 import { useTranslation } from "react-i18next"
 import AuthForm from "./AuthForm"
 

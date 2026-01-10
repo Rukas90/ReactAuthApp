@@ -1,5 +1,5 @@
 import CustomButton from "./CustomButton"
-import GithubIcon from "#icons/social/github.svg"
+import GithubIcon from "@icons/social/github.svg"
 import { useTranslation } from "react-i18next"
 
 const GithubButton = () => {

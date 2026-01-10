@@ -1,9 +1,9 @@
-import type { GeneralProps, ReactChildrenProps } from "#types/ui.types"
-import styles from "./Label.module.css"
+import styles from "./styles/Label.module.css"
 
-interface Props extends ReactChildrenProps, GeneralProps {}
-
-const HorizontalLineLabel = ({ children, className }: Props) => {
+const HorizontalLineLabel = ({
+  children,
+  className,
+}: Pick<React.ComponentProps<"div">, "children" | "className">) => {
   const line = (
     <div className={`flex-grow-1 w-100 ${styles.horizontal_label_line}`} />
   )

@@ -1,5 +1,5 @@
 import { useState } from "react"
-import styles from "./Toggle.module.css"
+import styles from "./styles/Toggle.module.css"
 
 interface Props {
   value?: boolean

@@ -1,5 +1,5 @@
+import { VoidResult, Result } from "@lib/types"
 import { useState } from "react"
-import { Result, VoidResult } from "#lib/Result"
 import { z } from "zod"
 
 interface UseAuthOptions<TSchema extends z.ZodSchema> {

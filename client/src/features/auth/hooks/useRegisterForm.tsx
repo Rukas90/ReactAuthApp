@@ -1,8 +1,8 @@
-import { VoidResult } from "#lib/Result"
-import { RegisterSchema, type RegisterData } from "#auth/db/RegisterSchema"
+import { type RegisterData, RegisterSchema } from "@auth/db"
+import { VoidResult } from "@lib/types"
 import type z from "zod"
 import useAuthForm from "./useAuthForm"
-import { useRegister } from "./useRegister"
+import useRegister from "./useRegister"
 
 const useRegisterForm = () => {
   const register = useRegister()

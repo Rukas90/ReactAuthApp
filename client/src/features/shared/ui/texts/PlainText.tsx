@@ -1,9 +1,14 @@
-import type { GeneralProps, ReactChildrenProps } from "#types/ui.types"
-import styles from "./Text.module.css"
+import styles from "./styles/Text.module.css"
 
-interface Props extends ReactChildrenProps, GeneralProps {}
-
-const PlainText = ({ children, className, id, style }: Props) => {
+const PlainText = ({
+  children,
+  className,
+  id,
+  style,
+}: Pick<
+  React.ComponentProps<"div">,
+  "children" | "className" | "id" | "style"
+>) => {
   return (
     <p id={id} className={`${className} ${styles.plain_text}`} style={style}>
       {children}

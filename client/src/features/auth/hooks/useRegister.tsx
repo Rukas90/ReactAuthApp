@@ -1,10 +1,10 @@
-import { AuthService } from "#services/api/AuthService"
-import type { ApiResult } from "#services/api/Response"
-import { useAuthContext } from "../contexts/AuthContext"
-import type { RegisterData } from "../db/RegisterSchema"
-import type { AuthResponseDto } from "../dto/AuthResponse"
+import type { RegisterData } from "@auth/db"
+import type { AuthResponseDto } from "@auth/dto"
+import { AuthService } from "@auth/services"
+import type { ApiResult } from "src/lib/api/Response"
+import useAuthContext from "./useAuthContext"
 
-export const useRegister = () => {
+const useRegister = () => {
   const { track, setUser } = useAuthContext()
 
   const handle = (data: RegisterData) =>
@@ -20,3 +20,4 @@ export const useRegister = () => {
     )
   return handle
 }
+export default useRegister

@@ -1,12 +1,14 @@
 import { Route, Routes } from "react-router-dom"
-import LoginView from "#features/auth/routes/LoginView"
-import RegisterView from "#features/auth/routes/RegisterView"
-import DashboardView from "#features/dashboard/routes/DashboardView"
-import { ProtectedRoute } from "#features/auth/routes/ProtectedRoute"
-import { GuestOnlyRoute } from "#features/auth/routes/GuestOnlyRoute"
-import { useAuthContext } from "#features/auth/contexts/AuthContext"
-import { ForwardRoute } from "#features/auth/routes/ForwardRoute"
-import NotFoundView from "#features/404/routes/NotFoundView"
+import {
+  LoginView,
+  RegisterView,
+  ProtectedRoute,
+  GuestOnlyRoute,
+  ForwardRoute,
+} from "@auth/routes"
+import { useAuthContext } from "@auth/hooks"
+import { DashboardView } from "@dashboard/routes"
+import { NotFoundView } from "@src/routes"
 
 const AppRouter = () => {
   const { isInitialized, isLoading } = useAuthContext()

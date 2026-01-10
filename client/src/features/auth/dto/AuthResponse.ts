@@ -1,4 +1,4 @@
-import type { AuthUser } from "#types/auth.types"
+import type { AuthUser } from "@auth/types"
 
 export interface AuthResponseDto {
   user: AuthUser

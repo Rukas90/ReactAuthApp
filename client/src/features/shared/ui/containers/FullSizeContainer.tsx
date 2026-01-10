@@ -1,4 +1,4 @@
-import styles from "./Container.module.css"
+import styles from "./styles/Container.module.css"
 
 const FullSizeContainer = (props: React.ComponentProps<"div">) => {
   return (

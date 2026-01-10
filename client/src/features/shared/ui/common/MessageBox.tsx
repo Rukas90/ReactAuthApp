@@ -1,8 +1,7 @@
-import type { ReactChildrenProps } from "#types/ui.types"
-import styles from "./Common.module.css"
-import errorIcon from "#icons/misc/error.svg"
+import styles from "./styles/Common.module.css"
+import errorIcon from "@icons/misc/error.svg"
 
-interface Props extends ReactChildrenProps {
+interface Props extends Pick<React.ComponentProps<"div">, "children"> {
   isHidden?: boolean
 }
 const MessageBox = ({ isHidden = true, children }: Props) => {

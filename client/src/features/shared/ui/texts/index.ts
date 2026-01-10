@@ -1,0 +1,3 @@
+export { default as HeaderText } from "./HeaderText"
+export { default as LinkText } from "./LinkText"
+export { default as PlainText } from "./PlainText"

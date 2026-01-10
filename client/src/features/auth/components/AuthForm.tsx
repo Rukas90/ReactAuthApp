@@ -1,12 +1,12 @@
-import CustomButton from "#ui/buttons/CustomButton"
-import styles from "#auth/styles/Auth.module.css"
+import { styles } from "@auth/styles"
+import CustomButton from "@shared/ui/buttons/CustomButton"
 import type { FormEvent } from "react"
-import type { ReactChildrenProps } from "#types/ui.types"
 
-interface Props extends ReactChildrenProps {
+interface Props extends Pick<React.ComponentProps<"div">, "children"> {
   onSubmit: (form: FormData) => void
   submitText: string
 }
+
 const AuthForm = ({ onSubmit, children, submitText }: Props) => {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()

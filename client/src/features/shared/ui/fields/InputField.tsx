@@ -1,15 +1,14 @@
-import type { GeneralProps } from "#types/ui.types"
 import {
   useState,
   type HTMLInputAutoCompleteAttribute,
   type HTMLInputTypeAttribute,
 } from "react"
-import styles from "./Field.module.css"
-import IconCheckbox from "#ui/toggles/IconCheckbox"
-import visibilityOnIcon from "#icons/misc/visibility-on.svg"
-import visibilityOffIcon from "#icons/misc/visibility-off.svg"
+import styles from "./styles/Field.module.css"
+import visibilityOnIcon from "@icons/misc/visibility-on.svg"
+import visibilityOffIcon from "@icons/misc/visibility-off.svg"
+import { IconCheckbox } from "@shared/ui/toggles"
 
-interface Props extends GeneralProps {
+interface Props extends Pick<React.ComponentProps<"div">, "id" | "className"> {
   name?: string | undefined
   value?: string | readonly string[] | number | undefined
   onValueChanged?: (newValue: string) => void

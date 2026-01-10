@@ -1,8 +1,8 @@
-import { AuthService } from "#services/api/AuthService"
+import { AuthService } from "@auth/services"
 import { useCallback } from "react"
-import { useAuthContext } from "../contexts/AuthContext"
+import useAuthContext from "./useAuthContext"
 
-export const useFetchUser = () => {
+const useFetchUser = () => {
   const { track, setUser } = useAuthContext()
 
   return useCallback(
@@ -19,3 +19,4 @@ export const useFetchUser = () => {
     [track, setUser]
   )
 }
+export default useFetchUser
