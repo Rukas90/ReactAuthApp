@@ -4,7 +4,7 @@ import { Result } from "#lib/common/result.js"
 import { hashing } from "#lib/security/hasher.service.js"
 import { Prisma } from "#prisma/client"
 import { TokenPair } from "../utils/auth.type"
-import { generateLoginTokens } from "./login.service"
+import { generateAuthTokens } from "./auth.service"
 
 export const register = async (
   email: string,
@@ -20,9 +20,10 @@ export const register = async (
         email: email,
         password_hash: passwordHashed,
         is_verified: false,
+        tfa_active: false,
       },
     })
-    const tokens = await generateLoginTokens(newUser)
+    const tokens = await generateAuthTokens(newUser)
     return Result.success(tokens)
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {

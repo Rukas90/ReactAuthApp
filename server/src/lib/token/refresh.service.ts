@@ -11,13 +11,15 @@ export const generateRefreshToken = async (user: User): Promise<string> => {
   const familyId = crypto.randomUUID()
   const lookupHash = await generateLookupHash(token)
 
+  const thirtyDaysInMs = 30 * 24 * 60 * 60 * 1000
+
   await database.client.refreshToken.create({
     data: {
       token_hash: tokenHash,
       lookup_hash: lookupHash,
       family_id: familyId,
       user_id: user.id,
-      expires_at: new Date(Date.now() + "30d"),
+      expires_at: new Date(Date.now() + thirtyDaysInMs),
       revoked: false,
     },
   })

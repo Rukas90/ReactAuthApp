@@ -1,15 +1,14 @@
 import { getUserByEmail } from "#features/user/service/user.service"
 import { hashing } from "#lib/security/hasher.service.js"
 import { User } from "#prisma/client"
-import { generateAccessToken } from "#lib/token/jwt.service.js"
 import {
-  generateRefreshToken,
   revokeUserRefreshTokens,
   validateRefreshToken,
 } from "#lib/token/refresh.service.js"
-import { TokenAuthState, TokenPair } from "../utils/auth.type"
+import { TokenPair } from "../utils/auth.type"
 import { Result } from "#lib/common/result.js"
 import { InvalidCredentialsError } from "#lib/common/business.error.js"
+import { generateAuthTokens } from "./auth.service"
 
 export const login = async (
   email: string,
@@ -26,24 +25,8 @@ export const login = async (
   if (existingRefreshToken) {
     await validateRefreshTokenReuse(user, existingRefreshToken)
   }
-  const tokens = await generateLoginTokens(
-    user,
-    user.tfa_active ? "2fa-pending" : "authenticated"
-  )
+  const tokens = await generateAuthTokens(user)
   return Result.success(tokens)
-}
-
-export const generateLoginTokens = async (
-  user: User,
-  state: TokenAuthState
-) => {
-  const accessToken = await generateAccessToken(user, state)
-  const refreshToken = await generateRefreshToken(user)
-
-  return {
-    accessToken,
-    refreshToken,
-  } as TokenPair
 }
 
 const validateRefreshTokenReuse = async (

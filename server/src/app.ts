@@ -21,7 +21,7 @@ app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(
   cors({
-    origin: "http://192.168.1.119:5173",
+    origin: ["http://192.168.1.119:5173", "http://localhost:5173"],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "X-CSRF-TOKEN"],

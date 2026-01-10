@@ -1,40 +1,47 @@
-import { validateAccessToken } from "#lib/token/jwt.service.js"
-import { AuthStatus } from "#features/auth/utils/auth.type"
+import {
+  AccessTokenData,
+  generateAccessToken,
+  validateAccessToken,
+} from "#lib/token/jwt.service.js"
+import { AuthUser, TokenPair } from "#features/auth/utils/auth.type"
+import { generateRefreshToken } from "#lib/token/refresh.service.js"
+import { User } from "#prisma/client"
 
-const UNAUTHENTICATED = (): AuthStatus => {
-  return {
-    state: "unauthenticated",
-    isVerified: false,
-  }
-}
-export const getAuthStatus = async (
-  accessToken?: string,
-  refreshToken?: string
-): Promise<AuthStatus> => {
+export const getAuthUser = async (
+  accessToken?: string
+): Promise<AuthUser | null> => {
   if (!accessToken) {
-    if (refreshToken) {
-      return { state: "needs-rotation", isVerified: false }
-    }
-    return UNAUTHENTICATED()
-  }
-  if (!refreshToken) {
-    return {
-      state: "needs-relogin",
-      isVerified: false,
-    }
+    return null
   }
   const result = await validateAccessToken(accessToken)
 
   if (!result.ok) {
-    return { state: "needs-rotation", isVerified: false }
+    return null
   }
   const payload = result.data
+  const expiration = payload.exp
 
-  if (payload.acr !== "authenticated" && payload.acr !== "2fa-pending") {
-    return UNAUTHENTICATED()
+  if (!expiration) {
+    return null
   }
-  return {
-    state: payload.acr,
+  const user: AuthUser = {
     isVerified: payload.isVerified,
+    otpPending: payload.otpPending,
+    accessExpires: expiration,
   }
+  return user
+}
+export const generateAuthTokens = async (
+  user: User,
+  data: AccessTokenData = {
+    otpPending: user.tfa_active,
+    isVerified: user.is_verified,
+  }
+) => {
+  const accessToken = await generateAccessToken(user, data)
+  const refreshToken = await generateRefreshToken(user)
+  return {
+    accessToken,
+    refreshToken,
+  } as TokenPair
 }

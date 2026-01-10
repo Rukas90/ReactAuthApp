@@ -2,7 +2,7 @@ import { VoidResult } from "#lib/Result"
 import { LoginSchema, type LoginData } from "#auth/db/LoginSchema"
 import type z from "zod"
 import useAuthForm from "./useAuthForm"
-import { useLogin } from "#auth/contexts/AuthContext"
+import { useLogin } from "./useLogin"
 
 const useLoginForm = () => {
   const login = useLogin()

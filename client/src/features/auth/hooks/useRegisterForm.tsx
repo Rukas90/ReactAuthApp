@@ -2,7 +2,7 @@ import { VoidResult } from "#lib/Result"
 import { RegisterSchema, type RegisterData } from "#auth/db/RegisterSchema"
 import type z from "zod"
 import useAuthForm from "./useAuthForm"
-import { useRegister } from "../contexts/AuthContext"
+import { useRegister } from "./useRegister"
 
 const useRegisterForm = () => {
   const register = useRegister()

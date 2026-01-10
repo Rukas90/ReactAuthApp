@@ -9,10 +9,10 @@ import {
   generateLookupHash,
   revokeRefreshToken,
 } from "#lib/token/refresh.service.js"
-import { Result } from "#lib/common/result.js"
 import { asyncRoute } from "#lib/util/express.error.handler.js"
-import { AuthStatus } from "#features/auth/utils/auth.type"
-import { getAuthStatus } from "../service/auth.service"
+import { getAuthUser } from "../service/auth.service"
+import { UnexpectedError } from "#lib/common/domain.error.js"
+import { TokenPair } from "../utils/auth.type"
 
 export const loginHandler = asyncRoute(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -24,11 +24,9 @@ export const loginHandler = asyncRoute(
     if (!result.ok) {
       return next(result.error)
     }
-    setResponseTokenCookies(res, result.data)
-    res.ok("Logged in successfully")
+    await sendAuthResponse(result.data, res, next, "Logged in successfully")
   }
 )
-
 export const registerHandler = asyncRoute(
   async (req: Request, res: Response, next: NextFunction) => {
     const result = await register(req.body.email, req.body.password)
@@ -36,29 +34,51 @@ export const registerHandler = asyncRoute(
     if (!result.ok) {
       return next(result.error)
     }
-    setResponseTokenCookies(res, result.data)
-    res.ok("Registered and logged in successfully")
+    await sendAuthResponse(
+      result.data,
+      res,
+      next,
+      "Registered and logged in successfully"
+    )
   }
 )
+
+const sendAuthResponse = async (
+  tokens: TokenPair,
+  res: Response,
+  next: NextFunction,
+  successMessage: string
+) => {
+  const accessToken = tokens.accessToken
+  const user = await getAuthUser(accessToken)
+
+  if (user === null) {
+    return next(
+      new UnexpectedError("Could not login successfully.", "LOGIN_FAILED")
+    )
+  }
+  setResponseTokenCookies(res, tokens)
+
+  res.ok({
+    message: successMessage,
+    user: user,
+  })
+}
 
 export const logoutHandler = asyncRoute(async (req: Request, res: Response) => {
   const currentRefreshToken = req.cookies?.refreshToken
 
   if (currentRefreshToken) {
     const tokenHash = await generateLookupHash(currentRefreshToken)
-    console.log(tokenHash)
     await revokeRefreshToken(tokenHash)
   }
   clearResponseTokenCookies(res)
   res.ok("Logged out successfully")
 })
 
-export const authStatusHandler = asyncRoute(
+export const authUserHandler = asyncRoute(
   async (req: Request, res: Response) => {
-    const status = await getAuthStatus(
-      req.cookies.accessToken,
-      req.cookies.refreshToken
-    )
-    res.ok(status)
+    const user = await getAuthUser(req.cookies.accessToken)
+    res.ok(user)
   }
 )

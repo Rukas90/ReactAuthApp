@@ -5,3 +5,8 @@ export class InvalidCredentialsError extends AccessDeniedError {
     super("Invalid credentials", "INVALID_CREDENTIALS")
   }
 }
+export class UnauthenticatedError extends AccessDeniedError {
+  constructor() {
+    super("Unauthenticated", "UNAUTHENTICATED")
+  }
+}

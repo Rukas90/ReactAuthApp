@@ -1,24 +1,23 @@
 import { validateAccessToken } from "#lib/token/jwt.service.js"
-import { AccessDeniedError } from "#lib/common/domain.error.js"
 import { asyncRoute } from "#lib/util/express.error.handler.js"
 import { NextFunction, Request, Response } from "express"
+import { UnauthenticatedError } from "#lib/common/business.error.js"
 
 export const authenticateRequest = asyncRoute(
   async (req: Request, _: Response, next: NextFunction) => {
-    const token = req.cookies.accessToken
+    const access = req.cookies.accessToken
 
-    if (!token) {
-      return next(new AccessDeniedError("No token provided", "NO_TOKEN"))
+    if (!access) {
+      return next(new UnauthenticatedError())
     }
-    const payload = await validateAccessToken(token)
-    const userId = payload.sub
+    const result = await validateAccessToken(access)
 
-    if (!userId) {
-      return next(
-        new AccessDeniedError("Invalid token payload", "INVALID_TOKEN_PAYLOAD")
-      )
+    if (!result.ok) {
+      return next(new UnauthenticatedError())
     }
-    req.session.userId = userId
+    const payload = result.data
+    req.session.userId = payload.sub
+
     next()
   }
 )

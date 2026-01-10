@@ -17,7 +17,7 @@ const LoginView = () => {
     <AuthView error={form.error}>
       <HeaderText>{t("LOGIN")}</HeaderText>
       <PlainText>
-        Don't have an account? <LinkText href="/register">Register</LinkText>
+        Don't have an account? <LinkText to="/register">Register</LinkText>
       </PlainText>
       <SocialLoginButtons />
       <HorizontalLineLabel className="py-4">{t("OR")}</HorizontalLineLabel>

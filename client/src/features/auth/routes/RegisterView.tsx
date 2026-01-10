@@ -17,7 +17,7 @@ const RegisterView = () => {
     <AuthView error={form.error}>
       <HeaderText>{t("REGISTER")}</HeaderText>
       <PlainText>
-        Already have an account? <LinkText href="/login">Login</LinkText>
+        Already have an account? <LinkText to="/login">Login</LinkText>
       </PlainText>
       <SocialLoginButtons />
       <HorizontalLineLabel className="py-4">{t("OR")}</HorizontalLineLabel>

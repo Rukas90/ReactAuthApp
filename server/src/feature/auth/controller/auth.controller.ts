@@ -1,7 +1,7 @@
 import { Express } from "express"
 import { Router } from "express"
 import {
-  authStatusHandler,
+  authUserHandler,
   loginHandler,
   logoutHandler,
   registerHandler,
@@ -27,4 +27,4 @@ authRouter.post(
 
 authRouter.post("/logout", logoutHandler)
 
-authRouter.get("/status", authStatusHandler)
+authRouter.get("/user", authUserHandler)

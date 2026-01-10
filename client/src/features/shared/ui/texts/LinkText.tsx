@@ -1,15 +1,16 @@
 import type { GeneralProps, ReactChildrenProps } from "#types/ui.types"
 import type { HTMLAttributeAnchorTarget } from "react"
 import styles from "./Text.module.css"
+import { Link } from "react-router-dom"
 
 interface Props extends ReactChildrenProps, GeneralProps {
-  href?: string | undefined
+  to: string
   target?: HTMLAttributeAnchorTarget | undefined
 }
 
-const LinkText = ({ href, target, children, className, id, style }: Props) => {
+const LinkText = ({ to, target, children, className, id, style }: Props) => {
   return (
-    <a href={href} target={target}>
+    <Link to={to} target={target}>
       <span
         id={id}
         className={`${className} ${styles.link_text}`}
@@ -17,7 +18,7 @@ const LinkText = ({ href, target, children, className, id, style }: Props) => {
       >
         {children}
       </span>
-    </a>
+    </Link>
   )
 }
 export default LinkText

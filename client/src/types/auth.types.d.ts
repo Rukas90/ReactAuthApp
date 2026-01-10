@@ -1,11 +1,5 @@
-export type TokenAuthState = "2fa-pending" | "authenticated"
-export type AuthState =
-  | "unauthenticated"
-  | TokenAuthState
-  | "needs-relogin"
-  | "needs-rotation"
-
-export type AuthStatus = {
-  state: AuthState
+export type AuthUser = {
   isVerified: boolean
+  otpPending: boolean
+  accessExpires: number
 }
