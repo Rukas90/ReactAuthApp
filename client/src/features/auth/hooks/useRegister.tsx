@@ -1,4 +1,4 @@
-import type { RegisterData } from "@auth/db"
+import type { RegisterData } from "@auth/schemas"
 import type { AuthResponseDto } from "@auth/dto"
 import { AuthService } from "@auth/services"
 import type { ApiResult } from "src/lib/api/Response"

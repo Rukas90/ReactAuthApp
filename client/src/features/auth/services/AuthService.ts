@@ -1,5 +1,5 @@
 import { type ApiResult, HTTP, API_URL } from "@src/lib/api"
-import type { LoginData, RegisterData } from "@auth/db"
+import type { LoginData, RegisterData } from "@auth/schemas"
 import type { AuthResponseDto, LogoutResponseDto } from "@auth/dto"
 import type { AuthUser } from "@auth/types"
 

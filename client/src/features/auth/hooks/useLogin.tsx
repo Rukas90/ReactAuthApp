@@ -1,4 +1,4 @@
-import type { LoginData } from "@auth/db"
+import type { LoginData } from "@auth/schemas"
 import type { AuthResponseDto } from "@auth/dto"
 import { AuthService } from "@auth/services"
 import type { ApiResult } from "src/lib/api/Response"

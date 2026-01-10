@@ -1,4 +1,4 @@
-import { type LoginData, LoginSchema } from "@auth/db"
+import { type LoginData, LoginSchema } from "@auth/schemas"
 import { VoidResult } from "@lib/types"
 import type z from "zod"
 import useAuthForm from "./useAuthForm"
