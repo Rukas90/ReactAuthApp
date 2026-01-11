@@ -1,4 +1,4 @@
-import { User } from "#prisma/client"
+import { User } from "@prisma/client"
 import * as express from "express"
 
 declare global {

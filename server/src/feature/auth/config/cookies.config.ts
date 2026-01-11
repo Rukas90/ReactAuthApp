@@ -1,5 +1,5 @@
+import { isProduction } from "@base/app"
 import { CookieOptions } from "express"
-import { isProduction } from "#lib/util/app.util.js"
 
 export const ACCESS_TOKEN_COOKIE_OPTIONS: CookieOptions = {
   httpOnly: true,

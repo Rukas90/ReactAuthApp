@@ -1,15 +1,15 @@
-import { database } from "#lib/app/database.js"
-import { ConflictError, UnexpectedError } from "#lib/common/domain.error.js"
-import { Result } from "#lib/common/result.js"
-import { hashing } from "#lib/security/hasher.service.js"
-import { Prisma } from "#prisma/client"
-import { TokenPair } from "../utils/auth.type"
+import { database } from "@base/app"
+import { ConflictError, UnexpectedError } from "@shared/errors"
+import { Result } from "@shared/types"
+import { hashing } from "@shared/security"
+import { Prisma } from "@prisma/client"
 import { generateAuthTokens } from "./auth.service"
+import { TokenPair } from "../util/auth.type"
 
 export const register = async (
   email: string,
   password: string
-): Promise<Result<TokenPair, ConflictError>> => {
+): Promise<Result<TokenPair, ConflictError | UnexpectedError>> => {
   const passwordHashed = await hashing.argon2.hash(password)
 
   // The creation of new user will automatically fail

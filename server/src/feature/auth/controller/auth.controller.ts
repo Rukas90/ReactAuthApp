@@ -1,14 +1,12 @@
-import { Express } from "express"
-import { Router } from "express"
+import { Express, Router } from "express"
 import {
   authUserHandler,
   loginHandler,
   logoutHandler,
+  refreshHandler,
   registerHandler,
 } from "./auth.handler"
-import { validateRegisterPassword } from "#lib/middleware/register.password.middleware.js"
-import { validateRegisterEmail } from "#lib/middleware/register.email.middleware.js"
-import { validateCaptchaToken } from "#lib/middleware/captcha.validate.middleware.js"
+import { validateCaptchaToken } from "@shared/middleware"
 
 export const useAuthRoutes = (app: Express) => {
   app.use("/v1/auth", authRouter)
@@ -17,14 +15,10 @@ const authRouter = Router()
 
 authRouter.post("/login", validateCaptchaToken, loginHandler)
 
-authRouter.post(
-  "/register",
-  validateRegisterEmail,
-  validateRegisterPassword,
-  validateCaptchaToken,
-  registerHandler
-)
+authRouter.post("/register", validateCaptchaToken, registerHandler)
 
 authRouter.post("/logout", logoutHandler)
 
 authRouter.get("/user", authUserHandler)
+
+authRouter.post("refresh", refreshHandler)

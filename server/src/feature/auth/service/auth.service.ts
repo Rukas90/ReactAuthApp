@@ -2,10 +2,10 @@ import {
   AccessTokenData,
   generateAccessToken,
   validateAccessToken,
-} from "#lib/token/jwt.service.js"
-import { AuthUser, TokenPair } from "#features/auth/utils/auth.type"
-import { generateRefreshToken } from "#lib/token/refresh.service.js"
-import { User } from "#prisma/client"
+  generateRefreshToken,
+} from "@shared/token"
+import { User } from "@prisma/client"
+import type { AuthUser, TokenPair } from "../util/auth.type"
 
 export const getAuthUser = async (
   accessToken?: string
@@ -19,15 +19,15 @@ export const getAuthUser = async (
     return null
   }
   const payload = result.data
-  const expiration = payload.exp
+  const expirationInSeconds = payload.exp
 
-  if (!expiration) {
+  if (!expirationInSeconds) {
     return null
   }
   const user: AuthUser = {
     isVerified: payload.isVerified,
     otpPending: payload.otpPending,
-    accessExpires: expiration,
+    accessExpires: expirationInSeconds * 1000, // Convert to milliseconds
   }
   return user
 }

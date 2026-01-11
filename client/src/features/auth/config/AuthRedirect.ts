@@ -5,7 +5,7 @@ export const getDefaultRedirect = (user: AuthUser | null) => {
     return "/login"
   }
   if (user.otpPending) {
-    return "otpVerify"
+    return "session/2fa"
   }
   return "/dashboard"
 }

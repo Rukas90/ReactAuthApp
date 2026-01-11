@@ -1,13 +1,10 @@
-import { getUserByEmail } from "#features/user/service/user.service"
-import { hashing } from "#lib/security/hasher.service.js"
-import { User } from "#prisma/client"
-import {
-  revokeUserRefreshTokens,
-  validateRefreshToken,
-} from "#lib/token/refresh.service.js"
-import { TokenPair } from "../utils/auth.type"
-import { Result } from "#lib/common/result.js"
-import { InvalidCredentialsError } from "#lib/common/business.error.js"
+import { getUserByEmail } from "@features/user"
+import { InvalidCredentialsError } from "@shared/errors"
+import { hashing } from "@shared/security"
+import { validateRefreshToken, revokeUserRefreshTokens } from "@shared/token"
+import { User } from "@prisma/client"
+import { Result } from "@shared/types"
+import { TokenPair } from "../util/auth.type"
 import { generateAuthTokens } from "./auth.service"
 
 export const login = async (

@@ -3,16 +3,13 @@ import { login } from "../service/login.service"
 import {
   clearResponseTokenCookies,
   setResponseTokenCookies,
-} from "../utils/auth.cookie"
+} from "../util/auth.cookie"
+import { generateLookupHash, revokeRefreshToken } from "@shared/token"
+import { asyncRoute } from "@shared/util"
+import { UnexpectedError } from "@shared/errors"
 import { register } from "../service/register.service"
-import {
-  generateLookupHash,
-  revokeRefreshToken,
-} from "#lib/token/refresh.service.js"
-import { asyncRoute } from "#lib/util/express.error.handler.js"
 import { getAuthUser } from "../service/auth.service"
-import { UnexpectedError } from "#lib/common/domain.error.js"
-import { TokenPair } from "../utils/auth.type"
+import { TokenPair } from "../util/auth.type"
 
 export const loginHandler = asyncRoute(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -77,6 +74,13 @@ export const logoutHandler = asyncRoute(async (req: Request, res: Response) => {
 })
 
 export const authUserHandler = asyncRoute(
+  async (req: Request, res: Response) => {
+    const user = await getAuthUser(req.cookies.accessToken)
+    res.ok(user)
+  }
+)
+
+export const refreshHandler = asyncRoute(
   async (req: Request, res: Response) => {
     const user = await getAuthUser(req.cookies.accessToken)
     res.ok(user)

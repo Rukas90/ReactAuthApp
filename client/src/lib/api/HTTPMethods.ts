@@ -4,7 +4,7 @@ import type { ApiResult } from "./Response"
 import Cookies from "js-cookie"
 
 export const HTTP = {
-  async GET<T>(
+  GET<T>(
     api: string,
     url: string,
     config: AxiosRequestConfig = {}
@@ -14,7 +14,7 @@ export const HTTP = {
       url
     )
   },
-  async POST<T>(
+  POST<T>(
     api: string,
     url: string,
     data?: any,
@@ -25,7 +25,7 @@ export const HTTP = {
       url
     )
   },
-  async PUT<T>(
+  PUT<T>(
     api: string,
     url: string,
     data?: any,
@@ -36,7 +36,7 @@ export const HTTP = {
       url
     )
   },
-  async DELETE<T>(
+  DELETE<T>(
     api: string,
     url: string,
     config: AxiosRequestConfig = {}
@@ -46,7 +46,7 @@ export const HTTP = {
       url
     )
   },
-  async PATCH<T>(
+  PATCH<T>(
     api: string,
     url: string,
     data?: any,
@@ -83,6 +83,5 @@ const buildApiUrl = (api: string, url: string): string => {
     console.error("api url is not defined")
     return path
   }
-  console.log(`${api}${path}`)
   return `${api}${path}`
 }

@@ -7,9 +7,11 @@
     "baseUrl": ".",
     "types": ["node"],
     "paths": {
-      "#prisma/client": ["./prisma/generated/client.ts"],
-      "#lib/*": ["src/lib/*"],
-      "#features/*": ["src/feature/*"]
+      "@prisma/client": ["./prisma/generated/client.ts"],
+      "@base/*": ["src/*"],
+      "@shared/*": ["src/shared/*"],
+      "@lib/*": ["src/lib/*"],
+      "@features/*": ["src/feature/*"],
     },
     "strict": true,
     "esModuleInterop": true,

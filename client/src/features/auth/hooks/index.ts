@@ -7,3 +7,4 @@ export { default as useLoginForm } from "./useLoginForm"
 export { default as useRegisterForm } from "./useRegisterForm"
 
 export { default as useAuthContext } from "./useAuthContext"
+export { default as useTokenRefresh } from "./useTokenRefresh"

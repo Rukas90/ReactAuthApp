@@ -13,7 +13,7 @@ export default defineConfig({
   server: {
     host: "0.0.0.0",
     port: 5173,
-    allowedHosts: ["192.168.1.119.nip.io"],
+    allowedHosts: ["192.168.1.119.nip.io", "192.168.1.200.nip.io"],
   },
   resolve: {
     alias: {

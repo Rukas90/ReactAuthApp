@@ -1,11 +1,10 @@
-import { Express } from 'express'
-import { Router } from 'express'
-import { asyncRoute } from '#lib/util/express.error.handler.js'
-import { authenticateRequest } from '#lib/middleware/authenticate.middleware.js'
-import { getUserByIdHandler } from './user.handler'
+import { authenticateRequest } from "@shared/middleware"
+import { asyncRoute } from "@shared/util"
+import { Express, Router } from "express"
+import { getUserByIdHandler } from "./user.handler"
 
 export const useUserRoutes = (app: Express) => {
-    app.use('/v1/user', userRouter)
+  app.use("/v1/user", userRouter)
 }
 const userRouter = Router()
 
@@ -28,6 +27,4 @@ const userRouter = Router()
  *       404:
  *         description: User not found
  */
-userRouter.get('/:id', 
-  authenticateRequest, 
-  asyncRoute(getUserByIdHandler))
+userRouter.get("/:id", authenticateRequest, asyncRoute(getUserByIdHandler))

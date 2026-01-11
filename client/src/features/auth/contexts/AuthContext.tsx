@@ -7,6 +7,5 @@ export interface AuthContextData {
   user: AuthUser | null
   setUser: (user: AuthUser | null) => void
   track: <T>(func: Promise<T>) => Promise<T>
-  isTokenExpired: () => boolean
 }
 export const AuthContext = createContext<AuthContextData | undefined>(undefined)
