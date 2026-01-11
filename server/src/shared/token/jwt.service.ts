@@ -15,7 +15,7 @@ export type AccessTokenData = {
 }
 
 export const generateAccessToken = (
-  user: User,
+  userId: string,
   data: AccessTokenData
 ): Promise<string> => {
   //const expiration = data.otpPending ? "5m" : "15m"
@@ -23,7 +23,7 @@ export const generateAccessToken = (
   return new SignJWT(data)
     .setIssuer(process.env.API_URL!)
     .setAudience(process.env.CLIENT_URL!)
-    .setSubject(user.id)
+    .setSubject(userId)
     .setIssuedAt()
     .setExpirationTime("2m")
     .setProtectedHeader({ alg: "HS256" })

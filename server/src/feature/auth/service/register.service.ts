@@ -2,18 +2,13 @@ import { database } from "@base/app"
 import { ConflictError, UnexpectedError } from "@shared/errors"
 import { Result } from "@shared/types"
 import { hashing } from "@shared/security"
-import { Prisma } from "@prisma/client"
-import { generateAuthTokens } from "./auth.service"
-import { TokenPair } from "../util/auth.type"
+import { Prisma, User } from "@prisma/client"
 
-export const register = async (
+export const createNewUser = async (
   email: string,
   password: string
-): Promise<Result<TokenPair, ConflictError | UnexpectedError>> => {
+): Promise<Result<User, ConflictError | UnexpectedError>> => {
   const passwordHashed = await hashing.argon2.hash(password)
-
-  // The creation of new user will automatically fail
-  // if registering user email is not unique in the db
   try {
     const newUser = await database.client.user.create({
       data: {
@@ -23,8 +18,7 @@ export const register = async (
         tfa_active: false,
       },
     })
-    const tokens = await generateAuthTokens(newUser)
-    return Result.success(tokens)
+    return Result.success(newUser)
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       return Result.error(

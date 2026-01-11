@@ -33,13 +33,14 @@ export const getAuthUser = async (
 }
 export const generateAuthTokens = async (
   user: User,
+  familyId?: string,
   data: AccessTokenData = {
     otpPending: user.tfa_active,
     isVerified: user.is_verified,
   }
 ) => {
-  const accessToken = await generateAccessToken(user, data)
-  const refreshToken = await generateRefreshToken(user)
+  const accessToken = await generateAccessToken(user.id, data)
+  const refreshToken = await generateRefreshToken(user.id, familyId)
   return {
     accessToken,
     refreshToken,

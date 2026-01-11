@@ -23,6 +23,7 @@ model User {
 
 model RefreshToken {
   id          String   @id @default(uuid())
+  family_id   String
   token_hash  String   @unique
   lookup_hash String   @unique
   created_at  DateTime @default(now())
@@ -32,6 +33,7 @@ model RefreshToken {
   user_id     String
 
   @@index([user_id])
+  @@index([family_id])
   @@index([lookup_hash])
 }
 

@@ -1,43 +1,10 @@
 import { getUserByEmail } from "@features/user"
 import { InvalidCredentialsError } from "@shared/errors"
 import { hashing } from "@shared/security"
-import { validateRefreshToken, revokeUserRefreshTokens } from "@shared/token"
 import { User } from "@prisma/client"
 import { Result } from "@shared/types"
-import { TokenPair } from "../util/auth.type"
-import { generateAuthTokens } from "./auth.service"
 
-export const login = async (
-  email: string,
-  password: string,
-  existingRefreshToken?: string
-): Promise<Result<TokenPair, InvalidCredentialsError>> => {
-  const result = await loginWithCredentials(email, password)
-
-  if (!result.ok) {
-    return result
-  }
-  const user = result.data
-
-  if (existingRefreshToken) {
-    await validateRefreshTokenReuse(user, existingRefreshToken)
-  }
-  const tokens = await generateAuthTokens(user)
-  return Result.success(tokens)
-}
-
-const validateRefreshTokenReuse = async (
-  user: User,
-  existingRefreshToken: string
-): Promise<void> => {
-  const isValid = await validateRefreshToken(existingRefreshToken)
-
-  if (!isValid) {
-    return await revokeUserRefreshTokens(user.id)
-  }
-}
-
-const loginWithCredentials = async (
+export const loginWithCredentials = async (
   email: string,
   password: string
 ): Promise<Result<User, InvalidCredentialsError>> => {
