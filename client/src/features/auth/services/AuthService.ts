@@ -1,7 +1,7 @@
 import { type ApiResult, HTTP, API_URL } from "@lib/api"
 import type { LoginData, RegisterData } from "@auth/schemas"
 import type { AuthResponseDto, LogoutResponseDto } from "@auth/dto"
-import type { AuthUser } from "@auth/types"
+import type { SessionData } from "@auth/types"
 
 const AuthService = {
   async login(data: LoginData): Promise<ApiResult<AuthResponseDto>> {
@@ -16,8 +16,12 @@ const AuthService = {
     return HTTP.POST<LogoutResponseDto>(API_URL, "/v1/auth/logout")
   },
 
-  async user(): Promise<ApiResult<AuthUser | null>> {
-    return HTTP.GET<AuthUser | null>(API_URL, "/v1/auth/user")
+  async user(): Promise<ApiResult<SessionData>> {
+    return HTTP.GET<SessionData>(API_URL, "/v1/auth/user")
+  },
+
+  async refresh(): Promise<ApiResult<AuthResponseDto>> {
+    return HTTP.POST<AuthResponseDto>(API_URL, "/v1/auth/refresh")
   },
 }
 export default AuthService

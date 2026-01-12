@@ -1,5 +1,4 @@
 import { useState } from "react"
-import styles from "./styles/Toggle.module.css"
 
 interface Props {
   value?: boolean
@@ -23,9 +22,16 @@ const IconCheckbox = ({
     onValueChanged?.(newState)
   }
   return (
-    <label className={styles.icon_toggle}>
-      <input type="checkbox" onChange={onChangeCallback} />
-      <img className={styles.icon_toggle_img} src={icon} />
+    <label className="relative w-5 h-5 inline-block bg-size-(16px) bg-center bg-no-repeat mt-0.5">
+      <input
+        className="w-full h-full inset-0 absolute opacity-0 pointer-events-none"
+        type="checkbox"
+        onChange={onChangeCallback}
+      />
+      <img
+        className="w-full h-full inset-0 opacity-35 absolute transition-opacity hover:opacity-50 active:opacity-40"
+        src={icon}
+      />
     </label>
   )
 }

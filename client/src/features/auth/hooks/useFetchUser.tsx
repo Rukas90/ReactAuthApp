@@ -8,13 +8,16 @@ const useFetchUser = () => {
   return useCallback(
     () =>
       track(
-        AuthService.user().then((result) => {
-          if (result.ok) {
-            setUser(result.data)
-          } else {
-            setUser(null)
-          }
-        })
+        AuthService.user()
+          .then((result) => {
+            if (result.ok) {
+              setUser(result.data.user)
+            } else {
+              setUser(null)
+            }
+            return result
+          })
+          .catch(() => setUser(null))
       ),
     [track, setUser]
   )

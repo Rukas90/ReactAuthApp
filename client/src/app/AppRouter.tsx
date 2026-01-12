@@ -6,15 +6,22 @@ import {
   GuestOnlyRoute,
   ForwardRoute,
 } from "@auth/routes"
-import { useAuthContext } from "@auth/hooks"
+import { useAuthContext, useTokenRefresh } from "@auth/hooks"
 import { DashboardView } from "@dashboard/routes"
 import { NotFoundView } from "@src/routes"
 
 const AppRouter = () => {
   const { isInitialized, isLoading } = useAuthContext()
+  const { refreshing } = useTokenRefresh()
 
-  if (!isInitialized || isLoading) {
+  if (!isInitialized) {
+    return <>Not isInitialized...</>
+  }
+  if (isLoading) {
     return <>Loading...</>
+  }
+  if (refreshing) {
+    return <>Refreshing...</>
   }
   return (
     <Routes>

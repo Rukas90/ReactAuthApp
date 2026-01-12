@@ -14,7 +14,7 @@ import { asyncRoute } from "@shared/util"
 import { UnexpectedError } from "@shared/errors"
 import { createNewUser } from "../service/register.service"
 import { generateAuthTokens, getAuthUser } from "../service/auth.service"
-import { TokenPair } from "../util/auth.type"
+import { SessionData, TokenPair } from "../util/auth.type"
 
 export const loginHandler = asyncRoute(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -84,12 +84,12 @@ const sendAuthResponse = async (
   successMessage: string
 ) => {
   const accessToken = tokens.accessToken
-  const user = await getAuthUser(accessToken)
+  const refreshToken = tokens.refreshToken
+
+  const user = await getAuthUser(accessToken, refreshToken)
 
   if (user === null) {
-    return next(
-      new UnexpectedError("Could not login successfully.", "LOGIN_FAILED")
-    )
+    return next(new UnexpectedError("Auth failed unexpectedly.", "AUTH_FAILED"))
   }
   setResponseTokenCookies(res, tokens)
 
@@ -115,7 +115,17 @@ export const logoutHandler = asyncRoute(async (req: Request, res: Response) => {
 
 export const authUserHandler = asyncRoute(
   async (req: Request, res: Response) => {
-    const user = await getAuthUser(req.cookies.accessToken)
-    res.ok(user)
+    const accessToken = req.cookies?.accessToken
+    const refreshToken = req.cookies?.refreshToken
+
+    const user = await getAuthUser(accessToken, refreshToken)
+    const canRefresh = !user && !!refreshToken
+
+    if (!user && !canRefresh) {
+      clearResponseTokenCookies(res)
+    }
+    const session: SessionData = { user, canRefresh }
+
+    res.ok(session)
   }
 )

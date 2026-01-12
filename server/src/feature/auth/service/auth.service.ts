@@ -8,26 +8,30 @@ import { User } from "@prisma/client"
 import type { AuthUser, TokenPair } from "../util/auth.type"
 
 export const getAuthUser = async (
-  accessToken?: string
+  accessToken?: string,
+  refreshToken?: string
 ): Promise<AuthUser | null> => {
-  if (!accessToken) {
+  if (!accessToken || !refreshToken) {
+    console.log("Missing")
     return null
   }
   const result = await validateAccessToken(accessToken)
 
   if (!result.ok) {
+    console.log("Not Valid")
     return null
   }
   const payload = result.data
   const expirationInSeconds = payload.exp
 
   if (!expirationInSeconds) {
+    console.log("Expired")
     return null
   }
   const user: AuthUser = {
-    isVerified: payload.isVerified,
+    verifiedEmail: payload.verifiedEmail,
     otpPending: payload.otpPending,
-    accessExpires: expirationInSeconds * 1000, // Convert to milliseconds
+    expiresAt: expirationInSeconds * 1000, // Convert to milliseconds
   }
   return user
 }
@@ -36,7 +40,7 @@ export const generateAuthTokens = async (
   familyId?: string,
   data: AccessTokenData = {
     otpPending: user.tfa_active,
-    isVerified: user.is_verified,
+    verifiedEmail: user.is_verified,
   }
 ) => {
   const accessToken = await generateAccessToken(user.id, data)

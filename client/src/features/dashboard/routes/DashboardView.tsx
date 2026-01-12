@@ -1,4 +1,13 @@
+import { ContentContainer, FullSizeContainer } from "@src/features/shared"
+import NavBar from "../components/NavBar"
+
 const DashboardView = () => {
-  return <>Dashboard View</>
+  return (
+    <FullSizeContainer>
+      <ContentContainer>
+        <NavBar />
+      </ContentContainer>
+    </FullSizeContainer>
+  )
 }
 export default DashboardView

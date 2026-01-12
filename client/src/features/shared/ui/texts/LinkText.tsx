@@ -1,5 +1,4 @@
 import type { HTMLAttributeAnchorTarget } from "react"
-import styles from "./styles/Text.module.css"
 import { Link } from "react-router-dom"
 
 interface Props
@@ -16,7 +15,21 @@ const LinkText = ({ to, target, children, className, id, style }: Props) => {
     <Link to={to} target={target}>
       <span
         id={id}
-        className={`${className} ${styles.link_text}`}
+        className={`${className} relative inline-block
+                                 text-stone-200
+                                 opacity-[0.85] hover:opacity-100
+                                 transition-opacity duration-100 ease-in-out
+                               
+                                 after:content-['']
+                                 after:absolute after:left-0 after:bottom-0
+                                 after:w-full after:h-px
+                                 after:bg-stone-200
+                                 after:opacity-50
+                                 after:origin-left
+                                 after:scale-x-0
+                                 after:transition-transform after:duration-100 after:ease-in-out
+                               
+                                 hover:after:scale-x-100`}
         style={style}
       >
         {children}

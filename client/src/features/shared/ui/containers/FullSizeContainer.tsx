@@ -1,8 +1,6 @@
-import styles from "./styles/Container.module.css"
-
 const FullSizeContainer = (props: React.ComponentProps<"div">) => {
   return (
-    <div className={styles.full_container} {...props}>
+    <div className="w-100 h-100" {...props}>
       {props.children}
     </div>
   )

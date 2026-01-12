@@ -1,41 +1,44 @@
 import { AuthInitializerContext } from "@auth/contexts"
-import { useFetchUser, useAuthContext } from "@auth/hooks"
-import { useRef, useLayoutEffect, useEffect } from "react"
+import { useAuthContext, useAuthRefresh } from "@auth/hooks"
+import { useRef, useLayoutEffect } from "react"
+import { AuthService } from "../services"
 
 const AuthInitializer = ({
   children,
 }: Pick<React.ComponentProps<"div">, "children">) => {
-  const fetchUser = useFetchUser()
-  const { isInitialized, user } = useAuthContext()
+  const { isInitialized, setUser, track } = useAuthContext()
+  const authRefresh = useAuthRefresh()
+
   const init = useRef(false)
-  const temp = useRef<number>(0)
 
   useLayoutEffect(() => {
     if (isInitialized || init.current) {
       return
     }
     init.current = true
-    fetchUser()
+
+    track(
+      AuthService.user()
+        .then(async (result) => {
+          if (!result.ok) {
+            setUser(null)
+            return
+          }
+          const session = result.data
+
+          setUser(session.user)
+
+          if (!session.user && session.canRefresh) {
+            const refresh = await authRefresh()
+
+            if (refresh.ok) {
+              setUser(refresh.data.user)
+            }
+          }
+        })
+        .catch(() => setUser(null))
+    )
   }, [])
-
-  useEffect(() => {
-    if (!user || !isInitialized) {
-      return
-    }
-    const timeUntilExpiry = user.accessExpires - Date.now()
-    const refreshThreshold = 30 * 1000
-
-    if (timeUntilExpiry <= refreshThreshold) {
-      console.log("refresh")
-      temp.current += 1
-    }
-    const timerId = setTimeout(() => {
-      console.log("Refresh")
-      temp.current += 1
-    }, Math.max(0, timeUntilExpiry - refreshThreshold))
-
-    return () => clearTimeout(timerId)
-  }, [temp.current, user, isInitialized])
 
   return (
     <AuthInitializerContext.Provider value={null}>

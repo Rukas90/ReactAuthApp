@@ -1,5 +1,9 @@
+export type SessionData = {
+  user: AuthUser
+  canRefresh: boolean
+}
 export type AuthUser = {
-  isVerified: boolean
+  verifiedEmail: boolean
   otpPending: boolean
-  accessExpires: number
+  expiresAt: number
 }

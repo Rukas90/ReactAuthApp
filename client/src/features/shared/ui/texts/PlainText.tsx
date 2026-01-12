@@ -1,5 +1,3 @@
-import styles from "./styles/Text.module.css"
-
 const PlainText = ({
   children,
   className,
@@ -10,7 +8,7 @@ const PlainText = ({
   "children" | "className" | "id" | "style"
 >) => {
   return (
-    <p id={id} className={`${className} ${styles.plain_text}`} style={style}>
+    <p id={id} className={`${className} text-stone-400`} style={style}>
       {children}
     </p>
   )

@@ -9,13 +9,6 @@ const AuthProvider = ({
   const [user, setUserInternal] = useState<AuthUser | null>(null)
   const [isInitialized, setInitialized] = useState(false)
 
-  const isTokenExpired = useCallback((): boolean => {
-    if (!user) {
-      return true
-    }
-    return Date.now() >= user.accessExpires
-  }, [user])
-
   const track = useCallback(async <T,>(func: Promise<T>): Promise<T> => {
     setLoading(true)
     try {
@@ -38,7 +31,6 @@ const AuthProvider = ({
         user,
         setUser,
         track,
-        isTokenExpired,
       }}
     >
       {children}

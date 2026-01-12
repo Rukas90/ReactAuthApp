@@ -21,4 +21,4 @@ authRouter.post("/logout", logoutHandler)
 
 authRouter.get("/user", authUserHandler)
 
-authRouter.post("refresh", refreshHandler)
+authRouter.post("/refresh", refreshHandler)

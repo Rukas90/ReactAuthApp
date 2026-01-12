@@ -1,4 +1,3 @@
-import { styles } from "@auth/styles"
 import CustomButton from "@shared/ui/buttons/CustomButton"
 import type { FormEvent } from "react"
 
@@ -16,7 +15,10 @@ const AuthForm = ({ onSubmit, children, submitText }: Props) => {
     }
   }
   return (
-    <form onSubmit={handleSubmit} className={styles.auth_form}>
+    <form
+      onSubmit={handleSubmit}
+      className="flex relative w-full flex-col gap-4"
+    >
       {children}
       <CustomButton
         type="submit"

@@ -1,26 +1,40 @@
-import { useEffect } from "react"
+import { useCallback, useEffect, useState } from "react"
 import useAuthContext from "./useAuthContext"
-import useFetchUser from "./useFetchUser"
+import useAuthRefresh from "./useAuthRefresh"
 
 const useTokenRefresh = (refreshThresholdMs: number = 3 * 60 * 1000) => {
   const { user, isInitialized } = useAuthContext()
-  const fetchUser = useFetchUser()
+  const [refreshing, setRefreshing] = useState(false)
+  const authRefresh = useAuthRefresh()
 
   useEffect(() => {
     if (!user || !isInitialized) {
       return
     }
-    const timeUntilExpiry = user.accessExpires - Date.now()
+    const timeUntilExpiry = user.expiresAt - Date.now()
 
     if (timeUntilExpiry <= refreshThresholdMs) {
-      fetchUser()
+      handleRefresh()
       return
     }
     const timerId = setTimeout(() => {
-      fetchUser()
+      handleRefresh()
     }, timeUntilExpiry - refreshThresholdMs)
 
     return () => clearTimeout(timerId)
-  }, [user?.accessExpires, isInitialized, fetchUser, refreshThresholdMs])
+  }, [user, isInitialized, authRefresh, refreshThresholdMs])
+
+  const handleRefresh = useCallback(async () => {
+    setRefreshing(true)
+    try {
+      await authRefresh()
+    } finally {
+      setRefreshing(false)
+    }
+  }, [authRefresh])
+
+  return {
+    refreshing,
+  }
 }
 export default useTokenRefresh

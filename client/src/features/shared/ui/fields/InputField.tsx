@@ -3,7 +3,6 @@ import {
   type HTMLInputAutoCompleteAttribute,
   type HTMLInputTypeAttribute,
 } from "react"
-import styles from "./styles/Field.module.css"
 import visibilityOnIcon from "@icons/misc/visibility-on.svg"
 import visibilityOffIcon from "@icons/misc/visibility-off.svg"
 import { IconCheckbox } from "@shared/ui/toggles"
@@ -37,17 +36,6 @@ const InputField = ({
   const [text, setText] = useState(value || "")
   const [hidden, setHidden] = useState(hideable && isHidden)
 
-  const baseClasses = `
-    ${styles.input_field_container}
-    ${text && styles.input_field_container__expanded}
-    ${indicateError && styles.input_field_container__error}
-    ${extendWidth && "w-100"}
-  `
-  const inputClasses = `
-    ${styles.input_field}
-    ${className}
-    ${extendWidth && "w-100"}
-  `
   const onChangeCallback = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value
 
@@ -57,9 +45,23 @@ const InputField = ({
       onValueChanged(newValue)
     }
   }
+  const expand = !!text
+
   return (
-    <div className={baseClasses}>
-      <label htmlFor={id} className={styles.input_field_placeholder}>
+    <div
+      className={`relative bg-stone-950 flex h-12 items-center px-3 py-2 transition-[background-color,height] hover:bg-stone-900 focus:border focus:border-stone-300 
+        ${expand && "h-16"} ${indicateError && "border border-red-900"} ${
+        extendWidth && "w-full"
+      }`}
+    >
+      <label
+        htmlFor={id}
+        className={`absolute left-3 pointer-events-none transition-all ${
+          expand
+            ? "top-1.5 text-[0.85rem] text-stone-600 translate-y-0"
+            : "top-1/2 text-[1rem] text-stone-500 -translate-y-1/2"
+        }`}
+      >
         {placeholder}
       </label>
       <input
@@ -69,7 +71,9 @@ const InputField = ({
         onChange={onChangeCallback}
         type={hidden ? "password" : type}
         autoComplete={autocomplete}
-        className={inputClasses}
+        className={`bg-transparent border-0 outline-0 h-auto text-stone-200 p-0 m-0 ${
+          expand && "pt-5"
+        } ${className} ${extendWidth && "w-100"}`}
       />
       {hideable && (
         <IconCheckbox

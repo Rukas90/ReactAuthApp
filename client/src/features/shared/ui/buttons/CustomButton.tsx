@@ -1,5 +1,3 @@
-import styles from "./styles/Button.module.css"
-
 interface CustomButtonProps
   extends Pick<React.ComponentProps<"div">, "className"> {
   text?: string
@@ -14,11 +12,6 @@ interface CustomButtonProps
 
   link?: string
   action?: () => void
-
-  theme?: string | "light" | "dark" | "danger" | "blank"
-}
-const DEFAULT_PROP_VALUES: CustomButtonProps = {
-  theme: "light",
 }
 
 const CustomButton = ({
@@ -32,32 +25,34 @@ const CustomButton = ({
   disabled = false,
   action,
   link,
-  theme = "light",
-}: CustomButtonProps = DEFAULT_PROP_VALUES) => {
-  const classes = `
-        border-0
-        ${styles.custom_button} 
-        btn 
-        btn-${theme}
-        ${extendWidth ? "w-100" : ""}
-        ${padding ? `py-2 px-4` : "p-0"}
-      `
+}: CustomButtonProps) => {
   return (
-    <a
-      className={`${className} text-decoration-none ${
-        extendWidth ? "w-100" : ""
-      }`}
-    >
+    <a className={`${className} ${extendWidth ? "w-full" : ""}`}>
       <button
         type={type}
         disabled={disabled}
         onClick={link || disabled ? undefined : action}
-        className={classes}
+        className={`
+        flex
+        flex-row
+        border-0
+        justify-center
+        items-center
+        text-center
+        bg-gray-200
+        btn 
+        hover:bg-gray-300
+        active:bg-gray-400
+        transition-colors
+        cursor-pointer
+        ${extendWidth && "w-full"}
+        ${padding ? `py-2 px-6` : "p-0"}
+      `}
       >
         {icon && (
           <img
             src={icon}
-            className={`${styles.button_icon} ${text ? "me-2" : "m-0"} ${
+            className={`w-5 h-5 ${text ? "me-2" : "m-0"} ${
               invertImg && "invert"
             }`}
           />

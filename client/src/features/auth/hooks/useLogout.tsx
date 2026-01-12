@@ -1,6 +1,6 @@
 import type { LogoutResponseDto } from "@auth/dto"
 import { AuthService } from "@auth/services"
-import type { ApiResult } from "src/lib/api/Response"
+import type { ApiResult } from "@api/Response"
 import useAuthContext from "./useAuthContext"
 
 const useLogout = () => {

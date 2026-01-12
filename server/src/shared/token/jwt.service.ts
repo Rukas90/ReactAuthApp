@@ -1,5 +1,4 @@
 import { JWTPayload, SignJWT, jwtVerify } from "jose"
-import { User } from "@prisma/client"
 import { Result } from "@shared/types"
 import { JOSEError } from "jose/errors"
 import { UnexpectedError } from "@shared/errors"
@@ -10,22 +9,22 @@ const SECRET = ENCODER.encode(process.env.JWT_SECRET!)
 export interface AccessTokenPayload extends JWTPayload, AccessTokenData {}
 
 export type AccessTokenData = {
+  verifiedEmail: boolean
   otpPending: boolean
-  isVerified: boolean
 }
 
 export const generateAccessToken = (
   userId: string,
   data: AccessTokenData
 ): Promise<string> => {
-  //const expiration = data.otpPending ? "5m" : "15m"
+  const expiration = data.otpPending ? "5m" : "15m"
 
   return new SignJWT(data)
     .setIssuer(process.env.API_URL!)
     .setAudience(process.env.CLIENT_URL!)
     .setSubject(userId)
     .setIssuedAt()
-    .setExpirationTime("2m")
+    .setExpirationTime(expiration)
     .setProtectedHeader({ alg: "HS256" })
     .sign(SECRET)
 }

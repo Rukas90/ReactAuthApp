@@ -1,18 +1,14 @@
-import styles from "./styles/Label.module.css"
-
 const HorizontalLineLabel = ({
   children,
   className,
 }: Pick<React.ComponentProps<"div">, "children" | "className">) => {
-  const line = (
-    <div className={`flex-grow-1 w-100 ${styles.horizontal_label_line}`} />
-  )
+  const line = <div className={`grow w-100 h-px bg-stone-800`} />
   return (
     <div
-      className={`${className} d-flex flex-row justify-content-center align-items-center w-100 gap-4`}
+      className={`${className} flex flex-row justify-center items-center w-100 gap-4`}
     >
       {line}
-      <p className={styles.horizontal_label_text}>{children}</p>
+      <p className="text-stone-400 p-0 m-0 font-normal">{children}</p>
       {line}
     </div>
   )
