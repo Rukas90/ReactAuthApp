@@ -45,6 +45,11 @@ export { Prisma }
  */
 export type User = Prisma.UserModel
 /**
+ * Model MfaEnrollment
+ * 
+ */
+export type MfaEnrollment = Prisma.MfaEnrollmentModel
+/**
  * Model RefreshToken
  * 
  */

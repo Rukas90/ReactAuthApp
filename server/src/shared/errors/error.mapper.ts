@@ -1,6 +1,6 @@
 import { DomainError } from "./domain.error.base"
 import { DomainErrorType } from "./domain.error.type"
-import { ProblemDetails } from "./problemDetails.type"
+import { ProblemDetails } from "@project/shared"
 
 type ProblemDescriptor = {
   status: number

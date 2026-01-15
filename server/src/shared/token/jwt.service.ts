@@ -1,28 +1,53 @@
 import { JWTPayload, SignJWT, jwtVerify } from "jose"
-import { Result } from "@shared/types"
 import { JOSEError } from "jose/errors"
 import { UnexpectedError } from "@shared/errors"
+import { User } from "@prisma/client"
+import { AuthLevel, Result } from "@project/shared"
 
 const ENCODER = new TextEncoder()
 const SECRET = ENCODER.encode(process.env.JWT_SECRET!)
 
-export interface AccessTokenPayload extends JWTPayload, AccessTokenData {}
+export type Scope = "2fa:verify" | "user:access"
 
-export type AccessTokenData = {
-  verifiedEmail: boolean
-  otpPending: boolean
+export type AccessTokenClaims = {
+  auth_level: AuthLevel
+  email_verified: boolean
+  scope: Scope[]
 }
 
-export const generateAccessToken = (
-  userId: string,
-  data: AccessTokenData
-): Promise<string> => {
-  const expiration = data.otpPending ? "5m" : "15m"
+export interface AccessTokenPayload extends JWTPayload, AccessTokenClaims {}
 
-  return new SignJWT(data)
+export const generatePre2faAccessToken = (user: User) => {
+  return generateAccessToken(
+    user,
+    {
+      auth_level: "pre_2fa",
+      email_verified: user.is_verified,
+      scope: ["2fa:verify"],
+    },
+    "5m"
+  )
+}
+export const generateFullAccessToken = (user: User) => {
+  return generateAccessToken(
+    user,
+    {
+      auth_level: "full",
+      email_verified: user.is_verified,
+      scope: ["user:access"],
+    },
+    "15m"
+  )
+}
+const generateAccessToken = (
+  user: User,
+  claims: AccessTokenClaims,
+  expiration: number | string | Date
+): Promise<string> => {
+  return new SignJWT(claims)
     .setIssuer(process.env.API_URL!)
     .setAudience(process.env.CLIENT_URL!)
-    .setSubject(userId)
+    .setSubject(user.id)
     .setIssuedAt()
     .setExpirationTime(expiration)
     .setProtectedHeader({ alg: "HS256" })

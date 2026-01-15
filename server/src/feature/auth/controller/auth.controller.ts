@@ -9,16 +9,16 @@ import {
 import { validateCaptchaToken } from "@shared/middleware"
 
 export const useAuthRoutes = (app: Express) => {
-  app.use("/v1/auth", authRouter)
+  app.use("/v1/auth", router)
 }
-const authRouter = Router()
+const router = Router()
 
-authRouter.post("/login", validateCaptchaToken, loginHandler)
+router.post("/login", validateCaptchaToken, loginHandler)
 
-authRouter.post("/register", validateCaptchaToken, registerHandler)
+router.post("/register", validateCaptchaToken, registerHandler)
 
-authRouter.post("/logout", logoutHandler)
+router.post("/logout", logoutHandler)
 
-authRouter.get("/user", authUserHandler)
+router.get("/session", authUserHandler)
 
-authRouter.post("/refresh", refreshHandler)
+router.post("/refresh", refreshHandler)

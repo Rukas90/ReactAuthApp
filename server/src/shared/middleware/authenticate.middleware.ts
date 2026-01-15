@@ -16,8 +16,11 @@ export const authenticateRequest = asyncRoute(
       return next(new UnauthenticatedError())
     }
     const payload = result.data
-    req.session.userId = payload.sub
 
+    if (!payload.sub) {
+      return next(new UnauthenticatedError())
+    }
+    req.session = payload
     next()
   }
 )

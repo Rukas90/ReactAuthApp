@@ -52,6 +52,7 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  MfaEnrollment: 'MfaEnrollment',
   RefreshToken: 'RefreshToken',
   OAuth: 'OAuth',
   Session: 'Session',
@@ -80,11 +81,22 @@ export const UserScalarFieldEnum = {
   email: 'email',
   password_hash: 'password_hash',
   is_verified: 'is_verified',
-  created_at: 'created_at',
-  tfa_active: 'tfa_active'
+  created_at: 'created_at'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const MfaEnrollmentScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  method: 'method',
+  configured: 'configured',
+  credentials: 'credentials',
+  created_at: 'created_at'
+} as const
+
+export type MfaEnrollmentScalarFieldEnum = (typeof MfaEnrollmentScalarFieldEnum)[keyof typeof MfaEnrollmentScalarFieldEnum]
 
 
 export const RefreshTokenScalarFieldEnum = {
@@ -158,6 +170,14 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const NullableJsonNullValueInput = {
+  DbNull: 'DbNull',
+  JsonNull: 'JsonNull'
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
 export const JsonNullValueInput = {
   JsonNull: 'JsonNull'
 } as const
@@ -180,4 +200,12 @@ export const JsonNullValueFilter = {
 } as const
 
 export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 

@@ -15,7 +15,6 @@ export const createNewUser = async (
         email: email,
         password_hash: passwordHashed,
         is_verified: false,
-        tfa_active: false,
       },
     })
     return Result.success(newUser)

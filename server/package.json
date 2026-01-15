@@ -1,6 +1,7 @@
 {
   "name": "test",
   "version": "1.0.0",
+  "private": true,
   "description": "",
   "main": "main.ts",
   "type": "module",
@@ -12,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@project/shared": "*",
     "@prisma/adapter-pg": "^7.2.0",
     "@prisma/client": "^7.2.0",
     "@scalar/express-api-reference": "^0.8.30",
@@ -62,6 +64,8 @@
     "@types/node": "^25.0.3",
     "@types/nodemailer": "^7.0.4",
     "@types/pg": "^8.16.0",
+    "@types/qrcode": "^1.5.6",
+    "@types/speakeasy": "^2.0.10",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
     "dotenv": "^17.2.3",

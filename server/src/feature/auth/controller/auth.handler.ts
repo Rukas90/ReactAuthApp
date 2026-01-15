@@ -1,11 +1,15 @@
 import { NextFunction, Request, Response } from "express"
 import { loginWithCredentials } from "../service/login.service"
 import {
-  clearResponseTokenCookies,
-  setResponseTokenCookies,
+  clearAuthTokenCookies,
+  setAccessTokenCookie,
+  setRefreshTokenCookie,
 } from "../util/auth.cookie"
 import {
   findRefreshToken,
+  generateFullAccessToken,
+  generatePre2faAccessToken,
+  generateRefreshToken,
   revokeRefreshToken,
   revokeTokenFamily,
   validateRefreshToken,
@@ -13,8 +17,9 @@ import {
 import { asyncRoute } from "@shared/util"
 import { UnexpectedError } from "@shared/errors"
 import { createNewUser } from "../service/register.service"
-import { generateAuthTokens, getAuthUser } from "../service/auth.service"
-import { SessionData, TokenPair } from "../util/auth.type"
+import { getAuthUser } from "../service/auth.service"
+import { hasMfaConfigured } from "@features/mfa"
+import { SessionData } from "@project/shared"
 
 export const loginHandler = asyncRoute(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -34,9 +39,28 @@ export const loginHandler = asyncRoute(
         await revokeTokenFamily(token.data.family_id)
       }
     }
-    const tokens = await generateAuthTokens(user)
+    if (await hasMfaConfigured(user.id)) {
+      const accessToken = await generatePre2faAccessToken(user)
 
-    await sendAuthResponse(tokens, res, next, "Logged in successfully")
+      sendAuthTokensResponse(
+        accessToken,
+        null,
+        res,
+        next,
+        "Logged in successfully"
+      )
+      return
+    }
+    const accessToken = await generateFullAccessToken(user)
+    const refreshToken = await generateRefreshToken(user)
+
+    await sendAuthTokensResponse(
+      accessToken,
+      refreshToken,
+      res,
+      next,
+      "Logged in successfully"
+    )
   }
 )
 export const registerHandler = asyncRoute(
@@ -46,10 +70,12 @@ export const registerHandler = asyncRoute(
     if (!user.ok) {
       return next(user.error)
     }
-    const tokens = await generateAuthTokens(user.data)
+    const accessToken = await generateFullAccessToken(user.data)
+    const refreshToken = await generateRefreshToken(user.data)
 
-    await sendAuthResponse(
-      tokens,
+    await sendAuthTokensResponse(
+      accessToken,
+      refreshToken,
       res,
       next,
       "Registered and logged in successfully"
@@ -62,37 +88,44 @@ export const refreshHandler = asyncRoute(
     const validation = await validateRefreshToken(req.cookies.refreshToken)
 
     if (!validation.ok) {
-      clearResponseTokenCookies(res)
+      clearAuthTokenCookies(res)
       return next(validation.error)
     }
     const currentToken = validation.data
-
     await revokeRefreshToken(currentToken.lookup_hash)
 
-    const tokens = await generateAuthTokens(
+    const accessToken = await generateFullAccessToken(currentToken.user)
+    const refreshToken = await generateRefreshToken(
       currentToken.user,
       currentToken.family_id
     )
-    await sendAuthResponse(tokens, res, next, "Session refreshed successfully")
+    await sendAuthTokensResponse(
+      accessToken,
+      refreshToken,
+      res,
+      next,
+      "Session refreshed successfully"
+    )
   }
 )
 
-const sendAuthResponse = async (
-  tokens: TokenPair,
+const sendAuthTokensResponse = async (
+  accessToken: string,
+  refreshToken: string | null,
   res: Response,
   next: NextFunction,
   successMessage: string
 ) => {
-  const accessToken = tokens.accessToken
-  const refreshToken = tokens.refreshToken
-
-  const user = await getAuthUser(accessToken, refreshToken)
+  const user = await getAuthUser(accessToken)
 
   if (user === null) {
     return next(new UnexpectedError("Auth failed unexpectedly.", "AUTH_FAILED"))
   }
-  setResponseTokenCookies(res, tokens)
+  setAccessTokenCookie(res, accessToken)
 
+  if (!!refreshToken) {
+    setRefreshTokenCookie(res, refreshToken)
+  }
   res.ok({
     message: successMessage,
     user: user,
@@ -109,7 +142,7 @@ export const logoutHandler = asyncRoute(async (req: Request, res: Response) => {
       await revokeTokenFamily(token.data.family_id)
     }
   }
-  clearResponseTokenCookies(res)
+  clearAuthTokenCookies(res)
   res.ok("Logged out successfully")
 })
 
@@ -118,14 +151,13 @@ export const authUserHandler = asyncRoute(
     const accessToken = req.cookies?.accessToken
     const refreshToken = req.cookies?.refreshToken
 
-    const user = await getAuthUser(accessToken, refreshToken)
+    const user = await getAuthUser(accessToken)
     const canRefresh = !user && !!refreshToken
 
     if (!user && !canRefresh) {
-      clearResponseTokenCookies(res)
+      clearAuthTokenCookies(res)
     }
     const session: SessionData = { user, canRefresh }
-
     res.ok(session)
   }
 )

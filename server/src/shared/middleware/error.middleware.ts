@@ -1,7 +1,7 @@
 import { domainErrorToProblemDetails, DomainError } from "@shared/errors"
-import { isDevelopment } from "@base/app"
+import { appConfig } from "@base/app"
 import { NextFunction, Request, Response } from "express"
-import { ProblemDetails } from "@shared/errors"
+import { ProblemDetails } from "@project/shared"
 
 const INTERNAL_ERROR_DETAILS = (
   type: string,
@@ -27,13 +27,17 @@ export const endpointErrorHandler = (
   }
   if (error instanceof DomainError) {
     return response.problem(
-      domainErrorToProblemDetails(error, isDevelopment(), request.originalUrl)
+      domainErrorToProblemDetails(
+        error,
+        appConfig.isDevelopment,
+        request.originalUrl
+      )
     )
   }
   console.error("Unexpected error", error)
 
   return response.problem({
     ...INTERNAL_ERROR_DETAILS("internal-error", request),
-    ...(isDevelopment() && { stack: error.stack }),
+    ...(appConfig.isDevelopment && { stack: error.stack }),
   })
 }

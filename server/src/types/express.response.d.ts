@@ -1,4 +1,5 @@
 import * as express from "express"
+import { ProblemDetails } from "@project/shared"
 
 export enum SuccessCode {
   Success = 200,
@@ -19,14 +20,4 @@ declare global {
       problem(json: ProblemDetails): Response
     }
   }
-}
-
-export type ProblemDetails = {
-  type: string
-  title: string
-  status: number
-  detail: string
-  code: string
-  instance: string
-  stack?: string
 }

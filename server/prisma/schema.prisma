@@ -13,12 +13,29 @@ model User {
   password_hash String
   is_verified   Boolean
   created_at    DateTime @default(now())
-  tfa_active    Boolean  @default(false)
 
-  refreshTokens RefreshToken[]
-  oauths        OAuth[]
-  verifications Verification[]
-  sessions      Session[]
+  refreshTokens  RefreshToken[]
+  oauths         OAuth[]
+  verifications  Verification[]
+  sessions       Session[]
+  mfaEnrollments MfaEnrollment[]
+}
+
+model MfaEnrollment {
+  id          String    @id @default(uuid())
+  user        User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id     String
+  method      MfaMethod
+  configured  Boolean   @default(false)
+  credentials Json?
+  created_at  DateTime  @default(now())
+
+  @@unique([user_id, method])
+  @@index([user_id])
+}
+
+enum MfaMethod {
+  TOTP
 }
 
 model RefreshToken {

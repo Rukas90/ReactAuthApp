@@ -1,3 +1,6 @@
 export { authenticateRequest } from "./authenticate.middleware"
 export { validateCaptchaToken } from "./captcha.validate.middleware"
 export { endpointErrorHandler } from "./error.middleware"
+export { requireScope } from "./requireScope.middleware"
+export { requireAuthLevel } from "./authLevel.middleware"
+export { validateMfaMethod } from "./mfaMethod.validate.middleware"

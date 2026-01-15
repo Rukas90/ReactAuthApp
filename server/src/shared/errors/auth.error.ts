@@ -1,4 +1,4 @@
-import { AccessDeniedError } from "./access.error"
+import { AccessDeniedError, AccessForbiddenError } from "./access.error"
 
 export class InvalidCredentialsError extends AccessDeniedError {
   constructor() {
@@ -28,5 +28,16 @@ export class RefreshTokenReusedError extends RefreshTokenError {
       "Token reuse detected. All tokens in this session have been revoked.",
       "REFRESH_TOKEN_REUSED"
     )
+  }
+}
+
+export class InvalidScopeError extends AccessForbiddenError {
+  constructor() {
+    super("Session does not include required auth scope.", "INVALID_AUTH_SCOPE")
+  }
+}
+export class InvalidAuthLevelError extends AccessForbiddenError {
+  constructor() {
+    super("Session does not include required auth level.", "INVALID_AUTH_LEVEL")
   }
 }

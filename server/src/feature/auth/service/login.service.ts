@@ -2,7 +2,7 @@ import { getUserByEmail } from "@features/user"
 import { InvalidCredentialsError } from "@shared/errors"
 import { hashing } from "@shared/security"
 import { User } from "@prisma/client"
-import { Result } from "@shared/types"
+import { Result } from "@project/shared"
 
 export const loginWithCredentials = async (
   email: string,

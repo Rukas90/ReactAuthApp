@@ -385,6 +385,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   User: 'User',
+  MfaEnrollment: 'MfaEnrollment',
   RefreshToken: 'RefreshToken',
   OAuth: 'OAuth',
   Session: 'Session',
@@ -405,7 +406,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "refreshToken" | "oAuth" | "session" | "blockedSession" | "verification"
+    modelProps: "user" | "mfaEnrollment" | "refreshToken" | "oAuth" | "session" | "blockedSession" | "verification"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -480,6 +481,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.UserCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.UserCountAggregateOutputType> | number
+        }
+      }
+    }
+    MfaEnrollment: {
+      payload: Prisma.$MfaEnrollmentPayload<ExtArgs>
+      fields: Prisma.MfaEnrollmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MfaEnrollmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MfaEnrollmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MfaEnrollmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MfaEnrollmentPayload>
+        }
+        findFirst: {
+          args: Prisma.MfaEnrollmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MfaEnrollmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MfaEnrollmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MfaEnrollmentPayload>
+        }
+        findMany: {
+          args: Prisma.MfaEnrollmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MfaEnrollmentPayload>[]
+        }
+        create: {
+          args: Prisma.MfaEnrollmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MfaEnrollmentPayload>
+        }
+        createMany: {
+          args: Prisma.MfaEnrollmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MfaEnrollmentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MfaEnrollmentPayload>[]
+        }
+        delete: {
+          args: Prisma.MfaEnrollmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MfaEnrollmentPayload>
+        }
+        update: {
+          args: Prisma.MfaEnrollmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MfaEnrollmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.MfaEnrollmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MfaEnrollmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MfaEnrollmentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MfaEnrollmentPayload>[]
+        }
+        upsert: {
+          args: Prisma.MfaEnrollmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MfaEnrollmentPayload>
+        }
+        aggregate: {
+          args: Prisma.MfaEnrollmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMfaEnrollment>
+        }
+        groupBy: {
+          args: Prisma.MfaEnrollmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MfaEnrollmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MfaEnrollmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MfaEnrollmentCountAggregateOutputType> | number
         }
       }
     }
@@ -897,11 +972,22 @@ export const UserScalarFieldEnum = {
   email: 'email',
   password_hash: 'password_hash',
   is_verified: 'is_verified',
-  created_at: 'created_at',
-  tfa_active: 'tfa_active'
+  created_at: 'created_at'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const MfaEnrollmentScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  method: 'method',
+  configured: 'configured',
+  credentials: 'credentials',
+  created_at: 'created_at'
+} as const
+
+export type MfaEnrollmentScalarFieldEnum = (typeof MfaEnrollmentScalarFieldEnum)[keyof typeof MfaEnrollmentScalarFieldEnum]
 
 
 export const RefreshTokenScalarFieldEnum = {
@@ -975,6 +1061,14 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
 export const JsonNullValueInput = {
   JsonNull: JsonNull
 } as const
@@ -997,6 +1091,14 @@ export const JsonNullValueFilter = {
 } as const
 
 export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
 
@@ -1037,6 +1139,20 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
+ * Reference to a field of type 'MfaMethod'
+ */
+export type EnumMfaMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MfaMethod'>
+    
+
+
+/**
+ * Reference to a field of type 'MfaMethod[]'
+ */
+export type ListEnumMfaMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MfaMethod[]'>
     
 
 
@@ -1177,6 +1293,7 @@ export type PrismaClientOptions = ({
 }
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
+  mfaEnrollment?: Prisma.MfaEnrollmentOmit
   refreshToken?: Prisma.RefreshTokenOmit
   oAuth?: Prisma.OAuthOmit
   session?: Prisma.SessionOmit

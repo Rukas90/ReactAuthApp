@@ -6,14 +6,14 @@ import {
   RefreshTokenReusedError,
   ResourceMissingError,
 } from "@shared/errors"
-import { Result } from "@shared/types"
+import { Result } from "@project/shared"
 import { hashing } from "@shared/security"
 import { RefreshToken, User } from "@prisma/client"
 import crypto from "crypto"
 
 export const generateRefreshToken = async (
-  userId: string,
-  familyId?: string
+  user: User,
+  familyId: string = crypto.randomUUID()
 ): Promise<string> => {
   const token = createToken()
   const tokenHash = await hashing.argon2.hash(token)
@@ -25,8 +25,8 @@ export const generateRefreshToken = async (
     data: {
       token_hash: tokenHash,
       lookup_hash: lookupHash,
-      family_id: familyId ?? crypto.randomUUID(),
-      user_id: userId,
+      family_id: familyId,
+      user_id: user.id,
       expires_at: new Date(Date.now() + thirtyDaysInMs),
       revoked: false,
     },

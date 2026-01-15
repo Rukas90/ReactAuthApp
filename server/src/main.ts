@@ -3,9 +3,10 @@ import "dotenv/config"
 import dotenv from "dotenv"
 import { useUserRoutes } from "@features/user"
 import { useAuthRoutes } from "@features/auth"
+import { useMfaRoutes } from "@features/mfa"
 import { endpointErrorHandler } from "@shared/middleware"
 import { useScalarDocs } from "./shared/docs/scalar"
-import { isDevelopment } from "@base/app"
+import { appConfig } from "@base/app"
 import { useSwaggerDocs } from "@shared/docs"
 import cookieParser from "cookie-parser"
 import bodyParser from "body-parser"
@@ -34,10 +35,11 @@ app.use(
 
 useUserRoutes(app)
 useAuthRoutes(app)
+useMfaRoutes(app)
 
 app.use(endpointErrorHandler)
 
-if (isDevelopment()) {
+if (appConfig.isDevelopment) {
   useSwaggerDocs(app)
   useScalarDocs(app)
 }

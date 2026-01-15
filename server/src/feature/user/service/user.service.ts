@@ -1,6 +1,6 @@
 import { database } from "@base/app"
 import { ResourceMissingError } from "@shared/errors"
-import { Result } from "@shared/types"
+import { Result } from "@project/shared"
 import { User } from "@prisma/client"
 
 export const getUserByEmail = async (
