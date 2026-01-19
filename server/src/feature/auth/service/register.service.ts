@@ -1,6 +1,6 @@
 import { database } from "@base/app"
 import { ConflictError, UnexpectedError } from "@shared/errors"
-import { Result } from "@shared/types"
+import { Result } from "@project/shared"
 import { hashing } from "@shared/security"
 import { Prisma, User } from "@prisma/client"
 

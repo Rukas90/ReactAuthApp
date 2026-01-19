@@ -49,10 +49,10 @@ const InputField = ({
 
   return (
     <div
-      className={`relative bg-stone-950 flex h-12 items-center px-3 py-2 transition-[background-color,height] hover:bg-stone-900 focus:border focus:border-stone-300 
+      className={`relative rounded-sm bg-stone-950 flex h-12 items-center px-3 py-2 transition-[background-color,height] hover:bg-stone-900 focus:border focus:border-stone-300 
         ${expand && "h-16"} ${indicateError && "border border-red-900"} ${
-        extendWidth && "w-full"
-      }`}
+          extendWidth && "w-full"
+        }`}
     >
       <label
         htmlFor={id}

@@ -1,8 +1,7 @@
 import { appConfig } from "@base/app"
-import { ProblemDetails } from "@project/shared"
 import * as express from "express"
 import { type Response } from "express-serve-static-core"
-import { SuccessResponse, SuccessCode } from "src/types/express.response"
+import { ProblemDetails, SuccessResponse, SuccessCode } from "@project/shared"
 
 export function extendResponse() {
   express.response.ok = function <T>(

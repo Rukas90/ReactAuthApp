@@ -5,7 +5,7 @@ import {
   CipherKey,
   CipherGCMTypes,
 } from "crypto"
-import { Result } from "../types"
+import { Result } from "@project/shared"
 
 export class EncryptionError extends Error {
   code = "ENCRYPTION_FAILED"

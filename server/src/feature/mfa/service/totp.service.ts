@@ -4,28 +4,52 @@ import speakeasy, { GeneratedSecret } from "speakeasy"
 import { appConfig, database } from "@base/app"
 import { CipherGCMOptions, decryptGCM, encryptGCM } from "@shared/security"
 import QRCode from "qrcode"
-import { Result } from "@project/shared"
-import { TotpGetDataError } from "@shared/errors"
+import { Result, TotpData } from "@project/shared"
+import { TotpError } from "@shared/errors"
 
 type TotpCredentials = {
   secret_enc: string
-}
-export type TotpData = {
-  qrCodeURi: string
 }
 const EncryptionOptions: CipherGCMOptions = {
   key: Buffer.from(process.env.TOTP_SECRET_AES_256_MASTER_KEY!, "base64"),
   algorithm: "aes-256-gcm",
 }
+type EnrollmentStatus =
+  | "NULL"
+  | "ALREADY_CONFIGURED"
+  | "EXPIRED"
+  | "INVALID"
+  | "AWAITING_VERIFICATION"
+
+const SETUP_EXPIRATION_MINUTES = 15
 
 export const getTotpData = async (
   user: User
-): Promise<Result<TotpData, TotpGetDataError>> => {
-  const enrollment = await getEnrollment(user.id, "TOTP", {
-    ensureCreated: true,
-  })
+): Promise<Result<TotpData, TotpError>> => {
+  let enrollment = await getEnrollment(user.id, "TOTP")
+
+  const status = getEnrollmentStatus(enrollment)
+
+  switch (status) {
+    case "ALREADY_CONFIGURED":
+      return Result.error(
+        new TotpError("TOTP is already configured", "ALREADY_CONFIGURED")
+      )
+    case "EXPIRED":
+    case "INVALID":
+      if (enrollment) {
+        await database.client.mfaEnrollment.delete({
+          where: { id: enrollment.id },
+        })
+      }
+      enrollment = null
+      break
+    case "NULL":
+    case "AWAITING_VERIFICATION":
+      break
+  }
   if (!enrollment) {
-    return Result.error(new TotpGetDataError())
+    enrollment = await createNewEnrollment(user)
   }
   const { credentials, generatedSecret } = await getCredentials(
     user,
@@ -38,7 +62,9 @@ export const getTotpData = async (
   } else {
     const decrypted = decryptGCM(credentials.secret_enc, EncryptionOptions)
     if (!decrypted.ok) {
-      return Result.error(new TotpGetDataError())
+      return Result.error(
+        new TotpError("Failed to decrypt TOTP secret", "DECRYPTION_FAILED")
+      )
     }
     secretKey = decrypted.data
   }
@@ -48,10 +74,45 @@ export const getTotpData = async (
   const qrCodeURi = await generateQRCodeURi(otpAuthUrl)
 
   if (!qrCodeURi) {
-    return Result.error(new TotpGetDataError())
+    return Result.error(
+      new TotpError("Failed to generate QR code", "QR_GENERATION_FAILED")
+    )
   }
-  return Result.success({ qrCodeURi })
+  return Result.success({
+    qrCodeURi,
+    setupKey: secretKey,
+    expiresAt: enrollment.expires_At!,
+  })
 }
+
+export const getEnrollmentStatus = (
+  enrollment: MfaEnrollment | null
+): EnrollmentStatus => {
+  if (!enrollment) {
+    return "NULL"
+  }
+  if (enrollment.configured) {
+    return "ALREADY_CONFIGURED"
+  }
+  if (!enrollment.expires_At) {
+    return "INVALID"
+  }
+  if (new Date() > enrollment.expires_At) {
+    return "EXPIRED"
+  }
+  return "AWAITING_VERIFICATION"
+}
+const createNewEnrollment = async (user: User): Promise<MfaEnrollment> => {
+  return await database.client.mfaEnrollment.create({
+    data: {
+      user_id: user.id,
+      method: "TOTP",
+      configured: false,
+      expires_At: new Date(Date.now() + SETUP_EXPIRATION_MINUTES * 60 * 1000),
+    },
+  })
+}
+
 const generateQRCodeURi = async (
   otpAuthUrl: string
 ): Promise<string | null> => {

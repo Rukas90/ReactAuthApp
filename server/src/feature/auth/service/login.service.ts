@@ -11,12 +11,14 @@ export const loginWithCredentials = async (
   if (!email || !password) {
     return Result.error(new InvalidCredentialsError())
   }
-  const result = await getUserByEmail(email)
+  const user = await getUserByEmail(email)
 
-  if (!result.ok) {
+  if (!user) {
     return Result.error(new InvalidCredentialsError())
   }
-  const user = result.data
+  if (!user.password_hash) {
+    return Result.error(new InvalidCredentialsError())
+  }
   const isPasswordValid = await validatePassword(password, user.password_hash)
 
   if (!isPasswordValid) {

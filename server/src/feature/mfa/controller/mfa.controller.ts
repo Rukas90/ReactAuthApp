@@ -3,7 +3,6 @@ import {
   authenticateRequest,
   requireScope,
   requireAuthLevel,
-  validateMfaMethod,
 } from "@shared/middleware"
 import {
   getInitEnrollmentData,
@@ -11,44 +10,32 @@ import {
 } from "./mfa.handler"
 
 export const useMfaRoutes = (app: Express) => {
-  app.use("/v1/auth", router)
+  app.use("/v1/auth/mfa", router)
 }
 const router = Router()
 
-router.get(
-  "/mfa/enrollments",
-  authenticateRequest,
-  getUserConfiguredEnrollments
-)
+router.get("/enrollments", authenticateRequest, getUserConfiguredEnrollments)
 
 router.post(
-  "/mfa/enrollments/:method/initialize",
+  "/totp/initialize",
   authenticateRequest,
   requireScope("user:access"),
   requireAuthLevel("full"),
-  validateMfaMethod,
   getInitEnrollmentData
 )
 
 router.post(
-  "/mfa/enrollments/:method/confirm",
+  "/totp/confirm",
   authenticateRequest,
   requireScope("user:access"),
-  requireAuthLevel("full"),
-  validateMfaMethod
+  requireAuthLevel("full")
 )
 
 router.delete(
-  "/mfa/enrollments/:method",
+  "/totp",
   authenticateRequest,
   requireScope("user:access"),
-  requireAuthLevel("full"),
-  validateMfaMethod
+  requireAuthLevel("full")
 )
 
-router.post(
-  "/mfa/:method/verify",
-  authenticateRequest,
-  requireScope("2fa:verify"),
-  validateMfaMethod
-)
+router.post("/totp/verify", authenticateRequest, requireScope("2fa:verify"))

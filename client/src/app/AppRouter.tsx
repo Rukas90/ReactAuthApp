@@ -29,6 +29,7 @@ const AppRouter = () => {
   return (
     <Routes>
       <Route path="/" element={<ForwardRoute />}></Route>
+      <Route path="/oauth/callback" element={<ForwardRoute />} />
       <Route element={<GuestOnlyRoute />}>
         <Route path="/login" element={<LoginView />} />
         <Route path="/register" element={<RegisterView />} />

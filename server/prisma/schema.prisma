@@ -10,7 +10,7 @@ datasource db {
 model User {
   id            String   @id @default(uuid())
   email         String   @unique
-  password_hash String
+  password_hash String?
   is_verified   Boolean
   created_at    DateTime @default(now())
 
@@ -21,6 +21,18 @@ model User {
   mfaEnrollments MfaEnrollment[]
 }
 
+model OAuth {
+  id          String  @id @default(uuid())
+  provider_id String
+  provider    String
+  username    String?
+  user        User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id     String
+
+  @@unique([provider, provider_id])
+  @@index([user_id])
+}
+
 model MfaEnrollment {
   id          String    @id @default(uuid())
   user        User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
@@ -29,6 +41,7 @@ model MfaEnrollment {
   configured  Boolean   @default(false)
   credentials Json?
   created_at  DateTime  @default(now())
+  expires_At  DateTime?
 
   @@unique([user_id, method])
   @@index([user_id])
@@ -52,17 +65,6 @@ model RefreshToken {
   @@index([user_id])
   @@index([family_id])
   @@index([lookup_hash])
-}
-
-model OAuth {
-  id            String @id @default(uuid())
-  provider_id   String
-  provider_name String
-  profile       Json
-  user          User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id       String
-
-  @@index([user_id])
 }
 
 model Session {

@@ -3,19 +3,28 @@ import {
   ACCESS_TOKEN_COOKIE_OPTIONS,
   REFRESH_TOKEN_COOKIE_OPTIONS,
 } from "../config/cookies.config"
+import ms from "ms"
 
-export const setAccessTokenCookie = (res: Response, accessToken: string) => {
+export const setAccessTokenCookie = (
+  res: Response,
+  accessToken: string,
+  expiration: number
+) => {
   clearAccessTokenCookie(res)
   res.cookie("accessToken", accessToken, {
     ...ACCESS_TOKEN_COOKIE_OPTIONS,
-    maxAge: 60 * 60 * 1000,
+    maxAge: expiration,
   })
 }
-export const setRefreshTokenCookie = (res: Response, refreshToken: string) => {
+export const setRefreshTokenCookie = (
+  res: Response,
+  refreshToken: string,
+  expiration: number
+) => {
   clearRefreshTokenCookie(res)
   res.cookie("refreshToken", refreshToken, {
     ...REFRESH_TOKEN_COOKIE_OPTIONS,
-    maxAge: 24 * 60 * 60 * 1000,
+    maxAge: expiration,
   })
 }
 

@@ -1,12 +1,11 @@
 import { database } from "@base/app"
-import { MfaEnrollment, MfaMethod } from "@prisma/client"
+import { MfaEnrollment, MfaMethod, Prisma } from "@prisma/client"
 
 export const getEnrollment = async (
   userId: string,
-  method: MfaMethod,
-  options: { ensureCreated?: boolean } = { ensureCreated: false }
+  method: MfaMethod
 ): Promise<MfaEnrollment | null> => {
-  const enrollment = await database.client.mfaEnrollment.findUnique({
+  return await database.client.mfaEnrollment.findUnique({
     where: {
       user_id_method: {
         user_id: userId,
@@ -14,16 +13,6 @@ export const getEnrollment = async (
       },
     },
   })
-  if (!enrollment && options.ensureCreated) {
-    return await database.client.mfaEnrollment.create({
-      data: {
-        user_id: userId,
-        method,
-        configured: false,
-      },
-    })
-  }
-  return enrollment
 }
 
 export const hasMfaConfigured = async (userId: string) => {

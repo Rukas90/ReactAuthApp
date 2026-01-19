@@ -30,6 +30,7 @@ export type MfaEnrollmentMinAggregateOutputType = {
   method: $Enums.MfaMethod | null
   configured: boolean | null
   created_at: Date | null
+  expires_At: Date | null
 }
 
 export type MfaEnrollmentMaxAggregateOutputType = {
@@ -38,6 +39,7 @@ export type MfaEnrollmentMaxAggregateOutputType = {
   method: $Enums.MfaMethod | null
   configured: boolean | null
   created_at: Date | null
+  expires_At: Date | null
 }
 
 export type MfaEnrollmentCountAggregateOutputType = {
@@ -47,6 +49,7 @@ export type MfaEnrollmentCountAggregateOutputType = {
   configured: number
   credentials: number
   created_at: number
+  expires_At: number
   _all: number
 }
 
@@ -57,6 +60,7 @@ export type MfaEnrollmentMinAggregateInputType = {
   method?: true
   configured?: true
   created_at?: true
+  expires_At?: true
 }
 
 export type MfaEnrollmentMaxAggregateInputType = {
@@ -65,6 +69,7 @@ export type MfaEnrollmentMaxAggregateInputType = {
   method?: true
   configured?: true
   created_at?: true
+  expires_At?: true
 }
 
 export type MfaEnrollmentCountAggregateInputType = {
@@ -74,6 +79,7 @@ export type MfaEnrollmentCountAggregateInputType = {
   configured?: true
   credentials?: true
   created_at?: true
+  expires_At?: true
   _all?: true
 }
 
@@ -156,6 +162,7 @@ export type MfaEnrollmentGroupByOutputType = {
   configured: boolean
   credentials: runtime.JsonValue | null
   created_at: Date
+  expires_At: Date | null
   _count: MfaEnrollmentCountAggregateOutputType | null
   _min: MfaEnrollmentMinAggregateOutputType | null
   _max: MfaEnrollmentMaxAggregateOutputType | null
@@ -186,6 +193,7 @@ export type MfaEnrollmentWhereInput = {
   configured?: Prisma.BoolFilter<"MfaEnrollment"> | boolean
   credentials?: Prisma.JsonNullableFilter<"MfaEnrollment">
   created_at?: Prisma.DateTimeFilter<"MfaEnrollment"> | Date | string
+  expires_At?: Prisma.DateTimeNullableFilter<"MfaEnrollment"> | Date | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
@@ -196,6 +204,7 @@ export type MfaEnrollmentOrderByWithRelationInput = {
   configured?: Prisma.SortOrder
   credentials?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  expires_At?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
 }
 
@@ -210,6 +219,7 @@ export type MfaEnrollmentWhereUniqueInput = Prisma.AtLeast<{
   configured?: Prisma.BoolFilter<"MfaEnrollment"> | boolean
   credentials?: Prisma.JsonNullableFilter<"MfaEnrollment">
   created_at?: Prisma.DateTimeFilter<"MfaEnrollment"> | Date | string
+  expires_At?: Prisma.DateTimeNullableFilter<"MfaEnrollment"> | Date | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "user_id_method">
 
@@ -220,6 +230,7 @@ export type MfaEnrollmentOrderByWithAggregationInput = {
   configured?: Prisma.SortOrder
   credentials?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  expires_At?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.MfaEnrollmentCountOrderByAggregateInput
   _max?: Prisma.MfaEnrollmentMaxOrderByAggregateInput
   _min?: Prisma.MfaEnrollmentMinOrderByAggregateInput
@@ -235,6 +246,7 @@ export type MfaEnrollmentScalarWhereWithAggregatesInput = {
   configured?: Prisma.BoolWithAggregatesFilter<"MfaEnrollment"> | boolean
   credentials?: Prisma.JsonNullableWithAggregatesFilter<"MfaEnrollment">
   created_at?: Prisma.DateTimeWithAggregatesFilter<"MfaEnrollment"> | Date | string
+  expires_At?: Prisma.DateTimeNullableWithAggregatesFilter<"MfaEnrollment"> | Date | string | null
 }
 
 export type MfaEnrollmentCreateInput = {
@@ -243,6 +255,7 @@ export type MfaEnrollmentCreateInput = {
   configured?: boolean
   credentials?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
+  expires_At?: Date | string | null
   user: Prisma.UserCreateNestedOneWithoutMfaEnrollmentsInput
 }
 
@@ -253,6 +266,7 @@ export type MfaEnrollmentUncheckedCreateInput = {
   configured?: boolean
   credentials?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
+  expires_At?: Date | string | null
 }
 
 export type MfaEnrollmentUpdateInput = {
@@ -261,6 +275,7 @@ export type MfaEnrollmentUpdateInput = {
   configured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   credentials?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expires_At?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutMfaEnrollmentsNestedInput
 }
 
@@ -271,6 +286,7 @@ export type MfaEnrollmentUncheckedUpdateInput = {
   configured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   credentials?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expires_At?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type MfaEnrollmentCreateManyInput = {
@@ -280,6 +296,7 @@ export type MfaEnrollmentCreateManyInput = {
   configured?: boolean
   credentials?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
+  expires_At?: Date | string | null
 }
 
 export type MfaEnrollmentUpdateManyMutationInput = {
@@ -288,6 +305,7 @@ export type MfaEnrollmentUpdateManyMutationInput = {
   configured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   credentials?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expires_At?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type MfaEnrollmentUncheckedUpdateManyInput = {
@@ -297,6 +315,7 @@ export type MfaEnrollmentUncheckedUpdateManyInput = {
   configured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   credentials?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expires_At?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type MfaEnrollmentListRelationFilter = {
@@ -321,6 +340,7 @@ export type MfaEnrollmentCountOrderByAggregateInput = {
   configured?: Prisma.SortOrder
   credentials?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  expires_At?: Prisma.SortOrder
 }
 
 export type MfaEnrollmentMaxOrderByAggregateInput = {
@@ -329,6 +349,7 @@ export type MfaEnrollmentMaxOrderByAggregateInput = {
   method?: Prisma.SortOrder
   configured?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  expires_At?: Prisma.SortOrder
 }
 
 export type MfaEnrollmentMinOrderByAggregateInput = {
@@ -337,6 +358,7 @@ export type MfaEnrollmentMinOrderByAggregateInput = {
   method?: Prisma.SortOrder
   configured?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  expires_At?: Prisma.SortOrder
 }
 
 export type MfaEnrollmentCreateNestedManyWithoutUserInput = {
@@ -385,12 +407,17 @@ export type EnumMfaMethodFieldUpdateOperationsInput = {
   set?: $Enums.MfaMethod
 }
 
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
+}
+
 export type MfaEnrollmentCreateWithoutUserInput = {
   id?: string
   method: $Enums.MfaMethod
   configured?: boolean
   credentials?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
+  expires_At?: Date | string | null
 }
 
 export type MfaEnrollmentUncheckedCreateWithoutUserInput = {
@@ -399,6 +426,7 @@ export type MfaEnrollmentUncheckedCreateWithoutUserInput = {
   configured?: boolean
   credentials?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
+  expires_At?: Date | string | null
 }
 
 export type MfaEnrollmentCreateOrConnectWithoutUserInput = {
@@ -437,6 +465,7 @@ export type MfaEnrollmentScalarWhereInput = {
   configured?: Prisma.BoolFilter<"MfaEnrollment"> | boolean
   credentials?: Prisma.JsonNullableFilter<"MfaEnrollment">
   created_at?: Prisma.DateTimeFilter<"MfaEnrollment"> | Date | string
+  expires_At?: Prisma.DateTimeNullableFilter<"MfaEnrollment"> | Date | string | null
 }
 
 export type MfaEnrollmentCreateManyUserInput = {
@@ -445,6 +474,7 @@ export type MfaEnrollmentCreateManyUserInput = {
   configured?: boolean
   credentials?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
+  expires_At?: Date | string | null
 }
 
 export type MfaEnrollmentUpdateWithoutUserInput = {
@@ -453,6 +483,7 @@ export type MfaEnrollmentUpdateWithoutUserInput = {
   configured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   credentials?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expires_At?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type MfaEnrollmentUncheckedUpdateWithoutUserInput = {
@@ -461,6 +492,7 @@ export type MfaEnrollmentUncheckedUpdateWithoutUserInput = {
   configured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   credentials?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expires_At?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type MfaEnrollmentUncheckedUpdateManyWithoutUserInput = {
@@ -469,6 +501,7 @@ export type MfaEnrollmentUncheckedUpdateManyWithoutUserInput = {
   configured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   credentials?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expires_At?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -480,6 +513,7 @@ export type MfaEnrollmentSelect<ExtArgs extends runtime.Types.Extensions.Interna
   configured?: boolean
   credentials?: boolean
   created_at?: boolean
+  expires_At?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mfaEnrollment"]>
 
@@ -490,6 +524,7 @@ export type MfaEnrollmentSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   configured?: boolean
   credentials?: boolean
   created_at?: boolean
+  expires_At?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mfaEnrollment"]>
 
@@ -500,6 +535,7 @@ export type MfaEnrollmentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   configured?: boolean
   credentials?: boolean
   created_at?: boolean
+  expires_At?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mfaEnrollment"]>
 
@@ -510,9 +546,10 @@ export type MfaEnrollmentSelectScalar = {
   configured?: boolean
   credentials?: boolean
   created_at?: boolean
+  expires_At?: boolean
 }
 
-export type MfaEnrollmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "user_id" | "method" | "configured" | "credentials" | "created_at", ExtArgs["result"]["mfaEnrollment"]>
+export type MfaEnrollmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "user_id" | "method" | "configured" | "credentials" | "created_at" | "expires_At", ExtArgs["result"]["mfaEnrollment"]>
 export type MfaEnrollmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -535,6 +572,7 @@ export type $MfaEnrollmentPayload<ExtArgs extends runtime.Types.Extensions.Inter
     configured: boolean
     credentials: runtime.JsonValue | null
     created_at: Date
+    expires_At: Date | null
   }, ExtArgs["result"]["mfaEnrollment"]>
   composites: {}
 }
@@ -965,6 +1003,7 @@ export interface MfaEnrollmentFieldRefs {
   readonly configured: Prisma.FieldRef<"MfaEnrollment", 'Boolean'>
   readonly credentials: Prisma.FieldRef<"MfaEnrollment", 'Json'>
   readonly created_at: Prisma.FieldRef<"MfaEnrollment", 'DateTime'>
+  readonly expires_At: Prisma.FieldRef<"MfaEnrollment", 'DateTime'>
 }
     
 

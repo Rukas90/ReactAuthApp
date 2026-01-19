@@ -1,6 +1,5 @@
 import type { AxiosError } from "axios"
-import type { SuccessResponse } from "./Response"
-import type { ProblemDetails } from "@project/shared"
+import type { SuccessResponse, ProblemDetails } from "@project/shared"
 
 export const isSuccessResponse = <T>(data: any): data is SuccessResponse<T> => {
   return data && data.status === "success" && "data" in data

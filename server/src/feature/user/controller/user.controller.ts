@@ -1,5 +1,4 @@
 import { authenticateRequest } from "@shared/middleware"
-import { asyncRoute } from "@shared/util"
 import { Express, Router } from "express"
 import { getUserByIdHandler } from "./user.handler"
 
@@ -27,4 +26,4 @@ const userRouter = Router()
  *       404:
  *         description: User not found
  */
-userRouter.get("/:id", authenticateRequest, asyncRoute(getUserByIdHandler))
+userRouter.get("/:id", authenticateRequest, getUserByIdHandler)

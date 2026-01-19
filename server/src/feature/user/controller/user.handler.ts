@@ -1,17 +1,16 @@
-import { NextFunction, Request, Response } from "express"
+import { NextFunction, Response } from "express"
 import { getUserById } from "../service/user.service"
-import { Result } from "@shared/types"
+import { Result } from "@project/shared"
+import { AuthRequest, authRoute } from "@shared/util"
 
-export const getUserByIdHandler = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const result = await getUserById(req.params.id)
+export const getUserByIdHandler = authRoute(
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    const result = await getUserById(req.params.id as string)
 
-  return Result.tap(
-    result,
-    (user) => res.ok(user),
-    (error) => next(error)
-  )
-}
+    return Result.tap(
+      result,
+      (user) => res.ok(user),
+      (error) => next(error),
+    )
+  },
+)

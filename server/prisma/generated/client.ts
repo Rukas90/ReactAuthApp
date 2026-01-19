@@ -45,6 +45,11 @@ export { Prisma }
  */
 export type User = Prisma.UserModel
 /**
+ * Model OAuth
+ * 
+ */
+export type OAuth = Prisma.OAuthModel
+/**
  * Model MfaEnrollment
  * 
  */
@@ -54,11 +59,6 @@ export type MfaEnrollment = Prisma.MfaEnrollmentModel
  * 
  */
 export type RefreshToken = Prisma.RefreshTokenModel
-/**
- * Model OAuth
- * 
- */
-export type OAuth = Prisma.OAuthModel
 /**
  * Model Session
  * 

@@ -52,9 +52,9 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  OAuth: 'OAuth',
   MfaEnrollment: 'MfaEnrollment',
   RefreshToken: 'RefreshToken',
-  OAuth: 'OAuth',
   Session: 'Session',
   BlockedSession: 'BlockedSession',
   Verification: 'Verification'
@@ -87,13 +87,25 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const OAuthScalarFieldEnum = {
+  id: 'id',
+  provider_id: 'provider_id',
+  provider: 'provider',
+  username: 'username',
+  user_id: 'user_id'
+} as const
+
+export type OAuthScalarFieldEnum = (typeof OAuthScalarFieldEnum)[keyof typeof OAuthScalarFieldEnum]
+
+
 export const MfaEnrollmentScalarFieldEnum = {
   id: 'id',
   user_id: 'user_id',
   method: 'method',
   configured: 'configured',
   credentials: 'credentials',
-  created_at: 'created_at'
+  created_at: 'created_at',
+  expires_At: 'expires_At'
 } as const
 
 export type MfaEnrollmentScalarFieldEnum = (typeof MfaEnrollmentScalarFieldEnum)[keyof typeof MfaEnrollmentScalarFieldEnum]
@@ -111,17 +123,6 @@ export const RefreshTokenScalarFieldEnum = {
 } as const
 
 export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[keyof typeof RefreshTokenScalarFieldEnum]
-
-
-export const OAuthScalarFieldEnum = {
-  id: 'id',
-  provider_id: 'provider_id',
-  provider_name: 'provider_name',
-  profile: 'profile',
-  user_id: 'user_id'
-} as const
-
-export type OAuthScalarFieldEnum = (typeof OAuthScalarFieldEnum)[keyof typeof OAuthScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {
@@ -178,19 +179,20 @@ export const NullableJsonNullValueInput = {
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
-export const JsonNullValueInput = {
-  JsonNull: 'JsonNull'
-} as const
-
-export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
-
-
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
 export const JsonNullValueFilter = {
@@ -200,12 +202,4 @@ export const JsonNullValueFilter = {
 } as const
 
 export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
-
-
-export const NullsOrder = {
-  first: 'first',
-  last: 'last'
-} as const
-
-export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 

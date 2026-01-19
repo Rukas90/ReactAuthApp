@@ -4,9 +4,9 @@ import { InvalidScopeError } from "../errors"
 
 export const requireScope =
   (scope: Scope) => (req: Request, _: Response, next: NextFunction) => {
-    const session = req.session
+    const auth = req.session.auth
 
-    if (!session || !session.scope.includes(scope)) {
+    if (!auth || !auth.scope.includes(scope)) {
       return next(new InvalidScopeError())
     }
     next()

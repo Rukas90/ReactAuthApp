@@ -1,40 +1,30 @@
 import { getMfaEnrollments } from "../service/mfa.service"
 import { MfaMethod } from "@prisma/client"
-import { UnauthenticatedError, UnexpectedError } from "@shared/errors"
-import { asyncRoute } from "@shared/util"
-import { NextFunction, Request, Response } from "express"
+import { UnexpectedError } from "@shared/errors"
+import { authRoute, AuthRequest } from "@shared/util"
 import { getTotpData } from "../service/totp.service"
 import { getUserById } from "@base/feature/user"
 
-export const getUserConfiguredEnrollments = asyncRoute(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const session = req.session
-
-    if (!session || !session.sub) {
-      return next(new UnauthenticatedError())
-    }
-    const userId = session.sub
-    const enrollments = await getMfaEnrollments(userId)
-
+export const getUserConfiguredEnrollments = authRoute(
+  async (req: AuthRequest, res) => {
+    const enrollments = await getMfaEnrollments(req.session.auth.userId)
     res.ok(enrollments.filter((e) => e.configured).map((e) => e.method))
-  }
+  },
 )
-export const getInitEnrollmentData = asyncRoute(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const session = req.session
-
-    if (!session || !session.sub) {
-      return next(new UnauthenticatedError())
-    }
+export const initializeTotpData = authRoute(async (req, res, next) => {
+  const session = req.session.auth
+})
+export const getInitEnrollmentData = authRoute(
+  async (req: AuthRequest, res, next) => {
     const method = req.params.method as MfaMethod
-    const user = await getUserById(session.sub)
+    const user = await getUserById(req.session.auth.userId)
 
     if (!user.ok) {
       return next(
         new UnexpectedError(
           "Failed to get enrollment data.",
-          "UNEXPECTED_ERROR"
-        )
+          "UNEXPECTED_ERROR",
+        ),
       )
     }
     switch (method) {
@@ -44,9 +34,9 @@ export const getInitEnrollmentData = asyncRoute(
         return next(
           new UnexpectedError(
             "Failed to get enrollment data.",
-            "UNEXPECTED_ERROR"
-          )
+            "UNEXPECTED_ERROR",
+          ),
         )
     }
-  }
+  },
 )

@@ -20,9 +20,8 @@
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
-  ],
+  ], 
   "include": [
-    "src",
     "src/types/**/*.d.ts",
     "./vite-env.d.ts"
   ]

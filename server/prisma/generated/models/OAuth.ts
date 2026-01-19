@@ -27,22 +27,24 @@ export type AggregateOAuth = {
 export type OAuthMinAggregateOutputType = {
   id: string | null
   provider_id: string | null
-  provider_name: string | null
+  provider: string | null
+  username: string | null
   user_id: string | null
 }
 
 export type OAuthMaxAggregateOutputType = {
   id: string | null
   provider_id: string | null
-  provider_name: string | null
+  provider: string | null
+  username: string | null
   user_id: string | null
 }
 
 export type OAuthCountAggregateOutputType = {
   id: number
   provider_id: number
-  provider_name: number
-  profile: number
+  provider: number
+  username: number
   user_id: number
   _all: number
 }
@@ -51,22 +53,24 @@ export type OAuthCountAggregateOutputType = {
 export type OAuthMinAggregateInputType = {
   id?: true
   provider_id?: true
-  provider_name?: true
+  provider?: true
+  username?: true
   user_id?: true
 }
 
 export type OAuthMaxAggregateInputType = {
   id?: true
   provider_id?: true
-  provider_name?: true
+  provider?: true
+  username?: true
   user_id?: true
 }
 
 export type OAuthCountAggregateInputType = {
   id?: true
   provider_id?: true
-  provider_name?: true
-  profile?: true
+  provider?: true
+  username?: true
   user_id?: true
   _all?: true
 }
@@ -146,8 +150,8 @@ export type OAuthGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type OAuthGroupByOutputType = {
   id: string
   provider_id: string
-  provider_name: string
-  profile: runtime.JsonValue
+  provider: string
+  username: string | null
   user_id: string
   _count: OAuthCountAggregateOutputType | null
   _min: OAuthMinAggregateOutputType | null
@@ -175,8 +179,8 @@ export type OAuthWhereInput = {
   NOT?: Prisma.OAuthWhereInput | Prisma.OAuthWhereInput[]
   id?: Prisma.StringFilter<"OAuth"> | string
   provider_id?: Prisma.StringFilter<"OAuth"> | string
-  provider_name?: Prisma.StringFilter<"OAuth"> | string
-  profile?: Prisma.JsonFilter<"OAuth">
+  provider?: Prisma.StringFilter<"OAuth"> | string
+  username?: Prisma.StringNullableFilter<"OAuth"> | string | null
   user_id?: Prisma.StringFilter<"OAuth"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
@@ -184,29 +188,30 @@ export type OAuthWhereInput = {
 export type OAuthOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   provider_id?: Prisma.SortOrder
-  provider_name?: Prisma.SortOrder
-  profile?: Prisma.SortOrder
+  provider?: Prisma.SortOrder
+  username?: Prisma.SortOrderInput | Prisma.SortOrder
   user_id?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
 }
 
 export type OAuthWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  provider_provider_id?: Prisma.OAuthProviderProvider_idCompoundUniqueInput
   AND?: Prisma.OAuthWhereInput | Prisma.OAuthWhereInput[]
   OR?: Prisma.OAuthWhereInput[]
   NOT?: Prisma.OAuthWhereInput | Prisma.OAuthWhereInput[]
   provider_id?: Prisma.StringFilter<"OAuth"> | string
-  provider_name?: Prisma.StringFilter<"OAuth"> | string
-  profile?: Prisma.JsonFilter<"OAuth">
+  provider?: Prisma.StringFilter<"OAuth"> | string
+  username?: Prisma.StringNullableFilter<"OAuth"> | string | null
   user_id?: Prisma.StringFilter<"OAuth"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-}, "id">
+}, "id" | "provider_provider_id">
 
 export type OAuthOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   provider_id?: Prisma.SortOrder
-  provider_name?: Prisma.SortOrder
-  profile?: Prisma.SortOrder
+  provider?: Prisma.SortOrder
+  username?: Prisma.SortOrderInput | Prisma.SortOrder
   user_id?: Prisma.SortOrder
   _count?: Prisma.OAuthCountOrderByAggregateInput
   _max?: Prisma.OAuthMaxOrderByAggregateInput
@@ -219,63 +224,63 @@ export type OAuthScalarWhereWithAggregatesInput = {
   NOT?: Prisma.OAuthScalarWhereWithAggregatesInput | Prisma.OAuthScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"OAuth"> | string
   provider_id?: Prisma.StringWithAggregatesFilter<"OAuth"> | string
-  provider_name?: Prisma.StringWithAggregatesFilter<"OAuth"> | string
-  profile?: Prisma.JsonWithAggregatesFilter<"OAuth">
+  provider?: Prisma.StringWithAggregatesFilter<"OAuth"> | string
+  username?: Prisma.StringNullableWithAggregatesFilter<"OAuth"> | string | null
   user_id?: Prisma.StringWithAggregatesFilter<"OAuth"> | string
 }
 
 export type OAuthCreateInput = {
   id?: string
   provider_id: string
-  provider_name: string
-  profile: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  provider: string
+  username?: string | null
   user: Prisma.UserCreateNestedOneWithoutOauthsInput
 }
 
 export type OAuthUncheckedCreateInput = {
   id?: string
   provider_id: string
-  provider_name: string
-  profile: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  provider: string
+  username?: string | null
   user_id: string
 }
 
 export type OAuthUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   provider_id?: Prisma.StringFieldUpdateOperationsInput | string
-  provider_name?: Prisma.StringFieldUpdateOperationsInput | string
-  profile?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  provider?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutOauthsNestedInput
 }
 
 export type OAuthUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   provider_id?: Prisma.StringFieldUpdateOperationsInput | string
-  provider_name?: Prisma.StringFieldUpdateOperationsInput | string
-  profile?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  provider?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type OAuthCreateManyInput = {
   id?: string
   provider_id: string
-  provider_name: string
-  profile: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  provider: string
+  username?: string | null
   user_id: string
 }
 
 export type OAuthUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   provider_id?: Prisma.StringFieldUpdateOperationsInput | string
-  provider_name?: Prisma.StringFieldUpdateOperationsInput | string
-  profile?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  provider?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type OAuthUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   provider_id?: Prisma.StringFieldUpdateOperationsInput | string
-  provider_name?: Prisma.StringFieldUpdateOperationsInput | string
-  profile?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  provider?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -289,25 +294,32 @@ export type OAuthOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type OAuthProviderProvider_idCompoundUniqueInput = {
+  provider: string
+  provider_id: string
+}
+
 export type OAuthCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   provider_id?: Prisma.SortOrder
-  provider_name?: Prisma.SortOrder
-  profile?: Prisma.SortOrder
+  provider?: Prisma.SortOrder
+  username?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
 }
 
 export type OAuthMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   provider_id?: Prisma.SortOrder
-  provider_name?: Prisma.SortOrder
+  provider?: Prisma.SortOrder
+  username?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
 }
 
 export type OAuthMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   provider_id?: Prisma.SortOrder
-  provider_name?: Prisma.SortOrder
+  provider?: Prisma.SortOrder
+  username?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
 }
 
@@ -356,15 +368,15 @@ export type OAuthUncheckedUpdateManyWithoutUserNestedInput = {
 export type OAuthCreateWithoutUserInput = {
   id?: string
   provider_id: string
-  provider_name: string
-  profile: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  provider: string
+  username?: string | null
 }
 
 export type OAuthUncheckedCreateWithoutUserInput = {
   id?: string
   provider_id: string
-  provider_name: string
-  profile: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  provider: string
+  username?: string | null
 }
 
 export type OAuthCreateOrConnectWithoutUserInput = {
@@ -399,37 +411,37 @@ export type OAuthScalarWhereInput = {
   NOT?: Prisma.OAuthScalarWhereInput | Prisma.OAuthScalarWhereInput[]
   id?: Prisma.StringFilter<"OAuth"> | string
   provider_id?: Prisma.StringFilter<"OAuth"> | string
-  provider_name?: Prisma.StringFilter<"OAuth"> | string
-  profile?: Prisma.JsonFilter<"OAuth">
+  provider?: Prisma.StringFilter<"OAuth"> | string
+  username?: Prisma.StringNullableFilter<"OAuth"> | string | null
   user_id?: Prisma.StringFilter<"OAuth"> | string
 }
 
 export type OAuthCreateManyUserInput = {
   id?: string
   provider_id: string
-  provider_name: string
-  profile: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  provider: string
+  username?: string | null
 }
 
 export type OAuthUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   provider_id?: Prisma.StringFieldUpdateOperationsInput | string
-  provider_name?: Prisma.StringFieldUpdateOperationsInput | string
-  profile?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  provider?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type OAuthUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   provider_id?: Prisma.StringFieldUpdateOperationsInput | string
-  provider_name?: Prisma.StringFieldUpdateOperationsInput | string
-  profile?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  provider?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type OAuthUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   provider_id?: Prisma.StringFieldUpdateOperationsInput | string
-  provider_name?: Prisma.StringFieldUpdateOperationsInput | string
-  profile?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  provider?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -437,8 +449,8 @@ export type OAuthUncheckedUpdateManyWithoutUserInput = {
 export type OAuthSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   provider_id?: boolean
-  provider_name?: boolean
-  profile?: boolean
+  provider?: boolean
+  username?: boolean
   user_id?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["oAuth"]>
@@ -446,8 +458,8 @@ export type OAuthSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
 export type OAuthSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   provider_id?: boolean
-  provider_name?: boolean
-  profile?: boolean
+  provider?: boolean
+  username?: boolean
   user_id?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["oAuth"]>
@@ -455,8 +467,8 @@ export type OAuthSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type OAuthSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   provider_id?: boolean
-  provider_name?: boolean
-  profile?: boolean
+  provider?: boolean
+  username?: boolean
   user_id?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["oAuth"]>
@@ -464,12 +476,12 @@ export type OAuthSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type OAuthSelectScalar = {
   id?: boolean
   provider_id?: boolean
-  provider_name?: boolean
-  profile?: boolean
+  provider?: boolean
+  username?: boolean
   user_id?: boolean
 }
 
-export type OAuthOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "provider_id" | "provider_name" | "profile" | "user_id", ExtArgs["result"]["oAuth"]>
+export type OAuthOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "provider_id" | "provider" | "username" | "user_id", ExtArgs["result"]["oAuth"]>
 export type OAuthInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -488,8 +500,8 @@ export type $OAuthPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     provider_id: string
-    provider_name: string
-    profile: runtime.JsonValue
+    provider: string
+    username: string | null
     user_id: string
   }, ExtArgs["result"]["oAuth"]>
   composites: {}
@@ -917,8 +929,8 @@ export interface Prisma__OAuthClient<T, Null = never, ExtArgs extends runtime.Ty
 export interface OAuthFieldRefs {
   readonly id: Prisma.FieldRef<"OAuth", 'String'>
   readonly provider_id: Prisma.FieldRef<"OAuth", 'String'>
-  readonly provider_name: Prisma.FieldRef<"OAuth", 'String'>
-  readonly profile: Prisma.FieldRef<"OAuth", 'Json'>
+  readonly provider: Prisma.FieldRef<"OAuth", 'String'>
+  readonly username: Prisma.FieldRef<"OAuth", 'String'>
   readonly user_id: Prisma.FieldRef<"OAuth", 'String'>
 }
     

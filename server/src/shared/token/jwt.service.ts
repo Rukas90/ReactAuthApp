@@ -2,7 +2,8 @@ import { JWTPayload, SignJWT, jwtVerify } from "jose"
 import { JOSEError } from "jose/errors"
 import { UnexpectedError } from "@shared/errors"
 import { User } from "@prisma/client"
-import { AuthLevel, Result } from "@project/shared"
+import { AuthLevel, AuthUser, Result } from "@project/shared"
+import ms from "ms"
 
 const ENCODER = new TextEncoder()
 const SECRET = ENCODER.encode(process.env.JWT_SECRET!)
@@ -17,34 +18,34 @@ export type AccessTokenClaims = {
 
 export interface AccessTokenPayload extends JWTPayload, AccessTokenClaims {}
 
-export const generatePre2faAccessToken = (user: User) => {
-  return generateAccessToken(
+export const generatePre2faAccessToken = async (user: User) => {
+  return await generateAccessToken(
     user,
     {
       auth_level: "pre_2fa",
       email_verified: user.is_verified,
       scope: ["2fa:verify"],
     },
-    "5m"
+    ms("5m")
   )
 }
-export const generateFullAccessToken = (user: User) => {
-  return generateAccessToken(
+export const generateFullAccessToken = async (user: User) => {
+  return await generateAccessToken(
     user,
     {
       auth_level: "full",
       email_verified: user.is_verified,
       scope: ["user:access"],
     },
-    "15m"
+    ms("15m")
   )
 }
-const generateAccessToken = (
+const generateAccessToken = async (
   user: User,
   claims: AccessTokenClaims,
-  expiration: number | string | Date
-): Promise<string> => {
-  return new SignJWT(claims)
+  expiration: number
+): Promise<{ accessToken: string; authUser: AuthUser }> => {
+  const accessToken = await new SignJWT(claims)
     .setIssuer(process.env.API_URL!)
     .setAudience(process.env.CLIENT_URL!)
     .setSubject(user.id)
@@ -52,6 +53,13 @@ const generateAccessToken = (
     .setExpirationTime(expiration)
     .setProtectedHeader({ alg: "HS256" })
     .sign(SECRET)
+
+  const authUser: AuthUser = {
+    verifiedEmail: claims.email_verified,
+    authLevel: claims.auth_level,
+    expiresAt: expiration,
+  }
+  return { accessToken, authUser }
 }
 
 export const validateAccessToken = async (
