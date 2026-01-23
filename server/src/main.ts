@@ -28,11 +28,7 @@ app.use(
     origin: ["http://www.127.0.0.1.sslip.io:5173", "http://localhost:5173"],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-    allowedHeaders: [
-      "Content-Type",
-      "X-CSRF-TOKEN",
-      "Access-Control-Allow-Origin",
-    ],
+    allowedHeaders: ["Content-Type", "X-CSRF-TOKEN"],
   }),
 )
 app.use(

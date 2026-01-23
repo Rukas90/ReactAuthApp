@@ -1,14 +1,37 @@
-import axios, { type AxiosResponse, AxiosError } from "axios"
+import axios, {
+  type AxiosInstance,
+  type AxiosResponse,
+  AxiosError,
+} from "axios"
 import { type ApiResult } from "./Response"
 import { axiosErrorToProblemDetails, isSuccessResponse } from "./RequestHelpers"
-
-axios.defaults.withCredentials = true
+import Cookies from "js-cookie"
 
 export const API_URL = import.meta.env.VITE_API_URL
 
-export const MAKE_REQUEST = async <T>(
+export const axiosBaseConfig = {
+  baseURL: API_URL,
+  timeout: 50000,
+  withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+  },
+}
+export const axiosInstance: AxiosInstance = axios.create(axiosBaseConfig)
+
+let csrfCookie: string | undefined = undefined
+
+axiosInstance.interceptors.request.use(async (request) => {
+  csrfCookie ??= Cookies.get("csrf-token")
+  if (!!csrfCookie) {
+    request.headers.set("X-CSRF-TOKEN", csrfCookie)
+  }
+  return request
+})
+
+export const makeRequest = async <T>(
   request: Promise<AxiosResponse<any>>,
-  path: string
+  path: string,
 ): Promise<ApiResult<T>> => {
   try {
     const response = await request
@@ -32,10 +55,7 @@ export const MAKE_REQUEST = async <T>(
     }
   } catch (error) {
     if (error instanceof AxiosError) {
-      return {
-        ok: false,
-        error: axiosErrorToProblemDetails(error),
-      }
+      throw error
     }
     return {
       ok: false,

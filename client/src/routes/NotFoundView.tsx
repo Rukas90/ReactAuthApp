@@ -1,9 +1,9 @@
-import { FullSizeContainer, HeaderText } from "@features/shared"
+import { FullSizeContainer, TitleText } from "@features/shared"
 
 const NotFoundView = () => {
   return (
     <FullSizeContainer>
-      <HeaderText>404</HeaderText>
+      <TitleText>404</TitleText>
     </FullSizeContainer>
   )
 }

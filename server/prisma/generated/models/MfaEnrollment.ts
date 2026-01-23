@@ -27,7 +27,7 @@ export type AggregateMfaEnrollment = {
 export type MfaEnrollmentMinAggregateOutputType = {
   id: string | null
   user_id: string | null
-  method: $Enums.MfaMethod | null
+  method: string | null
   configured: boolean | null
   created_at: Date | null
   expires_At: Date | null
@@ -36,7 +36,7 @@ export type MfaEnrollmentMinAggregateOutputType = {
 export type MfaEnrollmentMaxAggregateOutputType = {
   id: string | null
   user_id: string | null
-  method: $Enums.MfaMethod | null
+  method: string | null
   configured: boolean | null
   created_at: Date | null
   expires_At: Date | null
@@ -158,7 +158,7 @@ export type MfaEnrollmentGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 export type MfaEnrollmentGroupByOutputType = {
   id: string
   user_id: string
-  method: $Enums.MfaMethod
+  method: string
   configured: boolean
   credentials: runtime.JsonValue | null
   created_at: Date
@@ -189,7 +189,7 @@ export type MfaEnrollmentWhereInput = {
   NOT?: Prisma.MfaEnrollmentWhereInput | Prisma.MfaEnrollmentWhereInput[]
   id?: Prisma.StringFilter<"MfaEnrollment"> | string
   user_id?: Prisma.StringFilter<"MfaEnrollment"> | string
-  method?: Prisma.EnumMfaMethodFilter<"MfaEnrollment"> | $Enums.MfaMethod
+  method?: Prisma.StringFilter<"MfaEnrollment"> | string
   configured?: Prisma.BoolFilter<"MfaEnrollment"> | boolean
   credentials?: Prisma.JsonNullableFilter<"MfaEnrollment">
   created_at?: Prisma.DateTimeFilter<"MfaEnrollment"> | Date | string
@@ -215,7 +215,7 @@ export type MfaEnrollmentWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.MfaEnrollmentWhereInput[]
   NOT?: Prisma.MfaEnrollmentWhereInput | Prisma.MfaEnrollmentWhereInput[]
   user_id?: Prisma.StringFilter<"MfaEnrollment"> | string
-  method?: Prisma.EnumMfaMethodFilter<"MfaEnrollment"> | $Enums.MfaMethod
+  method?: Prisma.StringFilter<"MfaEnrollment"> | string
   configured?: Prisma.BoolFilter<"MfaEnrollment"> | boolean
   credentials?: Prisma.JsonNullableFilter<"MfaEnrollment">
   created_at?: Prisma.DateTimeFilter<"MfaEnrollment"> | Date | string
@@ -242,7 +242,7 @@ export type MfaEnrollmentScalarWhereWithAggregatesInput = {
   NOT?: Prisma.MfaEnrollmentScalarWhereWithAggregatesInput | Prisma.MfaEnrollmentScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"MfaEnrollment"> | string
   user_id?: Prisma.StringWithAggregatesFilter<"MfaEnrollment"> | string
-  method?: Prisma.EnumMfaMethodWithAggregatesFilter<"MfaEnrollment"> | $Enums.MfaMethod
+  method?: Prisma.StringWithAggregatesFilter<"MfaEnrollment"> | string
   configured?: Prisma.BoolWithAggregatesFilter<"MfaEnrollment"> | boolean
   credentials?: Prisma.JsonNullableWithAggregatesFilter<"MfaEnrollment">
   created_at?: Prisma.DateTimeWithAggregatesFilter<"MfaEnrollment"> | Date | string
@@ -251,7 +251,7 @@ export type MfaEnrollmentScalarWhereWithAggregatesInput = {
 
 export type MfaEnrollmentCreateInput = {
   id?: string
-  method: $Enums.MfaMethod
+  method: string
   configured?: boolean
   credentials?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
@@ -262,7 +262,7 @@ export type MfaEnrollmentCreateInput = {
 export type MfaEnrollmentUncheckedCreateInput = {
   id?: string
   user_id: string
-  method: $Enums.MfaMethod
+  method: string
   configured?: boolean
   credentials?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
@@ -271,7 +271,7 @@ export type MfaEnrollmentUncheckedCreateInput = {
 
 export type MfaEnrollmentUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  method?: Prisma.EnumMfaMethodFieldUpdateOperationsInput | $Enums.MfaMethod
+  method?: Prisma.StringFieldUpdateOperationsInput | string
   configured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   credentials?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -282,7 +282,7 @@ export type MfaEnrollmentUpdateInput = {
 export type MfaEnrollmentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
-  method?: Prisma.EnumMfaMethodFieldUpdateOperationsInput | $Enums.MfaMethod
+  method?: Prisma.StringFieldUpdateOperationsInput | string
   configured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   credentials?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -292,7 +292,7 @@ export type MfaEnrollmentUncheckedUpdateInput = {
 export type MfaEnrollmentCreateManyInput = {
   id?: string
   user_id: string
-  method: $Enums.MfaMethod
+  method: string
   configured?: boolean
   credentials?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
@@ -301,7 +301,7 @@ export type MfaEnrollmentCreateManyInput = {
 
 export type MfaEnrollmentUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  method?: Prisma.EnumMfaMethodFieldUpdateOperationsInput | $Enums.MfaMethod
+  method?: Prisma.StringFieldUpdateOperationsInput | string
   configured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   credentials?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -311,7 +311,7 @@ export type MfaEnrollmentUpdateManyMutationInput = {
 export type MfaEnrollmentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
-  method?: Prisma.EnumMfaMethodFieldUpdateOperationsInput | $Enums.MfaMethod
+  method?: Prisma.StringFieldUpdateOperationsInput | string
   configured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   credentials?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -330,7 +330,7 @@ export type MfaEnrollmentOrderByRelationAggregateInput = {
 
 export type MfaEnrollmentUser_idMethodCompoundUniqueInput = {
   user_id: string
-  method: $Enums.MfaMethod
+  method: string
 }
 
 export type MfaEnrollmentCountOrderByAggregateInput = {
@@ -403,17 +403,13 @@ export type MfaEnrollmentUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.MfaEnrollmentScalarWhereInput | Prisma.MfaEnrollmentScalarWhereInput[]
 }
 
-export type EnumMfaMethodFieldUpdateOperationsInput = {
-  set?: $Enums.MfaMethod
-}
-
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }
 
 export type MfaEnrollmentCreateWithoutUserInput = {
   id?: string
-  method: $Enums.MfaMethod
+  method: string
   configured?: boolean
   credentials?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
@@ -422,7 +418,7 @@ export type MfaEnrollmentCreateWithoutUserInput = {
 
 export type MfaEnrollmentUncheckedCreateWithoutUserInput = {
   id?: string
-  method: $Enums.MfaMethod
+  method: string
   configured?: boolean
   credentials?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
@@ -461,7 +457,7 @@ export type MfaEnrollmentScalarWhereInput = {
   NOT?: Prisma.MfaEnrollmentScalarWhereInput | Prisma.MfaEnrollmentScalarWhereInput[]
   id?: Prisma.StringFilter<"MfaEnrollment"> | string
   user_id?: Prisma.StringFilter<"MfaEnrollment"> | string
-  method?: Prisma.EnumMfaMethodFilter<"MfaEnrollment"> | $Enums.MfaMethod
+  method?: Prisma.StringFilter<"MfaEnrollment"> | string
   configured?: Prisma.BoolFilter<"MfaEnrollment"> | boolean
   credentials?: Prisma.JsonNullableFilter<"MfaEnrollment">
   created_at?: Prisma.DateTimeFilter<"MfaEnrollment"> | Date | string
@@ -470,7 +466,7 @@ export type MfaEnrollmentScalarWhereInput = {
 
 export type MfaEnrollmentCreateManyUserInput = {
   id?: string
-  method: $Enums.MfaMethod
+  method: string
   configured?: boolean
   credentials?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
@@ -479,7 +475,7 @@ export type MfaEnrollmentCreateManyUserInput = {
 
 export type MfaEnrollmentUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  method?: Prisma.EnumMfaMethodFieldUpdateOperationsInput | $Enums.MfaMethod
+  method?: Prisma.StringFieldUpdateOperationsInput | string
   configured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   credentials?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -488,7 +484,7 @@ export type MfaEnrollmentUpdateWithoutUserInput = {
 
 export type MfaEnrollmentUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  method?: Prisma.EnumMfaMethodFieldUpdateOperationsInput | $Enums.MfaMethod
+  method?: Prisma.StringFieldUpdateOperationsInput | string
   configured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   credentials?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -497,7 +493,7 @@ export type MfaEnrollmentUncheckedUpdateWithoutUserInput = {
 
 export type MfaEnrollmentUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  method?: Prisma.EnumMfaMethodFieldUpdateOperationsInput | $Enums.MfaMethod
+  method?: Prisma.StringFieldUpdateOperationsInput | string
   configured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   credentials?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -568,7 +564,7 @@ export type $MfaEnrollmentPayload<ExtArgs extends runtime.Types.Extensions.Inter
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     user_id: string
-    method: $Enums.MfaMethod
+    method: string
     configured: boolean
     credentials: runtime.JsonValue | null
     created_at: Date
@@ -999,7 +995,7 @@ export interface Prisma__MfaEnrollmentClient<T, Null = never, ExtArgs extends ru
 export interface MfaEnrollmentFieldRefs {
   readonly id: Prisma.FieldRef<"MfaEnrollment", 'String'>
   readonly user_id: Prisma.FieldRef<"MfaEnrollment", 'String'>
-  readonly method: Prisma.FieldRef<"MfaEnrollment", 'MfaMethod'>
+  readonly method: Prisma.FieldRef<"MfaEnrollment", 'String'>
   readonly configured: Prisma.FieldRef<"MfaEnrollment", 'Boolean'>
   readonly credentials: Prisma.FieldRef<"MfaEnrollment", 'Json'>
   readonly created_at: Prisma.FieldRef<"MfaEnrollment", 'DateTime'>

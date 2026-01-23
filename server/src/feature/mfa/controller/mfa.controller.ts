@@ -3,11 +3,16 @@ import {
   authenticateRequest,
   requireScope,
   requireAuthLevel,
+  validateBody,
 } from "@shared/middleware"
 import {
-  getInitEnrollmentData,
+  initializeTotpData,
   getUserConfiguredEnrollments,
+  deleteMfaEnrollment,
+  confirmTotp,
 } from "./mfa.handler"
+import validateMfaMethod from "../middleware/validate.method.middleware"
+import z from "zod"
 
 export const useMfaRoutes = (app: Express) => {
   app.use("/v1/auth/mfa", router)
@@ -21,21 +26,29 @@ router.post(
   authenticateRequest,
   requireScope("user:access"),
   requireAuthLevel("full"),
-  getInitEnrollmentData
+  initializeTotpData,
 )
+
+const codeSchema = z.object({
+  code: z.string().length(6),
+})
 
 router.post(
   "/totp/confirm",
   authenticateRequest,
   requireScope("user:access"),
-  requireAuthLevel("full")
+  requireAuthLevel("full"),
+  validateBody(codeSchema),
+  confirmTotp,
 )
 
 router.delete(
-  "/totp",
+  "/:method",
   authenticateRequest,
   requireScope("user:access"),
-  requireAuthLevel("full")
+  requireAuthLevel("full"),
+  validateMfaMethod,
+  deleteMfaEnrollment,
 )
 
 router.post("/totp/verify", authenticateRequest, requireScope("2fa:verify"))

@@ -16,3 +16,6 @@ html, body, #root {
 a {
   text-decoration: none; 
 }
+::selection {
+	background: oklch(75.862% 0.17676 60.629 / 0.137);
+}

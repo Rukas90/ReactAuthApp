@@ -1,7 +1,7 @@
 import {
   Captcha,
   HorizontalLineLabel,
-  HeaderText,
+  TitleText,
   LinkText,
 } from "@features/shared"
 import { useTranslation } from "react-i18next"
@@ -16,7 +16,7 @@ const LoginView = () => {
 
   return (
     <AuthView error={form.error}>
-      <HeaderText>{t("LOGIN")}</HeaderText>
+      <TitleText>{t("LOGIN")}</TitleText>
       <p className="text-stone-400">
         Don't have an account? <LinkText to="/register">Register</LinkText>
       </p>

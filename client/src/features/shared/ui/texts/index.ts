@@ -1,3 +1,5 @@
-export { default as HeaderText } from "./HeaderText"
+export { default as TitleText } from "./TitleText"
 export { default as LinkText } from "./LinkText"
 export { default as SectionText } from "./SectionText"
+export { default as PlainText } from "./PlainText"
+export { default as HeadingText } from "./HeadingText"

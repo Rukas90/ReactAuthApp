@@ -1,5 +1,9 @@
-export interface BaseButtonProps
-  extends Pick<React.ComponentProps<"div">, "className"> {
+import clsx from "clsx"
+
+export interface BaseButtonProps extends Pick<
+  React.ComponentProps<"div">,
+  "className"
+> {
   text?: string
   icon?: string
 
@@ -28,25 +32,17 @@ const BaseButton = ({
       type={type}
       disabled={disabled}
       onClick={disabled ? undefined : action}
-      className={`
-        ${className}
-        flex
-        rounded-sm
-        flex-row
-        border-0
-        font-medium
-        justify-center
-        items-center
-        text-center
-        transition
-        cursor-pointer
-        ${extendWidth && "w-full"}
-      `}
+      className={clsx(
+        className,
+        "flex rounded-sm flex-row border-0 font-medium justify-center items-center text-center transition",
+        extendWidth && "w-full",
+        disabled ? "opacity-50" : "cursor-pointer",
+      )}
     >
       {icon && (
         <img
           src={icon}
-          className={`w-5 h-5 ${text ? "me-2" : "m-0"} ${invert && "invert"}`}
+          className={clsx("w-5 h-5", text ? "me-2" : "m-0", invert && "invert")}
         />
       )}
 

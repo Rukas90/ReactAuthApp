@@ -9,8 +9,7 @@
 * 🟢 You can import this file directly.
 */
 
-export const MfaMethod = {
-  TOTP: 'TOTP'
-} as const
 
-export type MfaMethod = (typeof MfaMethod)[keyof typeof MfaMethod]
+
+// This file is empty because there are no enums in the schema.
+export {}

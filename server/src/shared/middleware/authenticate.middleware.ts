@@ -2,7 +2,7 @@ import { validateAccessToken } from "src/shared/token/jwt.service.js"
 import { asyncRoute } from "src/shared/util/express.error.handler.js"
 import { NextFunction, Request, Response } from "express"
 import { UnauthenticatedError } from "@shared/errors/auth.error.js"
-import { AuthSession } from "../util/authenticated.request"
+import { AuthSession } from "../util"
 
 export const authenticateRequest = asyncRoute(
   async (req: Request, _: Response, next: NextFunction) => {

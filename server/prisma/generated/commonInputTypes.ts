@@ -123,13 +123,6 @@ export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedDateTimeFilter<$PrismaModel>
 }
 
-export type EnumMfaMethodFilter<$PrismaModel = never> = {
-  equals?: $Enums.MfaMethod | Prisma.EnumMfaMethodFieldRefInput<$PrismaModel>
-  in?: $Enums.MfaMethod[] | Prisma.ListEnumMfaMethodFieldRefInput<$PrismaModel>
-  notIn?: $Enums.MfaMethod[] | Prisma.ListEnumMfaMethodFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumMfaMethodFilter<$PrismaModel> | $Enums.MfaMethod
-}
-
 export type JsonNullableFilter<$PrismaModel = never> =
 | Prisma.PatchUndefined<
     Prisma.Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
@@ -163,16 +156,6 @@ export type DateTimeNullableFilter<$PrismaModel = never> = {
   gt?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel>
   gte?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel>
   not?: Prisma.NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-}
-
-export type EnumMfaMethodWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.MfaMethod | Prisma.EnumMfaMethodFieldRefInput<$PrismaModel>
-  in?: $Enums.MfaMethod[] | Prisma.ListEnumMfaMethodFieldRefInput<$PrismaModel>
-  notIn?: $Enums.MfaMethod[] | Prisma.ListEnumMfaMethodFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumMfaMethodWithAggregatesFilter<$PrismaModel> | $Enums.MfaMethod
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumMfaMethodFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumMfaMethodFilter<$PrismaModel>
 }
 
 export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
@@ -365,13 +348,6 @@ export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedDateTimeFilter<$PrismaModel>
 }
 
-export type NestedEnumMfaMethodFilter<$PrismaModel = never> = {
-  equals?: $Enums.MfaMethod | Prisma.EnumMfaMethodFieldRefInput<$PrismaModel>
-  in?: $Enums.MfaMethod[] | Prisma.ListEnumMfaMethodFieldRefInput<$PrismaModel>
-  notIn?: $Enums.MfaMethod[] | Prisma.ListEnumMfaMethodFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumMfaMethodFilter<$PrismaModel> | $Enums.MfaMethod
-}
-
 export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
   equals?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel> | null
   in?: Date[] | string[] | Prisma.ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -381,16 +357,6 @@ export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
   gt?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel>
   gte?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel>
   not?: Prisma.NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-}
-
-export type NestedEnumMfaMethodWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.MfaMethod | Prisma.EnumMfaMethodFieldRefInput<$PrismaModel>
-  in?: $Enums.MfaMethod[] | Prisma.ListEnumMfaMethodFieldRefInput<$PrismaModel>
-  notIn?: $Enums.MfaMethod[] | Prisma.ListEnumMfaMethodFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumMfaMethodWithAggregatesFilter<$PrismaModel> | $Enums.MfaMethod
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumMfaMethodFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumMfaMethodFilter<$PrismaModel>
 }
 
 export type NestedJsonNullableFilter<$PrismaModel = never> =

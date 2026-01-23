@@ -26,7 +26,7 @@ export const generatePre2faAccessToken = async (user: User) => {
       email_verified: user.is_verified,
       scope: ["2fa:verify"],
     },
-    ms("5m")
+    ms("5m"),
   )
 }
 export const generateFullAccessToken = async (user: User) => {
@@ -37,33 +37,35 @@ export const generateFullAccessToken = async (user: User) => {
       email_verified: user.is_verified,
       scope: ["user:access"],
     },
-    ms("15m")
+    ms("15m"),
   )
 }
 const generateAccessToken = async (
   user: User,
   claims: AccessTokenClaims,
-  expiration: number
+  expirationMs: number,
 ): Promise<{ accessToken: string; authUser: AuthUser }> => {
+  const expiresAtMs = Date.now() + expirationMs
+
   const accessToken = await new SignJWT(claims)
     .setIssuer(process.env.API_URL!)
     .setAudience(process.env.CLIENT_URL!)
     .setSubject(user.id)
     .setIssuedAt()
-    .setExpirationTime(expiration)
+    .setExpirationTime(Math.floor(expiresAtMs / 1000))
     .setProtectedHeader({ alg: "HS256" })
     .sign(SECRET)
 
   const authUser: AuthUser = {
     verifiedEmail: claims.email_verified,
     authLevel: claims.auth_level,
-    expiresAt: expiration,
+    expiresAt: expiresAtMs,
   }
   return { accessToken, authUser }
 }
 
 export const validateAccessToken = async (
-  token: string
+  token: string,
 ): Promise<Result<AccessTokenPayload, Error>> => {
   try {
     const result = await jwtVerify<AccessTokenPayload>(token, SECRET, {
@@ -78,8 +80,8 @@ export const validateAccessToken = async (
     return Result.error(
       new UnexpectedError(
         "Unexpected error when verifying access token.",
-        "UNEXPECTED_ERROR"
-      )
+        "UNEXPECTED_ERROR",
+      ),
     )
   }
 }

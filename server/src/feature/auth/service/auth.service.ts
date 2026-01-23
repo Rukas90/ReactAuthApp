@@ -2,7 +2,7 @@ import { type AuthUser } from "@project/shared"
 import { validateAccessToken } from "@shared/token"
 
 export const getAuthUser = async (
-  accessToken?: string
+  accessToken?: string,
 ): Promise<AuthUser | null> => {
   if (!accessToken) {
     return null
@@ -21,7 +21,7 @@ export const getAuthUser = async (
   const user: AuthUser = {
     verifiedEmail: payload.email_verified,
     authLevel: payload.auth_level,
-    expiresAt: expirationInSeconds * 1000, // Convert to milliseconds
+    expiresAt: expirationInSeconds * 1000,
   }
   return user
 }

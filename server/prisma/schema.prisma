@@ -37,7 +37,7 @@ model MfaEnrollment {
   id          String    @id @default(uuid())
   user        User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id     String
-  method      MfaMethod
+  method      String
   configured  Boolean   @default(false)
   credentials Json?
   created_at  DateTime  @default(now())
@@ -45,10 +45,6 @@ model MfaEnrollment {
 
   @@unique([user_id, method])
   @@index([user_id])
-}
-
-enum MfaMethod {
-  TOTP
 }
 
 model RefreshToken {

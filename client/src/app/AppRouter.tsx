@@ -6,19 +6,21 @@ import {
   GuestOnlyRoute,
   ForwardRoute,
   useAuthContext,
+  useTokenRefresh,
 } from "@features/auth"
 import {
   DashboardView,
-  TOTPSetupView,
   SecuritySettings,
   ActivitySettings,
   PreferenceSettings,
   AccountSettings,
 } from "@features/dashboard"
 import { NotFoundView } from "@src/routes"
+import { TotpSetupView } from "@features/totp"
 
 const AppRouter = () => {
   const { isInitialized, isLoading } = useAuthContext()
+  useTokenRefresh()
 
   if (!isInitialized) {
     return <>Not isInitialized...</>
@@ -45,7 +47,7 @@ const AppRouter = () => {
           <Route path="preferences" element={<PreferenceSettings />} />
           <Route path="account" element={<AccountSettings />} />
         </Route>
-        <Route path="totp/setup" element={<TOTPSetupView />} />
+        <Route path="totp/setup" element={<TotpSetupView />} />
       </Route>
       <Route path="*" element={<NotFoundView />} />
     </Routes>

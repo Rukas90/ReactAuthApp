@@ -18,6 +18,7 @@ interface Props extends Pick<React.ComponentProps<"div">, "id" | "className"> {
   isHidden?: boolean
   extendWidth?: boolean
   indicateError?: boolean
+  expandable?: boolean
 }
 const InputField = ({
   id,
@@ -32,6 +33,7 @@ const InputField = ({
   isHidden,
   extendWidth,
   indicateError,
+  expandable = true,
 }: Props) => {
   const [text, setText] = useState(value || "")
   const [hidden, setHidden] = useState(hideable && isHidden)
@@ -45,7 +47,7 @@ const InputField = ({
       onValueChanged(newValue)
     }
   }
-  const expand = !!text
+  const expand = expandable && !!text
 
   return (
     <div
@@ -54,16 +56,18 @@ const InputField = ({
           extendWidth && "w-full"
         }`}
     >
-      <label
-        htmlFor={id}
-        className={`absolute left-3 pointer-events-none transition-all ${
-          expand
-            ? "top-1.5 text-[0.85rem] text-stone-600 translate-y-0"
-            : "top-1/2 text-[1rem] text-stone-500 -translate-y-1/2"
-        }`}
-      >
-        {placeholder}
-      </label>
+      {(expandable || !text) && (
+        <label
+          htmlFor={id}
+          className={`absolute left-3 pointer-events-none transition-all ${
+            expand
+              ? "top-1.5 text-[0.85rem] text-stone-600 translate-y-0"
+              : "top-1/2 text-[1rem] text-stone-500 -translate-y-1/2"
+          }`}
+        >
+          {placeholder}
+        </label>
+      )}
       <input
         id={id}
         name={name}

@@ -7,7 +7,7 @@ const AuthInitializer = ({
   children,
 }: Pick<React.ComponentProps<"div">, "children">) => {
   const { isInitialized, setUser, track } = useAuthContext()
-  const authRefresh = useAuthRefresh()
+  const { authRefresh } = useAuthRefresh()
 
   const init = useRef(false)
 
@@ -25,18 +25,13 @@ const AuthInitializer = ({
             return
           }
           const session = result.data
-
           setUser(session.user)
 
           if (!session.user && session.canRefresh) {
-            const refresh = await authRefresh()
-
-            if (refresh.ok) {
-              setUser(refresh.data.user)
-            }
+            await authRefresh()
           }
         })
-        .catch(() => setUser(null))
+        .catch(() => setUser(null)),
     )
   }, [])
 

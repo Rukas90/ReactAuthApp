@@ -12,5 +12,11 @@
     },
     "scripts": {
         "build": "tsc"
+    },
+    "dependencies": {
+        "zod": "^4.3.5"
+    },
+    "devDependencies": {
+        "undici-types": "^7.16.0"
     }
 }

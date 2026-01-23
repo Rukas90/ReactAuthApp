@@ -1137,20 +1137,6 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
- * Reference to a field of type 'MfaMethod'
- */
-export type EnumMfaMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MfaMethod'>
-    
-
-
-/**
- * Reference to a field of type 'MfaMethod[]'
- */
-export type ListEnumMfaMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MfaMethod[]'>
-    
-
-
-/**
  * Reference to a field of type 'Json'
  */
 export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
