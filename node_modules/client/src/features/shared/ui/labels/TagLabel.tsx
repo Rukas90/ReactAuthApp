@@ -2,8 +2,10 @@ import type React from "react"
 
 export type TagLabelStyle = "amber" | "red" | "green" | "gray"
 
-interface Props
-  extends Pick<React.ComponentProps<"div">, "className" | "children"> {
+interface Props extends Pick<
+  React.ComponentProps<"div">,
+  "className" | "children"
+> {
   style?: TagLabelStyle
 }
 
@@ -17,7 +19,7 @@ const styleMap: Record<TagLabelStyle, string> = {
 const TagLabel = ({ style = "amber", className, children }: Props) => {
   return (
     <span
-      className={`${className} ${styleMap[style]} text-xs font-medium border rounded-full px-1.5 py-0.5`}
+      className={`${className} ${styleMap[style]} max-h-full text-xs font-medium border rounded-full px-1.5 py-0.5`}
     >
       {children}
     </span>

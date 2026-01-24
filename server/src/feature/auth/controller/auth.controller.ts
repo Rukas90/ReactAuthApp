@@ -6,7 +6,8 @@ import {
   refreshHandler,
   registerHandler,
 } from "./auth.handler"
-import { validateCaptchaToken } from "@shared/middleware"
+import { validateCaptchaToken } from "@features/captcha"
+import { requireScope } from "../middleware/requireScope.middleware"
 
 export const useAuthRoutes = (app: Express) => {
   app.use("/v1/auth", router)
@@ -21,4 +22,4 @@ router.post("/logout", logoutHandler)
 
 router.get("/session", authUserHandler)
 
-router.post("/refresh", refreshHandler)
+router.post("/refresh", requireScope(["admin:access"]), refreshHandler)

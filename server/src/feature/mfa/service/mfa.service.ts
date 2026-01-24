@@ -1,5 +1,5 @@
 import { database } from "@base/app"
-import { MfaEnrollment, User } from "@prisma/client"
+import { MfaEnrollment } from "@prisma/client"
 import { MfaMethod } from "@project/shared"
 
 type EnrollmentStatus =
@@ -56,11 +56,6 @@ export const createNewEnrollment = async (
       expires_At: expiration,
     },
   })
-}
-
-export const hasMfaConfigured = async (userId: string) => {
-  const enrollments = await getMfaEnrollments(userId)
-  return enrollments.length > 0 && enrollments.some((e) => e.configured)
 }
 
 export const getMfaEnrollments = async (

@@ -1,9 +1,3 @@
-import type { AuthUser } from "@project/shared"
-
-export interface AuthResponseDto {
-  user: AuthUser
-  message: string
-}
 export interface LogoutResponseDto {
   message: string
 }

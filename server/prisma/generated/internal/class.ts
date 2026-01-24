@@ -17,8 +17,8 @@ import type * as Prisma from "./prismaNamespace"
 
 const config: runtime.GetPrismaClientConfig = {
   "previewFeatures": [],
-  "clientVersion": "7.2.0",
-  "engineVersion": "0c8ef2ce45c83248ab3df073180d5eda9e8be7a3",
+  "clientVersion": "7.3.0",
+  "engineVersion": "9d6ad21cbbceab97458517b147a6a09ff43aa735",
   "activeProvider": "postgresql",
   "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"./generated\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel User {\n  id            String   @id @default(uuid())\n  email         String   @unique\n  password_hash String?\n  is_verified   Boolean\n  created_at    DateTime @default(now())\n\n  refreshTokens  RefreshToken[]\n  oauths         OAuth[]\n  verifications  Verification[]\n  sessions       Session[]\n  mfaEnrollments MfaEnrollment[]\n}\n\nmodel OAuth {\n  id          String  @id @default(uuid())\n  provider_id String\n  provider    String\n  username    String?\n  user        User    @relation(fields: [user_id], references: [id], onDelete: Cascade)\n  user_id     String\n\n  @@unique([provider, provider_id])\n  @@index([user_id])\n}\n\nmodel MfaEnrollment {\n  id          String    @id @default(uuid())\n  user        User      @relation(fields: [user_id], references: [id], onDelete: Cascade)\n  user_id     String\n  method      String\n  configured  Boolean   @default(false)\n  credentials Json?\n  created_at  DateTime  @default(now())\n  expires_At  DateTime?\n\n  @@unique([user_id, method])\n  @@index([user_id])\n}\n\nmodel RefreshToken {\n  id          String   @id @default(uuid())\n  family_id   String\n  token_hash  String   @unique\n  lookup_hash String   @unique\n  created_at  DateTime @default(now())\n  expires_at  DateTime\n  revoked     Boolean\n  user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)\n  user_id     String\n\n  @@index([user_id])\n  @@index([family_id])\n  @@index([lookup_hash])\n}\n\nmodel Session {\n  session_id         String   @id @default(uuid())\n  ip_address         String\n  device_type        String\n  location           String\n  login_time         DateTime\n  last_activity_time DateTime\n  source             String\n  user               User     @relation(fields: [user_id], references: [id], onDelete: Cascade)\n  user_id            String\n\n  @@index([user_id])\n  @@map(\"UserSession\")\n}\n\nmodel BlockedSession {\n  session_id       String   @id @default(uuid())\n  block_reason     String\n  block_start_time DateTime @default(now())\n  block_end_time   DateTime\n}\n\nmodel Verification {\n  id            String   @id @default(uuid())\n  type          String\n  code_hash     String   @unique\n  dispatch      String\n  created_at    DateTime @default(now())\n  expires_at    DateTime\n  attempts_left Int      @default(5)\n  user          User     @relation(fields: [user_id], references: [id], onDelete: Cascade)\n  user_id       String\n\n  @@index([user_id])\n}\n",
   "runtimeDataModel": {
@@ -37,12 +37,14 @@ async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Modul
 }
 
 config.compilerWasm = {
-  getRuntime: async () => await import("@prisma/client/runtime/query_compiler_bg.postgresql.mjs"),
+  getRuntime: async () => await import("@prisma/client/runtime/query_compiler_fast_bg.postgresql.mjs"),
 
   getQueryCompilerWasmModule: async () => {
-    const { wasm } = await import("@prisma/client/runtime/query_compiler_bg.postgresql.wasm-base64.mjs")
+    const { wasm } = await import("@prisma/client/runtime/query_compiler_fast_bg.postgresql.wasm-base64.mjs")
     return await decodeBase64AsWasm(wasm)
-  }
+  },
+
+  importName: "./query_compiler_fast_bg.js"
 }
 
 

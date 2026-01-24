@@ -9,6 +9,8 @@ const useTokenRefresh = (refreshThresholdMs: number = 3 * 60 * 1000) => {
   const { authRefresh, isRefreshing } = useAuthRefresh()
   const navigate = useNavigate()
 
+  const hasFullAccess = (!!user && user.scope.includes("admin:access")) ?? false
+
   const handleRefresh = useCallback(async () => {
     const response = await authRefresh()
     if (!response.ok) {
@@ -25,7 +27,7 @@ const useTokenRefresh = (refreshThresholdMs: number = 3 * 60 * 1000) => {
         if (originalRequest._retry) {
           return Promise.reject(error)
         }
-        if (error.response.status === 401 || error.response.status === 403) {
+        if (error.response.status === 401) {
           const refresh = await handleRefresh()
 
           if (refresh.ok) {
@@ -43,12 +45,12 @@ const useTokenRefresh = (refreshThresholdMs: number = 3 * 60 * 1000) => {
   }, [handleRefresh])
 
   useEffect(() => {
-    if (!user || !isInitialized || isRefreshing) {
+    if (!hasFullAccess || !isInitialized) {
       return
     }
-    const timeUntilExpiry = user.expiresAt - Date.now()
+    const timeUntilExpiry = user!.expiresAt - Date.now()
 
-    if (timeUntilExpiry <= refreshThresholdMs) {
+    if (timeUntilExpiry <= refreshThresholdMs && !isRefreshing) {
       setTimeout(handleRefresh, 0)
       return
     }

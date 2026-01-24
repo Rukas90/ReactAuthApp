@@ -19,3 +19,7 @@ a {
 ::selection {
 	background: oklch(75.862% 0.17676 60.629 / 0.137);
 }
+:root {
+  --base-color: #121212;
+  --highlight-color: #323232;
+}

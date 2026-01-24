@@ -12,11 +12,9 @@ import {
 import { asyncRoute } from "@shared/util"
 import { createNewUser } from "../service/register.service"
 import { getAuthUser } from "../service/auth.service"
-import { AuthUser, SessionData } from "@project/shared"
-import {
-  establishUserAuthSession,
-  setAuthSessionCookies,
-} from "../util/auth.response"
+import { SessionData } from "@project/shared"
+import { setAuthSessionCookies } from "../util/auth.response"
+import { establishUserAuthSession } from "@features/auth"
 
 export const loginHandler = asyncRoute(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -26,8 +24,7 @@ export const loginHandler = asyncRoute(
       return next(login.error)
     }
     const user = login.data
-
-    const oldRefreshToken = req.cookies?.refreshToken
+    const oldRefreshToken: string = req.cookies?.refreshToken
 
     if (oldRefreshToken) {
       const token = await findRefreshToken(oldRefreshToken)
@@ -37,7 +34,10 @@ export const loginHandler = asyncRoute(
       }
     }
     const authUser = await establishUserAuthSession(res, user)
-    sendAuthResponse(res, authUser, "Logged in successfully.")
+    res.auth({
+      user: authUser,
+      message: "Logged in successfully.",
+    })
   },
 )
 export const registerHandler = asyncRoute(
@@ -51,7 +51,10 @@ export const registerHandler = asyncRoute(
     const refreshToken = await generateRefreshToken(user.data)
 
     setAuthSessionCookies(res, accessToken, refreshToken, authUser)
-    sendAuthResponse(res, authUser, "Registered and logged in successfully.")
+    res.auth({
+      user: authUser,
+      message: "Registered and logged in successfully.",
+    })
   },
 )
 
@@ -74,16 +77,12 @@ export const refreshHandler = asyncRoute(
       currentToken.family_id,
     )
     setAuthSessionCookies(res, accessToken, refreshToken, authUser)
-    sendAuthResponse(res, authUser, "Session refreshed successfully.")
+    res.auth({
+      user: authUser,
+      message: "Session refreshed successfully.",
+    })
   },
 )
-
-const sendAuthResponse = (res: Response, user: AuthUser, message: string) => {
-  res.ok({
-    user,
-    message,
-  })
-}
 
 export const logoutHandler = asyncRoute(async (req: Request, res: Response) => {
   const currentRefreshToken = req.cookies?.refreshToken

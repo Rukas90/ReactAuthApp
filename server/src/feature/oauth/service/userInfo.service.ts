@@ -1,7 +1,10 @@
 import { OAuthProvider, Result } from "@project/shared"
 import { oauthConfig } from "../config/oauth.config"
 import { OAuthUserInfo } from "./oauth.service"
-import { OAuthEmailNotProvidedError } from "../error/oauth.error"
+import {
+  OAuthEmailNotProvidedError,
+  OAuthUserInfoFetchFailedError,
+} from "../error/oauth.error"
 
 export type GithubEmail = {
   email: string
@@ -12,7 +15,7 @@ export type GithubEmail = {
 
 const getGoogleUserInfo = async (
   accessToken: string,
-): Promise<Result<OAuthUserInfo, Error>> => {
+): Promise<Result<OAuthUserInfo, OAuthUserInfoFetchFailedError>> => {
   const config = oauthConfig["google"]
   const response = await fetch(config.userInfoUrl, {
     headers: {
@@ -21,7 +24,7 @@ const getGoogleUserInfo = async (
     },
   })
   if (!response.ok) {
-    return Result.error(new Error("Failed to fetch user info"))
+    return Result.error(new OAuthUserInfoFetchFailedError("google"))
   }
   const data = await response.json()
 
@@ -35,7 +38,12 @@ const getGoogleUserInfo = async (
 }
 const getGithubUserInfo = async (
   accessToken: string,
-): Promise<Result<OAuthUserInfo, Error>> => {
+): Promise<
+  Result<
+    OAuthUserInfo,
+    OAuthUserInfoFetchFailedError | OAuthEmailNotProvidedError
+  >
+> => {
   const config = oauthConfig["github"]
   const response = await fetch(config.userInfoUrl, {
     headers: {
@@ -44,7 +52,7 @@ const getGithubUserInfo = async (
     },
   })
   if (!response.ok) {
-    return Result.error(new Error("Failed to fetch user info"))
+    return Result.error(new OAuthUserInfoFetchFailedError("github"))
   }
   const address = await getGithubAccountAddress(accessToken)
 
@@ -63,7 +71,7 @@ const getGithubUserInfo = async (
 }
 const getGithubAccountAddress = async (
   accessToken: string,
-): Promise<Result<GithubEmail, Error>> => {
+): Promise<Result<GithubEmail, OAuthEmailNotProvidedError>> => {
   try {
     const config = oauthConfig["github"]
     const emails: GithubEmail[] = await fetch(config.emailsUrl, {
@@ -93,7 +101,5 @@ export const fetchUserInfo = async (
       return getGoogleUserInfo(accessToken)
     case "github":
       return getGithubUserInfo(accessToken)
-    default:
-      throw new Error(`Unsupported provider: ${provider}`)
   }
 }

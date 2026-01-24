@@ -7,7 +7,6 @@ import crypto from "crypto"
 import {
   OAuthEmailNotProvidedError,
   OAuthFailedToAuthenticateError,
-  OAuthTokenExchangeError,
 } from "../error/oauth.error"
 import { OAuthSession } from "@shared/util"
 import { fetchUserInfo } from "./userInfo.service"
@@ -87,7 +86,7 @@ export const exchangeCodeForToken = async (
   provider: OAuthProvider,
   code: string,
   codeVerifier: string,
-): Promise<Result<OAuthTokens, OAuthTokenExchangeError>> => {
+): Promise<Result<OAuthTokens, OAuthFailedToAuthenticateError>> => {
   const config = oauthConfig[provider]
 
   try {

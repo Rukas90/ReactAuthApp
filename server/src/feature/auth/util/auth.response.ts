@@ -7,8 +7,8 @@ import {
   REFRESH_TOKEN_EXPIRATION,
 } from "@shared/token"
 import { User } from "@prisma/client"
-import { hasMfaConfigured } from "@features/mfa"
 import { AuthUser } from "@project/shared"
+import { hasMfaConfigured } from "../service/auth.service"
 
 export const establishUserAuthSession = async (
   res: Response,

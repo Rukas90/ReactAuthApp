@@ -1,5 +1,6 @@
 import { AuthProvider, AuthInitializer } from "@features/auth"
 import { LanguageProvider, LanguageInitializer } from "@features/localization"
+import { SkeletonTheme } from "react-loading-skeleton"
 
 const AppProviders = ({
   children,
@@ -8,7 +9,11 @@ const AppProviders = ({
     <LanguageProvider>
       <LanguageInitializer>
         <AuthProvider>
-          <AuthInitializer>{children}</AuthInitializer>
+          <AuthInitializer>
+            <SkeletonTheme baseColor="#202020" highlightColor="#404040">
+              {children}
+            </SkeletonTheme>
+          </AuthInitializer>
         </AuthProvider>
       </LanguageInitializer>
     </LanguageProvider>

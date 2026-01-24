@@ -1,8 +1,8 @@
 import type { ApiResult } from "@api/Response"
 import useAuthContext from "./useAuthContext"
-import type { AuthResponseDto } from "../dto"
 import type { LoginData } from "../schemas"
 import { AuthService } from "../services"
+import type { AuthResponseDto } from "@project/shared"
 
 const useLogin = () => {
   const { track, setUser } = useAuthContext()
@@ -16,7 +16,7 @@ const useLogin = () => {
           setUser(null)
         }
         return result
-      })
+      }),
     )
   return handle
 }

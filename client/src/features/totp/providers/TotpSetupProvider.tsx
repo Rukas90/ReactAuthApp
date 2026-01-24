@@ -1,11 +1,14 @@
 import { useEffect, useRef, useState } from "react"
 import { TotpSetupContext } from "../contexts/TotpSetupContext"
-import { type TotpData } from "@project/shared"
-import TotpService from "../services/TotpService"
+import { MfaErrorCodes, type TotpData } from "@project/shared"
+import { useNavigate } from "react-router-dom"
+import { TotpService } from "@features/mfa"
 
 const TotpSetupProvider = ({
   children,
 }: Pick<React.ComponentProps<"div">, "children">) => {
+  const navigate = useNavigate()
+
   const [data, setData] = useState<TotpData | null>(null)
   const [initialized, setInitialized] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
@@ -23,20 +26,22 @@ const TotpSetupProvider = ({
         if (res.ok) {
           setData(res.data)
         } else {
+          if (res.error.code === MfaErrorCodes.MFA_ALREADY_CONFIGURED) {
+            navigate("/dashboard/security")
+          }
           setError(res.error.detail)
         }
       })
       .finally(() => setInitialized(true))
   }, [])
 
-  const verifyCode = async (code: string) => {
-    const res = await TotpService.verifyCode(code)
-    console.log(JSON.stringify(res))
-
+  const confirmCode = async (code: string) => {
+    const res = await TotpService.confirmSetup({
+      code,
+    })
     setError(null)
 
     if (res.ok) {
-      // Activate totp mfa enrollment ...
     } else {
       setError(res.error.detail)
     }
@@ -50,7 +55,7 @@ const TotpSetupProvider = ({
     <TotpSetupContext.Provider
       value={{
         data,
-        verifyCode,
+        confirmCode,
         cancelSetup,
         error,
         requiredCodeLength: REQUIRED_CODE_LENGTH,

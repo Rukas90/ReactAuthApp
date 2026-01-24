@@ -1,22 +1,22 @@
 import { database } from "@base/app"
-import {
-  RefreshTokenError,
-  RefreshTokenExpiredError,
-  RefreshTokenInvalidError,
-  RefreshTokenReusedError,
-  ResourceMissingError,
-} from "@shared/errors"
 import { Result } from "@project/shared"
 import { hashing } from "@shared/security"
 import { RefreshToken, User } from "@prisma/client"
 import crypto from "crypto"
 import ms from "ms"
+import {
+  RefreshTokenError,
+  RefreshTokenExpiredError,
+  RefreshTokenInvalidError,
+  RefreshTokenNotFoundError,
+  RefreshTokenReusedError,
+} from "./refresh.error"
 
 export const REFRESH_TOKEN_EXPIRATION = ms("30d")
 
 export const generateRefreshToken = async (
   user: User,
-  familyId: string = crypto.randomUUID()
+  familyId: string = crypto.randomUUID(),
 ): Promise<string> => {
   const token = createToken()
   const tokenHash = await hashing.argon2.hash(token)
@@ -38,13 +38,16 @@ export const generateRefreshToken = async (
 export const generateLookupHash = async (token: string): Promise<string> => {
   return await hashing.hmac.hash(
     token,
-    process.env.REFRESH_TOKEN_LOOKUP_SECRET!
+    process.env.REFRESH_TOKEN_LOOKUP_SECRET!,
   )
 }
 
 export const validateRefreshToken = async (
-  token: string
+  token?: string,
 ): Promise<Result<RefreshToken & { user: User }, RefreshTokenError>> => {
+  if (!token) {
+    return Result.error(new RefreshTokenInvalidError())
+  }
   const result = await findRefreshToken(token)
 
   if (!result.ok) {
@@ -61,7 +64,7 @@ export const validateRefreshToken = async (
   }
   const comparison = await hashing.argon2.compare(
     token,
-    refreshToken.token_hash
+    refreshToken.token_hash,
   )
   if (!comparison) {
     return Result.error(new RefreshTokenInvalidError())
@@ -70,8 +73,10 @@ export const validateRefreshToken = async (
 }
 
 export const findRefreshToken = async (
-  token: string
-): Promise<Result<RefreshToken & { user: User }, ResourceMissingError>> => {
+  token: string,
+): Promise<
+  Result<RefreshToken & { user: User }, RefreshTokenNotFoundError>
+> => {
   const lookupHash = await generateLookupHash(token)
   const refreshToken = await database.client.refreshToken.findUnique({
     where: {
@@ -85,12 +90,7 @@ export const findRefreshToken = async (
   if (refreshToken) {
     return Result.success(refreshToken)
   }
-  return Result.error(
-    new ResourceMissingError(
-      "Refresh token is not found.",
-      "REFRESH_TOKEN_NOT_FOUND"
-    )
-  )
+  return Result.error(new RefreshTokenNotFoundError())
 }
 
 export const revokeTokenFamily = async (familyId: string) => {
@@ -112,7 +112,7 @@ export const revokeRefreshToken = async (lookupHash: string): Promise<void> => {
 }
 
 export const revokeUserRefreshTokens = async (
-  userId: string
+  userId: string,
 ): Promise<void> => {
   await database.client.refreshToken.updateMany({
     where: {

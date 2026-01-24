@@ -4,8 +4,8 @@ export const getDefaultRedirect = (user: AuthUser | null) => {
   if (!user) {
     return "/login"
   }
-  if (user.authLevel === "pre_2fa") {
-    return "session/2fa"
+  if (user.scope.includes("mfa:verify")) {
+    return "/session/mfa"
   }
   return "/dashboard"
 }

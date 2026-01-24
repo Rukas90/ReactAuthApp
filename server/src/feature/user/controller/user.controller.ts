@@ -1,6 +1,6 @@
-import { authenticateRequest } from "@shared/middleware"
 import { Express, Router } from "express"
 import { getUserByIdHandler } from "./user.handler"
+import { authenticateRequest } from "@features/auth"
 
 export const useUserRoutes = (app: Express) => {
   app.use("/v1/user", userRouter)

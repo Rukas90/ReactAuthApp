@@ -1,3 +1,4 @@
+import { database } from "@base/app"
 import { type AuthUser } from "@project/shared"
 import { validateAccessToken } from "@shared/token"
 
@@ -20,8 +21,16 @@ export const getAuthUser = async (
   }
   const user: AuthUser = {
     verifiedEmail: payload.email_verified,
-    authLevel: payload.auth_level,
+    scope: payload.scope,
     expiresAt: expirationInSeconds * 1000,
   }
   return user
+}
+export const hasMfaConfigured = async (userId: string) => {
+  const enrollments = await database.client.mfaEnrollment.findMany({
+    where: {
+      user_id: userId,
+    },
+  })
+  return enrollments.length > 0 && enrollments.some((e) => e.configured)
 }

@@ -1,12 +1,17 @@
 import { appConfig } from "@base/app"
 import * as express from "express"
 import { type Response } from "express-serve-static-core"
-import { ProblemDetails, SuccessResponse, SuccessCode } from "@project/shared"
+import {
+  ProblemDetails,
+  SuccessResponse,
+  SuccessCode,
+  AuthResponseDto,
+} from "@project/shared"
 
 export function extendResponse() {
   express.response.ok = function <T>(
     data: T,
-    statusCode: SuccessCode = 200
+    statusCode: SuccessCode = 200,
   ): express.Response {
     const response: SuccessResponse<T> = {
       status: "success",
@@ -14,8 +19,15 @@ export function extendResponse() {
     }
     return (this as Response).status(statusCode).json(response)
   }
+  express.response.auth = function (data: AuthResponseDto): express.Response {
+    const response: SuccessResponse<AuthResponseDto> = {
+      status: "success",
+      data,
+    }
+    return (this as Response).status(200).json(response)
+  }
   express.response.problem = function (
-    details: ProblemDetails
+    details: ProblemDetails,
   ): express.Response {
     return (this as Response)
       .status(details.status)

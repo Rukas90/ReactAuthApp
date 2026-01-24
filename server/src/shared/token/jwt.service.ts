@@ -2,18 +2,15 @@ import { JWTPayload, SignJWT, jwtVerify } from "jose"
 import { JOSEError } from "jose/errors"
 import { UnexpectedError } from "@shared/errors"
 import { User } from "@prisma/client"
-import { AuthLevel, AuthUser, Result } from "@project/shared"
+import { AuthUser, Result, Scope } from "@project/shared"
 import ms from "ms"
 
 const ENCODER = new TextEncoder()
 const SECRET = ENCODER.encode(process.env.JWT_SECRET!)
 
-export type Scope = "2fa:verify" | "user:access"
-
 export type AccessTokenClaims = {
-  auth_level: AuthLevel
-  email_verified: boolean
   scope: Scope[]
+  email_verified: boolean
 }
 
 export interface AccessTokenPayload extends JWTPayload, AccessTokenClaims {}
@@ -21,24 +18,22 @@ export interface AccessTokenPayload extends JWTPayload, AccessTokenClaims {}
 export const generatePre2faAccessToken = async (user: User) => {
   return await generateAccessToken(
     user,
-    {
-      auth_level: "pre_2fa",
-      email_verified: user.is_verified,
-      scope: ["2fa:verify"],
-    },
-    ms("5m"),
+    createTokenClaims(["mfa:verify"], user),
+    ms("24h"),
   )
 }
 export const generateFullAccessToken = async (user: User) => {
   return await generateAccessToken(
     user,
-    {
-      auth_level: "full",
-      email_verified: user.is_verified,
-      scope: ["user:access"],
-    },
+    createTokenClaims(["admin:access"], user),
     ms("15m"),
   )
+}
+const createTokenClaims = (scope: Scope[], user: User): AccessTokenClaims => {
+  return {
+    scope,
+    email_verified: user.is_verified,
+  }
 }
 const generateAccessToken = async (
   user: User,
@@ -58,7 +53,7 @@ const generateAccessToken = async (
 
   const authUser: AuthUser = {
     verifiedEmail: claims.email_verified,
-    authLevel: claims.auth_level,
+    scope: claims.scope,
     expiresAt: expiresAtMs,
   }
   return { accessToken, authUser }

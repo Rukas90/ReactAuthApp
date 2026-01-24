@@ -4,7 +4,7 @@ import { createContext } from "react"
 
 export interface TotpSetupContextData {
   data: TotpData | null
-  verifyCode: (code: string) => void
+  confirmCode: (code: string) => void
   cancelSetup: () => Promise<ApiResult<void>>
   error: string | null
   requiredCodeLength: number

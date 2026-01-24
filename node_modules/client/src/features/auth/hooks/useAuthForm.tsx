@@ -9,11 +9,11 @@ interface UseAuthOptions<TSchema extends z.ZodSchema> {
       | z.infer<TSchema>
       | {
           captchaToken: string
-        }
+        },
   ) => Promise<VoidResult<string>>
   getValidationError: (
     form: FormData,
-    validationError: z.ZodSafeParseError<z.infer<TSchema>>
+    validationError: z.ZodSafeParseError<z.infer<TSchema>>,
   ) => string
 }
 const useAuthForm = <TSchema extends z.ZodSchema>({
@@ -55,7 +55,7 @@ const useAuthForm = <TSchema extends z.ZodSchema>({
   }
 
   const validate = async (
-    form: FormData
+    form: FormData,
   ): Promise<Result<z.ZodSafeParseResult<z.core.output<TSchema>>, string>> => {
     const entries = Object.fromEntries(form)
     const result = await schema.safeParseAsync(entries)
@@ -73,7 +73,7 @@ const useAuthForm = <TSchema extends z.ZodSchema>({
   }
 
   const evaluateValidationResult = (
-    result: z.ZodSafeParseResult<z.infer<TSchema>>
+    result: z.ZodSafeParseResult<z.infer<TSchema>>,
   ): Set<string> => {
     const newFieldErrors = new Set<string>()
 

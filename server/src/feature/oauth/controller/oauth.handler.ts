@@ -49,6 +49,7 @@ export const handleOAuthCallback = asyncRoute(
     if (!auth.ok) {
       return next(auth.error)
     }
+
     await establishUserAuthSession(res, auth.data.user)
 
     const url = new URL(process.env.CLIENT_ORIGIN!)

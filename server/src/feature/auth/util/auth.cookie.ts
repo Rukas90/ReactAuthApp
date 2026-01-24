@@ -3,12 +3,11 @@ import {
   ACCESS_TOKEN_COOKIE_OPTIONS,
   REFRESH_TOKEN_COOKIE_OPTIONS,
 } from "../config/cookies.config"
-import ms from "ms"
 
 export const setAccessTokenCookie = (
   res: Response,
   accessToken: string,
-  expiration: number
+  expiration: number,
 ) => {
   clearAccessTokenCookie(res)
   res.cookie("accessToken", accessToken, {
@@ -19,7 +18,7 @@ export const setAccessTokenCookie = (
 export const setRefreshTokenCookie = (
   res: Response,
   refreshToken: string,
-  expiration: number
+  expiration: number,
 ) => {
   clearRefreshTokenCookie(res)
   res.cookie("refreshToken", refreshToken, {

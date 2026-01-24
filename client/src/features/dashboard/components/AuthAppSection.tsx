@@ -1,18 +1,27 @@
-import { IconSmartphone, TagLabel, MiniButton } from "@features/shared"
-import { Link } from "react-router-dom"
+import { IconSmartphone } from "@features/shared"
+import EnrollmentConfiguredTag from "./EnrollmentConfiguredTag"
+import EnrollmentActionButton from "./EnrollmentActionButton"
+import { useTranslation } from "react-i18next"
+import { useMfaEnrollments } from "@features/mfa"
 
 const AuthAppSection = () => {
+  const { t } = useTranslation()
+  const { totp, isLoading } = useMfaEnrollments()
   return (
     <div className="flex justify-between p-4">
       <div className="flex gap-2 items-center">
         <IconSmartphone className="w-5 h-5 text-stone-300" />
-        <TagLabel style="gray">Not Configured</TagLabel>
-
-        <p className="text-sm text-stone-300">Authenticator app</p>
+        <EnrollmentConfiguredTag
+          showSkeleton={isLoading}
+          isConfigured={totp?.configured ?? false}
+        />
+        <p className="text-sm text-stone-300">{t("AUTH_APP")}</p>
       </div>
-      <Link to="/totp/setup">
-        <MiniButton text="Add" />
-      </Link>
+      <EnrollmentActionButton
+        setupLink="/totp/setup"
+        isConfigured={totp?.configured ?? false}
+        showSkeleton={isLoading}
+      />
     </div>
   )
 }

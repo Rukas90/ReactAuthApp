@@ -4,6 +4,7 @@ import { createRoot } from "react-dom/client"
 import { BrowserRouter } from "react-router-dom"
 import { App } from "./app"
 import "./styles/main.css"
+import "react-loading-skeleton/dist/skeleton.css"
 import "@features/localization/utils/i18n"
 
 const queryClient = new QueryClient()
@@ -15,5 +16,5 @@ createRoot(document.getElementById("root")!).render(
         <App />
       </QueryClientProvider>
     </BrowserRouter>
-  </StrictMode>
+  </StrictMode>,
 )

@@ -1,3 +1,4 @@
+import clsx from "clsx"
 import {
   useEffect,
   useRef,
@@ -7,7 +8,10 @@ import {
   type MouseEvent,
 } from "react"
 
-interface Props extends Pick<React.ComponentProps<"input">, "name" | "id"> {
+interface Props extends Pick<
+  React.ComponentProps<"input">,
+  "id" | "name" | "className"
+> {
   digits?: number
   onCodeChanged?: (code: string) => void
   onCompleted?: (code: string) => void
@@ -15,17 +19,18 @@ interface Props extends Pick<React.ComponentProps<"input">, "name" | "id"> {
   placeholder?: string
 }
 const CodeField = ({
-  name,
   id,
+  name,
+  className,
   digits = 6,
   onCodeChanged,
   onCompleted,
   allowedPattern = /^[0-9]$/,
   placeholder = "X",
 }: Props) => {
+  const [code, setCode] = useState("")
   const [values, setValues] = useState<string[]>([])
   const inputRefs = useRef<(HTMLInputElement | null)[]>([])
-  const hiddenInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     setValues(new Array(digits).fill(""))
@@ -57,6 +62,7 @@ const CodeField = ({
       if (newCode.length === digits) {
         onCompleted?.(newCode)
       }
+      setCode(newCode)
       return newValues
     })
   }
@@ -77,13 +83,10 @@ const CodeField = ({
       return
     }
     if (evt.key === "Backspace" || evt.key === "Delete") {
+      evt.preventDefault()
       setInputValue(index, "")
     }
-    if (
-      evt.key === "Backspace" ||
-      evt.key === "Delete" ||
-      evt.key === "ArrowLeft"
-    ) {
+    if (evt.key === "Backspace" || evt.key === "ArrowLeft") {
       selectInput(index - 1)
     }
     if (evt.key === "ArrowRight") {
@@ -109,44 +112,24 @@ const CodeField = ({
   const handleClick = (evt: MouseEvent<HTMLInputElement>) => {
     evt.currentTarget.select()
   }
-  const handleHiddenInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    const code = evt.target.value
-
-    const newValues = code.split("").slice(0, digits)
-
-    while (newValues.length < digits) {
-      newValues.push("")
-    }
-    setValues(newValues)
-
-    if (onCodeChanged) {
-      onCodeChanged(newValues.join(""))
-    }
-    selectInput(0)
-  }
 
   return (
-    <div className="relative">
-      <input
-        ref={hiddenInputRef}
-        type="text"
-        id={id}
-        name={name}
-        autoComplete="one-time-code"
-        inputMode="numeric"
-        data-lpignore="false"
-        className="absolute opacity-0 pointer-events-none"
-        tabIndex={-1}
-        onChange={handleHiddenInputChange}
-        aria-hidden="true"
-      />
+    <div className={clsx("relative", className)}>
       <div className="flex">
+        <input
+          id={id}
+          name={name}
+          type="hidden"
+          value={code}
+          autoComplete="on"
+          data-lpignore="false"
+          data-bwignore="false"
+        />
         {values.map((value, index) => (
           <input
             ref={(el) => {
               inputRefs.current[index] = el
             }}
-            name={`digit-${index}`}
             id={`digit-${index}`}
             key={`CodeField_Value_${index}`}
             className="w-8 mx-1 rounded-sm text-center p-1.5 text-stone-300 bg-stone-800 hover:bg-stone-700 focus:bg-stone-700 outline-amber-400 focus:outline-2 transition"
@@ -166,6 +149,8 @@ const CodeField = ({
             spellCheck={false}
             data-lpignore="true"
             data-bwignore="true"
+            data-np-autofill-field-type="none"
+            data-np-autofill-mfa-last="0"
           />
         ))}
       </div>

@@ -9,7 +9,7 @@ export const getUserByEmail = async (email: string): Promise<User | null> => {
   })
 }
 export const getUserById = async (
-  id: string
+  id: string,
 ): Promise<Result<User, ResourceMissingError>> => {
   const user = await database.client.user.findUnique({ where: { id } })
   return user
@@ -18,7 +18,7 @@ export const getUserById = async (
 }
 export const createNewUser = async (
   email: string,
-  isVerified: boolean
+  isVerified: boolean,
 ): Promise<User> => {
   return await database.client.user.create({
     data: {

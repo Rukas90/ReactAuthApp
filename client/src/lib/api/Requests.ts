@@ -55,7 +55,10 @@ export const makeRequest = async <T>(
     }
   } catch (error) {
     if (error instanceof AxiosError) {
-      throw error
+      return {
+        ok: false,
+        error: axiosErrorToProblemDetails(error),
+      }
     }
     return {
       ok: false,

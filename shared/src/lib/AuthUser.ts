@@ -2,10 +2,10 @@ export type SessionData = {
   user: AuthUser | null
   canRefresh: boolean
 }
-export type AuthLevel = "pre_2fa" | "full"
+export type Scope = "mfa:verify" | "admin:access"
 
 export type AuthUser = {
   verifiedEmail: boolean
-  authLevel: AuthLevel
+  scope: Scope[]
   expiresAt: number
 }

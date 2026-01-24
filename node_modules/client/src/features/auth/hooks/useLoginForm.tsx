@@ -17,7 +17,7 @@ const useLoginForm = () => {
 
   const getValidationError = (
     form: FormData,
-    validationError: z.ZodSafeParseError<LoginData>
+    validationError: z.ZodSafeParseError<LoginData>,
   ): string => {
     if (!form.get("email") && !form.get("password")) {
       return "Please enter a valid email and password."

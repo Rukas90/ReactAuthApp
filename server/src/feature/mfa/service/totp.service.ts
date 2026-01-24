@@ -9,7 +9,7 @@ import { appConfig, database } from "@base/app"
 import { CipherGCMOptions, decryptGCM, encryptGCM } from "@shared/security"
 import QRCode from "qrcode"
 import { Result, TotpData, VoidResult } from "@project/shared"
-import { DomainError, UnexpectedError } from "@shared/errors"
+import { DomainError } from "@shared/errors"
 import {
   MfaAlreadyConfiguredError,
   MfaNotFoundError,
@@ -17,7 +17,9 @@ import {
   MfaCredentialsMissingError,
   MfaVerificationError,
   MfaInvalidCodeError,
-} from "../error/validation.error"
+  MfaQRCodeGenerateError,
+  MfaDecryptionError,
+} from "../error/mfa.error"
 
 type TotpCredentials = {
   secret_enc: string
@@ -81,9 +83,7 @@ export const getTotpData = async (
   const qrCodeURi = await generateQRCodeURi(otpAuthUrl)
 
   if (!qrCodeURi) {
-    return Result.error(
-      new UnexpectedError("Failed to generate QR code", "QR_GENERATION_FAILED"),
-    )
+    return Result.error(new MfaQRCodeGenerateError())
   }
   return Result.success({
     qrCodeURi,
@@ -192,12 +192,10 @@ const updateCredentials = async (
 
 const decryptSecret = (
   secretEnrypted: string,
-): Result<string, UnexpectedError> => {
+): Result<string, MfaDecryptionError> => {
   const decrypted = decryptGCM(secretEnrypted, EncryptionOptions)
   if (!decrypted.ok) {
-    return Result.error(
-      new UnexpectedError("Failed to decrypt TOTP secret", "DECRYPTION_FAILED"),
-    )
+    return Result.error(new MfaDecryptionError())
   }
   return Result.success(decrypted.data)
 }

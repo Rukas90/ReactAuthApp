@@ -1,10 +1,10 @@
 import { FullSizeContainer } from "@features/shared"
-import TfaSectionPanel from "../components/TfaSectionPanel"
+import MfaSectionPanel from "../components/MfaSectionPanel"
 
 const SecuritySettings = () => {
   return (
     <FullSizeContainer>
-      <TfaSectionPanel />
+      <MfaSectionPanel />
     </FullSizeContainer>
   )
 }

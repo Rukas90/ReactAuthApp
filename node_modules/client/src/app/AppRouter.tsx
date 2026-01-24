@@ -17,9 +17,11 @@ import {
 } from "@features/dashboard"
 import { NotFoundView } from "@src/routes"
 import { TotpSetupView } from "@features/totp"
+import { MfaAuthView, TotpLogin } from "@features/mfa"
 
 const AppRouter = () => {
   const { isInitialized, isLoading } = useAuthContext()
+
   useTokenRefresh()
 
   if (!isInitialized) {
@@ -36,7 +38,12 @@ const AppRouter = () => {
         <Route path="/login" element={<LoginView />} />
         <Route path="/register" element={<RegisterView />} />
       </Route>
-      <Route element={<ProtectedRoute />}>
+      <Route element={<ProtectedRoute scope={["mfa:verify"]} />}>
+        <Route path="/session/mfa" element={<MfaAuthView />}>
+          <Route path="totp" element={<TotpLogin />} />
+        </Route>
+      </Route>
+      <Route element={<ProtectedRoute scope={["admin:access"]} />}>
         <Route path="/dashboard" element={<DashboardView />}>
           <Route
             index={true}
