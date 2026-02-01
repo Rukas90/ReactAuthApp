@@ -1,1 +1,1 @@
-export { default as LanguageInitializer } from "./LanguageInitializer"
+export { default as LanguagePicker } from "./LanguagePicker"

@@ -1,25 +1,25 @@
+import logger from "@shared/logger"
+import chalk from "chalk"
 import IORedis from "ioredis"
 
-const CONNECTION = new IORedis("redis://localhost:6379")
+const redis = new IORedis("redis://localhost:6379", {
+  maxRetriesPerRequest: null,
+})
 
-const redis = {
-  initialize: () => {
-    CONNECTION.on("connect", () => {
-      console.log("Redis connected")
-    })
+redis.on("connect", () => {
+  logger.success(chalk.red("Redis"), "connected on port", chalk.gray("6379"))
+})
 
-    CONNECTION.on("ready", () => {
-      console.log("Redis ready")
-    })
+redis.on("ready", () => {
+  logger.info(chalk.red("Redis"), "is ready.")
+})
 
-    CONNECTION.on("error", (err) => {
-      console.error("Redis error:", err)
-    })
+redis.on("error", (err) => {
+  logger.error(chalk.red("Redis"), "error:", err)
+})
 
-    CONNECTION.on("close", () => {
-      console.log("Redis closed")
-    })
-  },
-  connection: CONNECTION,
-}
+redis.on("close", () => {
+  logger.info(chalk.red("Redis"), "closed.")
+})
+
 export default redis

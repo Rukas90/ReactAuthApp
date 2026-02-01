@@ -6,4 +6,5 @@ export type ProblemDetails = {
     code: string;
     instance: string;
     stack?: string;
+    extensions?: Record<string, unknown>;
 };

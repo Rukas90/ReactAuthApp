@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client"
 import { PrismaPg } from "@prisma/adapter-pg"
 import { Pool } from "pg"
+import logger from "@shared/logger"
 
 class Database {
   #pool: Pool | null = null
@@ -9,7 +10,7 @@ class Database {
 
   async connect(connectionString: string): Promise<void> {
     if (this.#client) {
-      console.log("Already connected")
+      logger.warn("Already connected")
       return
     }
     this.#pool = new Pool({ connectionString })
@@ -30,7 +31,7 @@ class Database {
       }
       this.#adapter = null
     } finally {
-      console.log("Database disconnected")
+      logger.info("Database disconnected")
     }
   }
   get client(): PrismaClient {

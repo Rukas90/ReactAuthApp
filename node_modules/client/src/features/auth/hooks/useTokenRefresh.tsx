@@ -3,8 +3,11 @@ import useAuthContext from "./useAuthContext"
 import useAuthRefresh from "./useAuthRefresh"
 import { axiosInstance } from "@src/lib"
 import { useNavigate } from "react-router-dom"
+import { AuthErrorCodes } from "@project/shared"
+import { useQueryClient } from "@tanstack/react-query"
 
 const useTokenRefresh = (refreshThresholdMs: number = 3 * 60 * 1000) => {
+  const queryClient = useQueryClient()
   const { user, isInitialized } = useAuthContext()
   const { authRefresh, isRefreshing } = useAuthRefresh()
   const navigate = useNavigate()
@@ -15,6 +18,8 @@ const useTokenRefresh = (refreshThresholdMs: number = 3 * 60 * 1000) => {
     const response = await authRefresh()
     if (!response.ok) {
       navigate("/login")
+    } else {
+      queryClient.invalidateQueries({ queryKey: ["user", "sessions"] })
     }
     return response
   }, [authRefresh])
@@ -27,7 +32,12 @@ const useTokenRefresh = (refreshThresholdMs: number = 3 * 60 * 1000) => {
         if (originalRequest._retry) {
           return Promise.reject(error)
         }
-        if (error.response.status === 401) {
+        if (error.response.data.status === 401) {
+          if (
+            error.response.data.code !== AuthErrorCodes.AUTH_UNAUTHENTICATED
+          ) {
+            return Promise.reject(error)
+          }
           const refresh = await handleRefresh()
 
           if (refresh.ok) {

@@ -13,6 +13,17 @@ export type GithubEmail = {
   visibility: string
 }
 
+const userInfoService = {
+  fetchUserInfo: async (provider: OAuthProvider, accessToken: string) => {
+    switch (provider) {
+      case "google":
+        return getGoogleUserInfo(accessToken)
+      case "github":
+        return getGithubUserInfo(accessToken)
+    }
+  },
+}
+
 const getGoogleUserInfo = async (
   accessToken: string,
 ): Promise<Result<OAuthUserInfo, OAuthUserInfoFetchFailedError>> => {
@@ -92,14 +103,4 @@ const getGithubAccountAddress = async (
   }
 }
 
-export const fetchUserInfo = async (
-  provider: OAuthProvider,
-  accessToken: string,
-) => {
-  switch (provider) {
-    case "google":
-      return getGoogleUserInfo(accessToken)
-    case "github":
-      return getGithubUserInfo(accessToken)
-  }
-}
+export default userInfoService

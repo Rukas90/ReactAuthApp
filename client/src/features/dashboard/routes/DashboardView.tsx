@@ -1,26 +1,20 @@
-import {
-  ContentContainer,
-  FullSizeContainer,
-  HorizontalLineLabel,
-} from "@features/shared"
+import { ContentContainer, DividerLabel } from "@features/shared"
 import NavBar from "../components/NavBar"
 import SettingsNav from "../components/SettingsNav"
 import { Outlet } from "react-router-dom"
-import UserVerifiedRibbon from "../components/UserVerifiedRibbon"
+import { useTranslation } from "react-i18next"
 
 const DashboardView = () => {
+  const { t } = useTranslation()
   return (
-    <FullSizeContainer>
-      <UserVerifiedRibbon />
-      <ContentContainer>
-        <NavBar />
-        <HorizontalLineLabel className="w-full text-stone-400 text-lg font-medium">
-          Settings
-        </HorizontalLineLabel>
-        <SettingsNav />
-        <Outlet />
-      </ContentContainer>
-    </FullSizeContainer>
+    <ContentContainer>
+      <NavBar />
+      <DividerLabel className="w-full text-stone-400 text-lg font-medium">
+        {t("SETTINGS")}
+      </DividerLabel>
+      <SettingsNav />
+      <Outlet />
+    </ContentContainer>
   )
 }
 export default DashboardView

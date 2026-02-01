@@ -1,11 +1,12 @@
 import clsx from "clsx"
+import type { ReactNode } from "react"
 
 export interface BaseButtonProps extends Pick<
   React.ComponentProps<"div">,
   "className"
 > {
   text?: string
-  icon?: string
+  icon?: ReactNode
 
   type?: "submit" | "reset" | "button" | undefined
 
@@ -23,7 +24,6 @@ const BaseButton = ({
   type = "button",
   className,
   extendWidth = false,
-  invert = false,
   disabled = false,
   action,
 }: BaseButtonProps) => {
@@ -39,13 +39,7 @@ const BaseButton = ({
         disabled ? "opacity-50" : "cursor-pointer",
       )}
     >
-      {icon && (
-        <img
-          src={icon}
-          className={clsx("w-5 h-5", text ? "me-2" : "m-0", invert && "invert")}
-        />
-      )}
-
+      {icon}
       {text && <span className="fw-medium">{text}</span>}
     </button>
   )

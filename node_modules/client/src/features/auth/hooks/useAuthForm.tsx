@@ -4,13 +4,7 @@ import { z } from "zod"
 
 interface UseAuthOptions<TSchema extends z.ZodSchema> {
   schema: TSchema
-  onAuth: (
-    data:
-      | z.infer<TSchema>
-      | {
-          captchaToken: string
-        },
-  ) => Promise<VoidResult<string>>
+  onAuth: (data: z.infer<TSchema>) => Promise<VoidResult<string>>
   getValidationError: (
     form: FormData,
     validationError: z.ZodSafeParseError<z.infer<TSchema>>,

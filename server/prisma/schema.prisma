@@ -16,9 +16,9 @@ model User {
 
   refreshTokens  RefreshToken[]
   oauths         OAuth[]
-  verifications  Verification[]
-  sessions       Session[]
+  sessions       UserSession[]
   mfaEnrollments MfaEnrollment[]
+  verifications  Verification[]
 }
 
 model OAuth {
@@ -48,53 +48,50 @@ model MfaEnrollment {
 }
 
 model RefreshToken {
-  id          String   @id @default(uuid())
+  id          String    @id @default(uuid())
   family_id   String
-  token_hash  String   @unique
-  lookup_hash String   @unique
-  created_at  DateTime @default(now())
+  token_hash  String    @unique
+  lookup_hash String    @unique
+  created_at  DateTime  @default(now())
   expires_at  DateTime
-  revoked     Boolean
-  user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  revoked_at  DateTime?
+  revoked     Boolean   @default(false)
+  user        User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id     String
 
-  @@index([user_id])
-  @@index([family_id])
   @@index([lookup_hash])
+  @@index([user_id, family_id])
 }
 
-model Session {
-  session_id         String   @id @default(uuid())
-  ip_address         String
-  device_type        String
-  location           String
-  login_time         DateTime
-  last_activity_time DateTime
-  source             String
-  user               User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id            String
+model UserSession {
+  id               String   @id @default(uuid())
+  family_id        String   @unique
+  user_agent       String
+  ip_address       String
+  location         String?
+  created_at       DateTime @default(now())
+  expires_at       DateTime
+  last_accessed_at DateTime @default(now())
+  revoked          Boolean  @default(false)
+  user_id          String
+  user             User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
+  @@index([user_id, family_id])
   @@index([user_id])
-  @@map("UserSession")
-}
-
-model BlockedSession {
-  session_id       String   @id @default(uuid())
-  block_reason     String
-  block_start_time DateTime @default(now())
-  block_end_time   DateTime
 }
 
 model Verification {
-  id            String   @id @default(uuid())
-  type          String
-  code_hash     String   @unique
-  dispatch      String
-  created_at    DateTime @default(now())
-  expires_at    DateTime
-  attempts_left Int      @default(5)
-  user          User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id       String
+  id                String   @id @default(uuid())
+  dispatch_type     String
+  payload_encrypted String?
+  code_hash         String   @unique
+  lookup_hash       String   @unique
+  created_at        DateTime @default(now())
+  expires_at        DateTime
+  user_id           String
+  user              User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@index([user_id])
+  @@index([user_id, dispatch_type])
+  @@index([user_id, lookup_hash])
 }

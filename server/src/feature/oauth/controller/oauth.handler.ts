@@ -1,32 +1,28 @@
-import { generateCsrfToken } from "@features/csrf"
+import { csrfService, generateCsrfCookie } from "@features/csrf"
 import { OAuthProvider, Result } from "@project/shared"
-import { asyncRoute, OAuthSession } from "@shared/util"
+import { asyncRoute, authRoute, OAuthSession } from "@shared/util"
 import { Request, Response, NextFunction } from "express"
-import {
-  authenticateOAuthAccount,
-  generatePKCE,
-  getAuthorizationUrl,
-  processOAuthRequest,
-} from "../service/oauth.service"
+import oauthService from "../service/oauth.service"
 import {
   OAuthInvalidStateError,
   OAuthMissingAuthorizationCodeError,
 } from "../error/oauth.error"
-import { establishUserAuthSession } from "@features/auth"
+import { authService, setAuthSessionCookies } from "@features/auth"
+import { extractSessionContext } from "@features/session"
 
 export const initiateOAuth = asyncRoute(
   async (req: Request, res: Response, _: NextFunction) => {
     const provider = req.params.provider as OAuthProvider
 
-    const state = generateCsrfToken()
-    const { verifier, challenge } = generatePKCE()
+    const state = csrfService.generateCsrfToken()
+    const { verifier, challenge } = oauthService.generatePKCE()
 
     req.session.oauth = {
       state,
       verifier,
       provider,
     }
-    res.redirect(getAuthorizationUrl(provider, state, challenge))
+    res.redirect(oauthService.getAuthorizationUrl(provider, state, challenge))
   },
 )
 
@@ -37,24 +33,29 @@ export const handleOAuthCallback = asyncRoute(
     if (!session.ok) {
       return Result.error(session.error)
     }
-    const oauth = await processOAuthRequest(session.data)
+    const oauth = await oauthService.processOAuthRequest(session.data)
 
     if (!oauth.ok) {
       return next(oauth.error)
     }
-    const auth = await authenticateOAuthAccount(
+    const auth = await oauthService.authenticateOAuthAccount(
       oauth.data.session,
       oauth.data.userInfo,
     )
     if (!auth.ok) {
       return next(auth.error)
     }
-
-    await establishUserAuthSession(res, auth.data.user)
+    const { accessToken, refreshToken, authUser } =
+      await authService.establishUserAuthSession(
+        auth.data.user,
+        extractSessionContext(req),
+      )
+    setAuthSessionCookies(res, accessToken, refreshToken, authUser)
 
     const url = new URL(process.env.CLIENT_ORIGIN!)
     url.pathname = "oauth/callback"
 
+    generateCsrfCookie(res)
     res.redirect(url.toString())
   },
 )
@@ -90,3 +91,19 @@ export const validateCallbackRequest = (
   }
   return Result.success({ ...session, code })
 }
+export const disconnectOAuthMethodHandler = authRoute(
+  async (req, res, next) => {
+    const userId = req.session.auth.userId
+    const provider = req.params.provider as OAuthProvider
+
+    const disconnect = await oauthService.disconnectOAuthProvider(
+      userId,
+      provider,
+    )
+
+    if (!disconnect.ok) {
+      return next(disconnect.error)
+    }
+    res.ok("Disconnected OAuth provider from user successfully.")
+  },
+)

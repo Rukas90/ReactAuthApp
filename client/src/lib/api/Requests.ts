@@ -1,11 +1,14 @@
 import axios, {
   type AxiosInstance,
+  type AxiosRequestConfig,
   type AxiosResponse,
   AxiosError,
 } from "axios"
 import { type ApiResult } from "./Response"
 import { axiosErrorToProblemDetails, isSuccessResponse } from "./RequestHelpers"
 import Cookies from "js-cookie"
+import superjson from "superjson"
+import { CSRF_COOKIE_NAME, CSRF_HEADER_NAME } from "@project/shared"
 
 export const API_URL = import.meta.env.VITE_API_URL
 
@@ -16,15 +19,34 @@ export const axiosBaseConfig = {
   headers: {
     "Content-Type": "application/json",
   },
-}
+  transformResponse: [
+    (data) => {
+      if (typeof data === "string") {
+        try {
+          const prased = superjson.parse(data)
+          if (prased === undefined) {
+            return JSON.parse(data)
+          }
+          return prased
+        } catch (error) {
+          try {
+            return JSON.parse(data)
+          } catch (jsonError) {
+            return data
+          }
+        }
+      }
+      return data
+    },
+  ],
+} satisfies AxiosRequestConfig
+
 export const axiosInstance: AxiosInstance = axios.create(axiosBaseConfig)
 
-let csrfCookie: string | undefined = undefined
-
 axiosInstance.interceptors.request.use(async (request) => {
-  csrfCookie ??= Cookies.get("csrf-token")
+  const csrfCookie = Cookies.get(CSRF_COOKIE_NAME)
   if (!!csrfCookie) {
-    request.headers.set("X-CSRF-TOKEN", csrfCookie)
+    request.headers[CSRF_HEADER_NAME] = csrfCookie
   }
   return request
 })

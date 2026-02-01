@@ -20,93 +20,75 @@ export type VerificationModel = runtime.Types.Result.DefaultSelection<Prisma.$Ve
 
 export type AggregateVerification = {
   _count: VerificationCountAggregateOutputType | null
-  _avg: VerificationAvgAggregateOutputType | null
-  _sum: VerificationSumAggregateOutputType | null
   _min: VerificationMinAggregateOutputType | null
   _max: VerificationMaxAggregateOutputType | null
 }
 
-export type VerificationAvgAggregateOutputType = {
-  attempts_left: number | null
-}
-
-export type VerificationSumAggregateOutputType = {
-  attempts_left: number | null
-}
-
 export type VerificationMinAggregateOutputType = {
   id: string | null
-  type: string | null
+  dispatch_type: string | null
+  payload_encrypted: string | null
   code_hash: string | null
-  dispatch: string | null
+  lookup_hash: string | null
   created_at: Date | null
   expires_at: Date | null
-  attempts_left: number | null
   user_id: string | null
 }
 
 export type VerificationMaxAggregateOutputType = {
   id: string | null
-  type: string | null
+  dispatch_type: string | null
+  payload_encrypted: string | null
   code_hash: string | null
-  dispatch: string | null
+  lookup_hash: string | null
   created_at: Date | null
   expires_at: Date | null
-  attempts_left: number | null
   user_id: string | null
 }
 
 export type VerificationCountAggregateOutputType = {
   id: number
-  type: number
+  dispatch_type: number
+  payload_encrypted: number
   code_hash: number
-  dispatch: number
+  lookup_hash: number
   created_at: number
   expires_at: number
-  attempts_left: number
   user_id: number
   _all: number
 }
 
 
-export type VerificationAvgAggregateInputType = {
-  attempts_left?: true
-}
-
-export type VerificationSumAggregateInputType = {
-  attempts_left?: true
-}
-
 export type VerificationMinAggregateInputType = {
   id?: true
-  type?: true
+  dispatch_type?: true
+  payload_encrypted?: true
   code_hash?: true
-  dispatch?: true
+  lookup_hash?: true
   created_at?: true
   expires_at?: true
-  attempts_left?: true
   user_id?: true
 }
 
 export type VerificationMaxAggregateInputType = {
   id?: true
-  type?: true
+  dispatch_type?: true
+  payload_encrypted?: true
   code_hash?: true
-  dispatch?: true
+  lookup_hash?: true
   created_at?: true
   expires_at?: true
-  attempts_left?: true
   user_id?: true
 }
 
 export type VerificationCountAggregateInputType = {
   id?: true
-  type?: true
+  dispatch_type?: true
+  payload_encrypted?: true
   code_hash?: true
-  dispatch?: true
+  lookup_hash?: true
   created_at?: true
   expires_at?: true
-  attempts_left?: true
   user_id?: true
   _all?: true
 }
@@ -149,18 +131,6 @@ export type VerificationAggregateArgs<ExtArgs extends runtime.Types.Extensions.I
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: VerificationAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: VerificationSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: VerificationMinAggregateInputType
@@ -191,24 +161,20 @@ export type VerificationGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   _count?: VerificationCountAggregateInputType | true
-  _avg?: VerificationAvgAggregateInputType
-  _sum?: VerificationSumAggregateInputType
   _min?: VerificationMinAggregateInputType
   _max?: VerificationMaxAggregateInputType
 }
 
 export type VerificationGroupByOutputType = {
   id: string
-  type: string
+  dispatch_type: string
+  payload_encrypted: string | null
   code_hash: string
-  dispatch: string
+  lookup_hash: string
   created_at: Date
   expires_at: Date
-  attempts_left: number
   user_id: string
   _count: VerificationCountAggregateOutputType | null
-  _avg: VerificationAvgAggregateOutputType | null
-  _sum: VerificationSumAggregateOutputType | null
   _min: VerificationMinAggregateOutputType | null
   _max: VerificationMaxAggregateOutputType | null
 }
@@ -233,24 +199,24 @@ export type VerificationWhereInput = {
   OR?: Prisma.VerificationWhereInput[]
   NOT?: Prisma.VerificationWhereInput | Prisma.VerificationWhereInput[]
   id?: Prisma.StringFilter<"Verification"> | string
-  type?: Prisma.StringFilter<"Verification"> | string
+  dispatch_type?: Prisma.StringFilter<"Verification"> | string
+  payload_encrypted?: Prisma.StringNullableFilter<"Verification"> | string | null
   code_hash?: Prisma.StringFilter<"Verification"> | string
-  dispatch?: Prisma.StringFilter<"Verification"> | string
+  lookup_hash?: Prisma.StringFilter<"Verification"> | string
   created_at?: Prisma.DateTimeFilter<"Verification"> | Date | string
   expires_at?: Prisma.DateTimeFilter<"Verification"> | Date | string
-  attempts_left?: Prisma.IntFilter<"Verification"> | number
   user_id?: Prisma.StringFilter<"Verification"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type VerificationOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  type?: Prisma.SortOrder
+  dispatch_type?: Prisma.SortOrder
+  payload_encrypted?: Prisma.SortOrderInput | Prisma.SortOrder
   code_hash?: Prisma.SortOrder
-  dispatch?: Prisma.SortOrder
+  lookup_hash?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   expires_at?: Prisma.SortOrder
-  attempts_left?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
 }
@@ -258,32 +224,30 @@ export type VerificationOrderByWithRelationInput = {
 export type VerificationWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   code_hash?: string
+  lookup_hash?: string
   AND?: Prisma.VerificationWhereInput | Prisma.VerificationWhereInput[]
   OR?: Prisma.VerificationWhereInput[]
   NOT?: Prisma.VerificationWhereInput | Prisma.VerificationWhereInput[]
-  type?: Prisma.StringFilter<"Verification"> | string
-  dispatch?: Prisma.StringFilter<"Verification"> | string
+  dispatch_type?: Prisma.StringFilter<"Verification"> | string
+  payload_encrypted?: Prisma.StringNullableFilter<"Verification"> | string | null
   created_at?: Prisma.DateTimeFilter<"Verification"> | Date | string
   expires_at?: Prisma.DateTimeFilter<"Verification"> | Date | string
-  attempts_left?: Prisma.IntFilter<"Verification"> | number
   user_id?: Prisma.StringFilter<"Verification"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-}, "id" | "code_hash">
+}, "id" | "code_hash" | "lookup_hash">
 
 export type VerificationOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  type?: Prisma.SortOrder
+  dispatch_type?: Prisma.SortOrder
+  payload_encrypted?: Prisma.SortOrderInput | Prisma.SortOrder
   code_hash?: Prisma.SortOrder
-  dispatch?: Prisma.SortOrder
+  lookup_hash?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   expires_at?: Prisma.SortOrder
-  attempts_left?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
   _count?: Prisma.VerificationCountOrderByAggregateInput
-  _avg?: Prisma.VerificationAvgOrderByAggregateInput
   _max?: Prisma.VerificationMaxOrderByAggregateInput
   _min?: Prisma.VerificationMinOrderByAggregateInput
-  _sum?: Prisma.VerificationSumOrderByAggregateInput
 }
 
 export type VerificationScalarWhereWithAggregatesInput = {
@@ -291,88 +255,88 @@ export type VerificationScalarWhereWithAggregatesInput = {
   OR?: Prisma.VerificationScalarWhereWithAggregatesInput[]
   NOT?: Prisma.VerificationScalarWhereWithAggregatesInput | Prisma.VerificationScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Verification"> | string
-  type?: Prisma.StringWithAggregatesFilter<"Verification"> | string
+  dispatch_type?: Prisma.StringWithAggregatesFilter<"Verification"> | string
+  payload_encrypted?: Prisma.StringNullableWithAggregatesFilter<"Verification"> | string | null
   code_hash?: Prisma.StringWithAggregatesFilter<"Verification"> | string
-  dispatch?: Prisma.StringWithAggregatesFilter<"Verification"> | string
+  lookup_hash?: Prisma.StringWithAggregatesFilter<"Verification"> | string
   created_at?: Prisma.DateTimeWithAggregatesFilter<"Verification"> | Date | string
   expires_at?: Prisma.DateTimeWithAggregatesFilter<"Verification"> | Date | string
-  attempts_left?: Prisma.IntWithAggregatesFilter<"Verification"> | number
   user_id?: Prisma.StringWithAggregatesFilter<"Verification"> | string
 }
 
 export type VerificationCreateInput = {
   id?: string
-  type: string
+  dispatch_type: string
+  payload_encrypted?: string | null
   code_hash: string
-  dispatch: string
+  lookup_hash: string
   created_at?: Date | string
   expires_at: Date | string
-  attempts_left?: number
   user: Prisma.UserCreateNestedOneWithoutVerificationsInput
 }
 
 export type VerificationUncheckedCreateInput = {
   id?: string
-  type: string
+  dispatch_type: string
+  payload_encrypted?: string | null
   code_hash: string
-  dispatch: string
+  lookup_hash: string
   created_at?: Date | string
   expires_at: Date | string
-  attempts_left?: number
   user_id: string
 }
 
 export type VerificationUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
+  dispatch_type?: Prisma.StringFieldUpdateOperationsInput | string
+  payload_encrypted?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code_hash?: Prisma.StringFieldUpdateOperationsInput | string
-  dispatch?: Prisma.StringFieldUpdateOperationsInput | string
+  lookup_hash?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expires_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  attempts_left?: Prisma.IntFieldUpdateOperationsInput | number
   user?: Prisma.UserUpdateOneRequiredWithoutVerificationsNestedInput
 }
 
 export type VerificationUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
+  dispatch_type?: Prisma.StringFieldUpdateOperationsInput | string
+  payload_encrypted?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code_hash?: Prisma.StringFieldUpdateOperationsInput | string
-  dispatch?: Prisma.StringFieldUpdateOperationsInput | string
+  lookup_hash?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expires_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  attempts_left?: Prisma.IntFieldUpdateOperationsInput | number
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type VerificationCreateManyInput = {
   id?: string
-  type: string
+  dispatch_type: string
+  payload_encrypted?: string | null
   code_hash: string
-  dispatch: string
+  lookup_hash: string
   created_at?: Date | string
   expires_at: Date | string
-  attempts_left?: number
   user_id: string
 }
 
 export type VerificationUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
+  dispatch_type?: Prisma.StringFieldUpdateOperationsInput | string
+  payload_encrypted?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code_hash?: Prisma.StringFieldUpdateOperationsInput | string
-  dispatch?: Prisma.StringFieldUpdateOperationsInput | string
+  lookup_hash?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expires_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  attempts_left?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type VerificationUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
+  dispatch_type?: Prisma.StringFieldUpdateOperationsInput | string
+  payload_encrypted?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code_hash?: Prisma.StringFieldUpdateOperationsInput | string
-  dispatch?: Prisma.StringFieldUpdateOperationsInput | string
+  lookup_hash?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expires_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  attempts_left?: Prisma.IntFieldUpdateOperationsInput | number
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -388,43 +352,35 @@ export type VerificationOrderByRelationAggregateInput = {
 
 export type VerificationCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  type?: Prisma.SortOrder
+  dispatch_type?: Prisma.SortOrder
+  payload_encrypted?: Prisma.SortOrder
   code_hash?: Prisma.SortOrder
-  dispatch?: Prisma.SortOrder
+  lookup_hash?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   expires_at?: Prisma.SortOrder
-  attempts_left?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
-}
-
-export type VerificationAvgOrderByAggregateInput = {
-  attempts_left?: Prisma.SortOrder
 }
 
 export type VerificationMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  type?: Prisma.SortOrder
+  dispatch_type?: Prisma.SortOrder
+  payload_encrypted?: Prisma.SortOrder
   code_hash?: Prisma.SortOrder
-  dispatch?: Prisma.SortOrder
+  lookup_hash?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   expires_at?: Prisma.SortOrder
-  attempts_left?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
 }
 
 export type VerificationMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  type?: Prisma.SortOrder
+  dispatch_type?: Prisma.SortOrder
+  payload_encrypted?: Prisma.SortOrder
   code_hash?: Prisma.SortOrder
-  dispatch?: Prisma.SortOrder
+  lookup_hash?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   expires_at?: Prisma.SortOrder
-  attempts_left?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
-}
-
-export type VerificationSumOrderByAggregateInput = {
-  attempts_left?: Prisma.SortOrder
 }
 
 export type VerificationCreateNestedManyWithoutUserInput = {
@@ -469,32 +425,24 @@ export type VerificationUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.VerificationScalarWhereInput | Prisma.VerificationScalarWhereInput[]
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type VerificationCreateWithoutUserInput = {
   id?: string
-  type: string
+  dispatch_type: string
+  payload_encrypted?: string | null
   code_hash: string
-  dispatch: string
+  lookup_hash: string
   created_at?: Date | string
   expires_at: Date | string
-  attempts_left?: number
 }
 
 export type VerificationUncheckedCreateWithoutUserInput = {
   id?: string
-  type: string
+  dispatch_type: string
+  payload_encrypted?: string | null
   code_hash: string
-  dispatch: string
+  lookup_hash: string
   created_at?: Date | string
   expires_at: Date | string
-  attempts_left?: number
 }
 
 export type VerificationCreateOrConnectWithoutUserInput = {
@@ -528,105 +476,105 @@ export type VerificationScalarWhereInput = {
   OR?: Prisma.VerificationScalarWhereInput[]
   NOT?: Prisma.VerificationScalarWhereInput | Prisma.VerificationScalarWhereInput[]
   id?: Prisma.StringFilter<"Verification"> | string
-  type?: Prisma.StringFilter<"Verification"> | string
+  dispatch_type?: Prisma.StringFilter<"Verification"> | string
+  payload_encrypted?: Prisma.StringNullableFilter<"Verification"> | string | null
   code_hash?: Prisma.StringFilter<"Verification"> | string
-  dispatch?: Prisma.StringFilter<"Verification"> | string
+  lookup_hash?: Prisma.StringFilter<"Verification"> | string
   created_at?: Prisma.DateTimeFilter<"Verification"> | Date | string
   expires_at?: Prisma.DateTimeFilter<"Verification"> | Date | string
-  attempts_left?: Prisma.IntFilter<"Verification"> | number
   user_id?: Prisma.StringFilter<"Verification"> | string
 }
 
 export type VerificationCreateManyUserInput = {
   id?: string
-  type: string
+  dispatch_type: string
+  payload_encrypted?: string | null
   code_hash: string
-  dispatch: string
+  lookup_hash: string
   created_at?: Date | string
   expires_at: Date | string
-  attempts_left?: number
 }
 
 export type VerificationUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
+  dispatch_type?: Prisma.StringFieldUpdateOperationsInput | string
+  payload_encrypted?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code_hash?: Prisma.StringFieldUpdateOperationsInput | string
-  dispatch?: Prisma.StringFieldUpdateOperationsInput | string
+  lookup_hash?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expires_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  attempts_left?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type VerificationUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
+  dispatch_type?: Prisma.StringFieldUpdateOperationsInput | string
+  payload_encrypted?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code_hash?: Prisma.StringFieldUpdateOperationsInput | string
-  dispatch?: Prisma.StringFieldUpdateOperationsInput | string
+  lookup_hash?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expires_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  attempts_left?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type VerificationUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
+  dispatch_type?: Prisma.StringFieldUpdateOperationsInput | string
+  payload_encrypted?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code_hash?: Prisma.StringFieldUpdateOperationsInput | string
-  dispatch?: Prisma.StringFieldUpdateOperationsInput | string
+  lookup_hash?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expires_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  attempts_left?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 
 
 export type VerificationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  type?: boolean
+  dispatch_type?: boolean
+  payload_encrypted?: boolean
   code_hash?: boolean
-  dispatch?: boolean
+  lookup_hash?: boolean
   created_at?: boolean
   expires_at?: boolean
-  attempts_left?: boolean
   user_id?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["verification"]>
 
 export type VerificationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  type?: boolean
+  dispatch_type?: boolean
+  payload_encrypted?: boolean
   code_hash?: boolean
-  dispatch?: boolean
+  lookup_hash?: boolean
   created_at?: boolean
   expires_at?: boolean
-  attempts_left?: boolean
   user_id?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["verification"]>
 
 export type VerificationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  type?: boolean
+  dispatch_type?: boolean
+  payload_encrypted?: boolean
   code_hash?: boolean
-  dispatch?: boolean
+  lookup_hash?: boolean
   created_at?: boolean
   expires_at?: boolean
-  attempts_left?: boolean
   user_id?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["verification"]>
 
 export type VerificationSelectScalar = {
   id?: boolean
-  type?: boolean
+  dispatch_type?: boolean
+  payload_encrypted?: boolean
   code_hash?: boolean
-  dispatch?: boolean
+  lookup_hash?: boolean
   created_at?: boolean
   expires_at?: boolean
-  attempts_left?: boolean
   user_id?: boolean
 }
 
-export type VerificationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "code_hash" | "dispatch" | "created_at" | "expires_at" | "attempts_left" | "user_id", ExtArgs["result"]["verification"]>
+export type VerificationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "dispatch_type" | "payload_encrypted" | "code_hash" | "lookup_hash" | "created_at" | "expires_at" | "user_id", ExtArgs["result"]["verification"]>
 export type VerificationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -644,12 +592,12 @@ export type $VerificationPayload<ExtArgs extends runtime.Types.Extensions.Intern
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    type: string
+    dispatch_type: string
+    payload_encrypted: string | null
     code_hash: string
-    dispatch: string
+    lookup_hash: string
     created_at: Date
     expires_at: Date
-    attempts_left: number
     user_id: string
   }, ExtArgs["result"]["verification"]>
   composites: {}
@@ -1076,12 +1024,12 @@ export interface Prisma__VerificationClient<T, Null = never, ExtArgs extends run
  */
 export interface VerificationFieldRefs {
   readonly id: Prisma.FieldRef<"Verification", 'String'>
-  readonly type: Prisma.FieldRef<"Verification", 'String'>
+  readonly dispatch_type: Prisma.FieldRef<"Verification", 'String'>
+  readonly payload_encrypted: Prisma.FieldRef<"Verification", 'String'>
   readonly code_hash: Prisma.FieldRef<"Verification", 'String'>
-  readonly dispatch: Prisma.FieldRef<"Verification", 'String'>
+  readonly lookup_hash: Prisma.FieldRef<"Verification", 'String'>
   readonly created_at: Prisma.FieldRef<"Verification", 'DateTime'>
   readonly expires_at: Prisma.FieldRef<"Verification", 'DateTime'>
-  readonly attempts_left: Prisma.FieldRef<"Verification", 'Int'>
   readonly user_id: Prisma.FieldRef<"Verification", 'String'>
 }
     

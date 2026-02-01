@@ -32,7 +32,7 @@ const RegisterForm = ({ onSubmit, fieldErrors }: Props) => {
         indicateError={fieldErrors.has("password")}
       />
       <InputField
-        id="confirmPassword"
+        id="confirm_Password"
         name="confirmPassword"
         type="text"
         placeholder={t("CONFIRM_PASSWORD")}
@@ -40,7 +40,7 @@ const RegisterForm = ({ onSubmit, fieldErrors }: Props) => {
         extendWidth
         hideable
         isHidden
-        indicateError={fieldErrors.has("confirmPassword")}
+        indicateError={fieldErrors.has("confirm_Password")}
       />
     </AuthForm>
   )

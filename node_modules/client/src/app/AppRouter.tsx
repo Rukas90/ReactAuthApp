@@ -20,15 +20,12 @@ import { TotpSetupView } from "@features/totp"
 import { MfaAuthView, TotpLogin } from "@features/mfa"
 
 const AppRouter = () => {
-  const { isInitialized, isLoading } = useAuthContext()
+  const { isInitialized } = useAuthContext()
 
   useTokenRefresh()
 
   if (!isInitialized) {
-    return <>Not isInitialized...</>
-  }
-  if (isLoading) {
-    return <>Loading...</>
+    return <></>
   }
   return (
     <Routes>

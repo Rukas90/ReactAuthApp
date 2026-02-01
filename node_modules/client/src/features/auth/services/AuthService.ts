@@ -1,7 +1,10 @@
 import { type ApiResult, axiosBaseConfig, HTTP } from "@lib/api"
-import type { SessionData } from "@project/shared"
-import type { AuthResponseDto, LogoutResponseDto } from "../dto"
-import type { LoginData, RegisterData } from "../schemas"
+import type {
+  AuthResponseDto,
+  LoginData,
+  RegisterData,
+  SessionData,
+} from "@project/shared"
 import axios, { type AxiosInstance } from "axios"
 
 export const refreshInstance: AxiosInstance = axios.create(axiosBaseConfig)
@@ -15,8 +18,8 @@ const AuthService = {
     return HTTP.POST<AuthResponseDto>("/v1/auth/register", data)
   },
 
-  async logout(): Promise<ApiResult<LogoutResponseDto>> {
-    return HTTP.POST<LogoutResponseDto>("/v1/auth/logout")
+  async logout(): Promise<ApiResult<string>> {
+    return HTTP.POST<string>("/v1/auth/logout")
   },
 
   async session(): Promise<ApiResult<SessionData>> {

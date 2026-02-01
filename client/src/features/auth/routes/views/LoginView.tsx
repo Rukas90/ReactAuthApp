@@ -1,9 +1,4 @@
-import {
-  Captcha,
-  HorizontalLineLabel,
-  TitleText,
-  LinkText,
-} from "@features/shared"
+import { Captcha, DividerLabel, TitleText, LinkText } from "@features/shared"
 import { useTranslation } from "react-i18next"
 import AuthView from "./AuthView"
 import { LoginForm } from "../../components"
@@ -18,12 +13,11 @@ const LoginView = () => {
     <AuthView error={form.error}>
       <TitleText>{t("LOGIN")}</TitleText>
       <p className="text-stone-400">
-        Don't have an account? <LinkText to="/register">Register</LinkText>
+        Don't have an account?{" "}
+        <LinkText to="/register">{t("REGISTER")}</LinkText>
       </p>
       <SocialLoginButtons />
-      <HorizontalLineLabel className="py-4 text-stone-400">
-        {t("OR")}
-      </HorizontalLineLabel>
+      <DividerLabel className="py-4 text-stone-400">{t("OR")}</DividerLabel>
       <LoginForm onSubmit={form.onSubmit} fieldErrors={form.fieldErrors} />
       <Captcha setToken={form.setCaptchaToken} />
     </AuthView>

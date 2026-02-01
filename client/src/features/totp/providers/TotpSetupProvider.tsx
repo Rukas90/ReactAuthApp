@@ -3,6 +3,7 @@ import { TotpSetupContext } from "../contexts/TotpSetupContext"
 import { MfaErrorCodes, type TotpData } from "@project/shared"
 import { useNavigate } from "react-router-dom"
 import { TotpService } from "@features/mfa"
+import { toast } from "react-toastify"
 
 const TotpSetupProvider = ({
   children,
@@ -42,6 +43,8 @@ const TotpSetupProvider = ({
     setError(null)
 
     if (res.ok) {
+      navigate("/dashboard/security")
+      toast("MFA totp method was verified and configured successfully!")
     } else {
       setError(res.error.detail)
     }

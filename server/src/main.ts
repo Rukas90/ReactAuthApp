@@ -1,22 +1,31 @@
-import { server } from "@base/app"
+import { redis, server } from "@base/app"
 import "dotenv/config"
 import dotenv from "dotenv"
-import { useUserRoutes } from "@features/user"
-import { useAuthRoutes } from "@features/auth"
-import { useOAuthRoutes } from "@features/oauth"
-import { useMfaRoutes } from "@features/mfa"
 import { endpointErrorHandler } from "@shared/middleware"
 import { useScalarDocs } from "./shared/docs/scalar"
-import { appConfig } from "@base/app"
+import { config } from "@base/app"
 import { useSwaggerDocs } from "@shared/docs"
 import cookieParser from "cookie-parser"
 import bodyParser from "body-parser"
 import cors from "cors"
 import session from "express-session"
 import ms from "ms"
+import {
+  registerDispatches,
+  registerRoutes,
+  startWorkers,
+} from "./shared/loader"
+import { initializeCsrf } from "./feature/csrf"
+import { CSRF_HEADER_NAME } from "@project/shared"
 
 dotenv.config()
-server.initialize()
+
+try {
+  server.initialize()
+} catch {
+  server.shutdown()
+  throw new Error("App initialization has failed.")
+}
 
 const app = server.app
 const port = Number.parseInt(process.env.SERVER_PORT ?? "3000", 10)
@@ -28,7 +37,7 @@ app.use(
     origin: ["http://www.127.0.0.1.sslip.io:5173", "http://localhost:5173"],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-    allowedHeaders: ["Content-Type", "X-CSRF-TOKEN"],
+    allowedHeaders: ["Content-Type", CSRF_HEADER_NAME],
   }),
 )
 app.use(
@@ -38,21 +47,22 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: appConfig.isProduction,
+      secure: config().isProduction,
       sameSite: "lax",
       maxAge: ms("15m"),
     },
   }),
 )
 
-useUserRoutes(app)
-useAuthRoutes(app)
-useOAuthRoutes(app)
-useMfaRoutes(app)
+app.use(initializeCsrf)
+
+await registerRoutes(app)
+await startWorkers()
+await registerDispatches()
 
 app.use(endpointErrorHandler)
 
-if (appConfig.isDevelopment) {
+if (config().isDevelopment) {
   useSwaggerDocs(app)
   useScalarDocs(app)
 }

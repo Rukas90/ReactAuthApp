@@ -5,7 +5,6 @@ export type SessionData = {
 export type Scope = "mfa:verify" | "admin:access"
 
 export type AuthUser = {
-  verifiedEmail: boolean
   scope: Scope[]
   expiresAt: number
 }

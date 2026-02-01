@@ -64,7 +64,7 @@ const ERROR_DESCRIPTORS: Record<DomainErrorType, ProblemDescriptor> = {
 export function domainErrorToProblemDetails(
   error: DomainError,
   useStack: boolean,
-  instance: string
+  instance: string,
 ): ProblemDetails {
   return {
     ...ERROR_DESCRIPTORS[error.type],
@@ -72,5 +72,6 @@ export function domainErrorToProblemDetails(
     code: error.code,
     instance,
     ...(useStack && { stack: error.stack }),
+    extensions: error.data,
   }
 }

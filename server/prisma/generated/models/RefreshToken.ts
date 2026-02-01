@@ -31,6 +31,7 @@ export type RefreshTokenMinAggregateOutputType = {
   lookup_hash: string | null
   created_at: Date | null
   expires_at: Date | null
+  revoked_at: Date | null
   revoked: boolean | null
   user_id: string | null
 }
@@ -42,6 +43,7 @@ export type RefreshTokenMaxAggregateOutputType = {
   lookup_hash: string | null
   created_at: Date | null
   expires_at: Date | null
+  revoked_at: Date | null
   revoked: boolean | null
   user_id: string | null
 }
@@ -53,6 +55,7 @@ export type RefreshTokenCountAggregateOutputType = {
   lookup_hash: number
   created_at: number
   expires_at: number
+  revoked_at: number
   revoked: number
   user_id: number
   _all: number
@@ -66,6 +69,7 @@ export type RefreshTokenMinAggregateInputType = {
   lookup_hash?: true
   created_at?: true
   expires_at?: true
+  revoked_at?: true
   revoked?: true
   user_id?: true
 }
@@ -77,6 +81,7 @@ export type RefreshTokenMaxAggregateInputType = {
   lookup_hash?: true
   created_at?: true
   expires_at?: true
+  revoked_at?: true
   revoked?: true
   user_id?: true
 }
@@ -88,6 +93,7 @@ export type RefreshTokenCountAggregateInputType = {
   lookup_hash?: true
   created_at?: true
   expires_at?: true
+  revoked_at?: true
   revoked?: true
   user_id?: true
   _all?: true
@@ -172,6 +178,7 @@ export type RefreshTokenGroupByOutputType = {
   lookup_hash: string
   created_at: Date
   expires_at: Date
+  revoked_at: Date | null
   revoked: boolean
   user_id: string
   _count: RefreshTokenCountAggregateOutputType | null
@@ -204,6 +211,7 @@ export type RefreshTokenWhereInput = {
   lookup_hash?: Prisma.StringFilter<"RefreshToken"> | string
   created_at?: Prisma.DateTimeFilter<"RefreshToken"> | Date | string
   expires_at?: Prisma.DateTimeFilter<"RefreshToken"> | Date | string
+  revoked_at?: Prisma.DateTimeNullableFilter<"RefreshToken"> | Date | string | null
   revoked?: Prisma.BoolFilter<"RefreshToken"> | boolean
   user_id?: Prisma.StringFilter<"RefreshToken"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -216,6 +224,7 @@ export type RefreshTokenOrderByWithRelationInput = {
   lookup_hash?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   expires_at?: Prisma.SortOrder
+  revoked_at?: Prisma.SortOrderInput | Prisma.SortOrder
   revoked?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
@@ -231,6 +240,7 @@ export type RefreshTokenWhereUniqueInput = Prisma.AtLeast<{
   family_id?: Prisma.StringFilter<"RefreshToken"> | string
   created_at?: Prisma.DateTimeFilter<"RefreshToken"> | Date | string
   expires_at?: Prisma.DateTimeFilter<"RefreshToken"> | Date | string
+  revoked_at?: Prisma.DateTimeNullableFilter<"RefreshToken"> | Date | string | null
   revoked?: Prisma.BoolFilter<"RefreshToken"> | boolean
   user_id?: Prisma.StringFilter<"RefreshToken"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -243,6 +253,7 @@ export type RefreshTokenOrderByWithAggregationInput = {
   lookup_hash?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   expires_at?: Prisma.SortOrder
+  revoked_at?: Prisma.SortOrderInput | Prisma.SortOrder
   revoked?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
   _count?: Prisma.RefreshTokenCountOrderByAggregateInput
@@ -260,6 +271,7 @@ export type RefreshTokenScalarWhereWithAggregatesInput = {
   lookup_hash?: Prisma.StringWithAggregatesFilter<"RefreshToken"> | string
   created_at?: Prisma.DateTimeWithAggregatesFilter<"RefreshToken"> | Date | string
   expires_at?: Prisma.DateTimeWithAggregatesFilter<"RefreshToken"> | Date | string
+  revoked_at?: Prisma.DateTimeNullableWithAggregatesFilter<"RefreshToken"> | Date | string | null
   revoked?: Prisma.BoolWithAggregatesFilter<"RefreshToken"> | boolean
   user_id?: Prisma.StringWithAggregatesFilter<"RefreshToken"> | string
 }
@@ -271,7 +283,8 @@ export type RefreshTokenCreateInput = {
   lookup_hash: string
   created_at?: Date | string
   expires_at: Date | string
-  revoked: boolean
+  revoked_at?: Date | string | null
+  revoked?: boolean
   user: Prisma.UserCreateNestedOneWithoutRefreshTokensInput
 }
 
@@ -282,7 +295,8 @@ export type RefreshTokenUncheckedCreateInput = {
   lookup_hash: string
   created_at?: Date | string
   expires_at: Date | string
-  revoked: boolean
+  revoked_at?: Date | string | null
+  revoked?: boolean
   user_id: string
 }
 
@@ -293,6 +307,7 @@ export type RefreshTokenUpdateInput = {
   lookup_hash?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expires_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revoked_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revoked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.UserUpdateOneRequiredWithoutRefreshTokensNestedInput
 }
@@ -304,6 +319,7 @@ export type RefreshTokenUncheckedUpdateInput = {
   lookup_hash?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expires_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revoked_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revoked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
 }
@@ -315,7 +331,8 @@ export type RefreshTokenCreateManyInput = {
   lookup_hash: string
   created_at?: Date | string
   expires_at: Date | string
-  revoked: boolean
+  revoked_at?: Date | string | null
+  revoked?: boolean
   user_id: string
 }
 
@@ -326,6 +343,7 @@ export type RefreshTokenUpdateManyMutationInput = {
   lookup_hash?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expires_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revoked_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revoked?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
@@ -336,6 +354,7 @@ export type RefreshTokenUncheckedUpdateManyInput = {
   lookup_hash?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expires_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revoked_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revoked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
 }
@@ -357,6 +376,7 @@ export type RefreshTokenCountOrderByAggregateInput = {
   lookup_hash?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   expires_at?: Prisma.SortOrder
+  revoked_at?: Prisma.SortOrder
   revoked?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
 }
@@ -368,6 +388,7 @@ export type RefreshTokenMaxOrderByAggregateInput = {
   lookup_hash?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   expires_at?: Prisma.SortOrder
+  revoked_at?: Prisma.SortOrder
   revoked?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
 }
@@ -379,6 +400,7 @@ export type RefreshTokenMinOrderByAggregateInput = {
   lookup_hash?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   expires_at?: Prisma.SortOrder
+  revoked_at?: Prisma.SortOrder
   revoked?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
 }
@@ -432,7 +454,8 @@ export type RefreshTokenCreateWithoutUserInput = {
   lookup_hash: string
   created_at?: Date | string
   expires_at: Date | string
-  revoked: boolean
+  revoked_at?: Date | string | null
+  revoked?: boolean
 }
 
 export type RefreshTokenUncheckedCreateWithoutUserInput = {
@@ -442,7 +465,8 @@ export type RefreshTokenUncheckedCreateWithoutUserInput = {
   lookup_hash: string
   created_at?: Date | string
   expires_at: Date | string
-  revoked: boolean
+  revoked_at?: Date | string | null
+  revoked?: boolean
 }
 
 export type RefreshTokenCreateOrConnectWithoutUserInput = {
@@ -481,6 +505,7 @@ export type RefreshTokenScalarWhereInput = {
   lookup_hash?: Prisma.StringFilter<"RefreshToken"> | string
   created_at?: Prisma.DateTimeFilter<"RefreshToken"> | Date | string
   expires_at?: Prisma.DateTimeFilter<"RefreshToken"> | Date | string
+  revoked_at?: Prisma.DateTimeNullableFilter<"RefreshToken"> | Date | string | null
   revoked?: Prisma.BoolFilter<"RefreshToken"> | boolean
   user_id?: Prisma.StringFilter<"RefreshToken"> | string
 }
@@ -492,7 +517,8 @@ export type RefreshTokenCreateManyUserInput = {
   lookup_hash: string
   created_at?: Date | string
   expires_at: Date | string
-  revoked: boolean
+  revoked_at?: Date | string | null
+  revoked?: boolean
 }
 
 export type RefreshTokenUpdateWithoutUserInput = {
@@ -502,6 +528,7 @@ export type RefreshTokenUpdateWithoutUserInput = {
   lookup_hash?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expires_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revoked_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revoked?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
@@ -512,6 +539,7 @@ export type RefreshTokenUncheckedUpdateWithoutUserInput = {
   lookup_hash?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expires_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revoked_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revoked?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
@@ -522,6 +550,7 @@ export type RefreshTokenUncheckedUpdateManyWithoutUserInput = {
   lookup_hash?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expires_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revoked_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revoked?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
@@ -534,6 +563,7 @@ export type RefreshTokenSelect<ExtArgs extends runtime.Types.Extensions.Internal
   lookup_hash?: boolean
   created_at?: boolean
   expires_at?: boolean
+  revoked_at?: boolean
   revoked?: boolean
   user_id?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -546,6 +576,7 @@ export type RefreshTokenSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   lookup_hash?: boolean
   created_at?: boolean
   expires_at?: boolean
+  revoked_at?: boolean
   revoked?: boolean
   user_id?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -558,6 +589,7 @@ export type RefreshTokenSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   lookup_hash?: boolean
   created_at?: boolean
   expires_at?: boolean
+  revoked_at?: boolean
   revoked?: boolean
   user_id?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -570,11 +602,12 @@ export type RefreshTokenSelectScalar = {
   lookup_hash?: boolean
   created_at?: boolean
   expires_at?: boolean
+  revoked_at?: boolean
   revoked?: boolean
   user_id?: boolean
 }
 
-export type RefreshTokenOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "family_id" | "token_hash" | "lookup_hash" | "created_at" | "expires_at" | "revoked" | "user_id", ExtArgs["result"]["refreshToken"]>
+export type RefreshTokenOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "family_id" | "token_hash" | "lookup_hash" | "created_at" | "expires_at" | "revoked_at" | "revoked" | "user_id", ExtArgs["result"]["refreshToken"]>
 export type RefreshTokenInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -597,6 +630,7 @@ export type $RefreshTokenPayload<ExtArgs extends runtime.Types.Extensions.Intern
     lookup_hash: string
     created_at: Date
     expires_at: Date
+    revoked_at: Date | null
     revoked: boolean
     user_id: string
   }, ExtArgs["result"]["refreshToken"]>
@@ -1029,6 +1063,7 @@ export interface RefreshTokenFieldRefs {
   readonly lookup_hash: Prisma.FieldRef<"RefreshToken", 'String'>
   readonly created_at: Prisma.FieldRef<"RefreshToken", 'DateTime'>
   readonly expires_at: Prisma.FieldRef<"RefreshToken", 'DateTime'>
+  readonly revoked_at: Prisma.FieldRef<"RefreshToken", 'DateTime'>
   readonly revoked: Prisma.FieldRef<"RefreshToken", 'Boolean'>
   readonly user_id: Prisma.FieldRef<"RefreshToken", 'String'>
 }

@@ -7,6 +7,7 @@ import {
   type KeyboardEvent,
   type MouseEvent,
 } from "react"
+import { VisibilityToggleIcon } from "../icons"
 
 interface Props extends Pick<
   React.ComponentProps<"input">,
@@ -17,6 +18,7 @@ interface Props extends Pick<
   onCompleted?: (code: string) => void
   allowedPattern?: RegExp
   placeholder?: string
+  isHidden?: boolean
 }
 const CodeField = ({
   id,
@@ -27,7 +29,9 @@ const CodeField = ({
   onCompleted,
   allowedPattern = /^[0-9]$/,
   placeholder = "X",
+  isHidden,
 }: Props) => {
+  const [hidden, setHidden] = useState(isHidden)
   const [code, setCode] = useState("")
   const [values, setValues] = useState<string[]>([])
   const inputRefs = useRef<(HTMLInputElement | null)[]>([])
@@ -36,6 +40,16 @@ const CodeField = ({
     setValues(new Array(digits).fill(""))
     inputRefs.current = new Array(digits).fill(null)
   }, [digits])
+
+  useEffect(() => {
+    if (code) {
+      onCodeChanged?.(code)
+
+      if (code.length === digits) {
+        onCompleted?.(code)
+      }
+    }
+  }, [code, digits, onCodeChanged, onCompleted])
 
   const onValueChanged = (
     index: number,
@@ -55,13 +69,8 @@ const CodeField = ({
     setValues((v) => {
       const newValues = [...v]
       newValues[index] = value
-
       const newCode = newValues.join("")
-      onCodeChanged?.(newCode)
 
-      if (newCode.length === digits) {
-        onCompleted?.(newCode)
-      }
       setCode(newCode)
       return newValues
     })
@@ -135,7 +144,7 @@ const CodeField = ({
             className="w-8 mx-1 rounded-sm text-center p-1.5 text-stone-300 bg-stone-800 hover:bg-stone-700 focus:bg-stone-700 outline-amber-400 focus:outline-2 transition"
             value={value}
             placeholder={placeholder}
-            type="text"
+            type={hidden ? "password" : "text"}
             onFocus={(e) => e.target.select()}
             maxLength={2}
             onChange={(c) => {
@@ -153,6 +162,9 @@ const CodeField = ({
             data-np-autofill-mfa-last="0"
           />
         ))}
+        <div className="absolute left-[101.5%] top-1/2 -translate-y-1/2 mt-0.5">
+          <VisibilityToggleIcon isHidden={hidden} onToggled={setHidden} />
+        </div>
       </div>
     </div>
   )

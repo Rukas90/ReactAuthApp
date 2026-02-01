@@ -10,8 +10,9 @@ import {
 import validateMfaMethod from "../middleware/validate.method.middleware"
 import { totpCodeSchema } from "@project/shared"
 import { authenticateRequest, requireScope } from "@features/auth"
+import { validateCsrf } from "@features/csrf"
 
-export const useMfaRoutes = (app: Express) => {
+const useRoutes = (app: Express) => {
   app.use("/v1/mfa", router)
 }
 const router = Router()
@@ -22,33 +23,43 @@ router.get(
   requireScope(["admin:access", "mfa:verify"], "any"),
   getUserEnrollments,
 )
-
 router.post(
   "/totp/initialize",
+  validateCsrf,
   authenticateRequest,
   requireScope("admin:access"),
   initializeTotpData,
 )
 router.post(
   "/totp/confirm",
+  validateCsrf,
   authenticateRequest,
   requireScope("admin:access"),
   validateBody(totpCodeSchema),
   confirmTotp,
 )
+router.post(
+  "/totp/login",
+  validateCsrf,
+  authenticateRequest,
+  requireScope("mfa:verify"),
+  validateBody(totpCodeSchema),
+  loginTotp,
+)
+router.post(
+  "/totp/verify",
+  validateCsrf,
+  authenticateRequest,
+  requireScope(["admin:access", "mfa:verify"], "any"),
+  validateBody(totpCodeSchema),
+)
 router.delete(
   "/:method",
+  validateCsrf,
   authenticateRequest,
   requireScope("admin:access"),
   validateMfaMethod,
   deleteMfaEnrollment,
 )
 
-router.post(
-  "/totp/login",
-  authenticateRequest,
-  requireScope("mfa:verify"),
-  validateBody(totpCodeSchema),
-  loginTotp,
-)
-router.post("/totp/verify", authenticateRequest, validateBody(totpCodeSchema))
+export default useRoutes

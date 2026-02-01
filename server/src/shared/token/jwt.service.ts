@@ -11,30 +11,60 @@ const SECRET = ENCODER.encode(process.env.JWT_SECRET!)
 export type AccessTokenClaims = {
   scope: Scope[]
   email_verified: boolean
+  sid?: string
 }
 
 export interface AccessTokenPayload extends JWTPayload, AccessTokenClaims {}
 
-export const generatePre2faAccessToken = async (user: User) => {
-  return await generateAccessToken(
-    user,
-    createTokenClaims(["mfa:verify"], user),
-    ms("24h"),
-  )
+const jwtService = {
+  constants: {
+    ACCESS_PRE_2FA_TOKEN_EXPIRY_MS: ms("5m"),
+    ACCESS_TOKEN_EXPIRY_MS: ms("15m"),
+  },
+  generatePre2faAccessToken: async (user: User) => {
+    return await generateAccessToken(
+      user,
+      {
+        scope: ["mfa:verify"],
+        email_verified: user.is_verified,
+      },
+      jwtService.constants.ACCESS_PRE_2FA_TOKEN_EXPIRY_MS,
+    )
+  },
+  generateFullAccessToken: async (sessionId: string, user: User) => {
+    return await generateAccessToken(
+      user,
+      {
+        scope: ["admin:access"],
+        email_verified: user.is_verified,
+        sid: sessionId,
+      },
+      jwtService.constants.ACCESS_TOKEN_EXPIRY_MS,
+    )
+  },
+  validateAccessToken: async (
+    token: string,
+  ): Promise<Result<AccessTokenPayload, Error>> => {
+    try {
+      const result = await jwtVerify<AccessTokenPayload>(token, SECRET, {
+        issuer: process.env.API_URL!,
+        audience: process.env.CLIENT_URL!,
+      })
+      return Result.success(result.payload)
+    } catch (error) {
+      if (error instanceof JOSEError) {
+        return Result.error(error)
+      }
+      return Result.error(
+        new UnexpectedError(
+          "Unexpected error when verifying access token.",
+          "UNEXPECTED_ERROR",
+        ),
+      )
+    }
+  },
 }
-export const generateFullAccessToken = async (user: User) => {
-  return await generateAccessToken(
-    user,
-    createTokenClaims(["admin:access"], user),
-    ms("15m"),
-  )
-}
-const createTokenClaims = (scope: Scope[], user: User): AccessTokenClaims => {
-  return {
-    scope,
-    email_verified: user.is_verified,
-  }
-}
+
 const generateAccessToken = async (
   user: User,
   claims: AccessTokenClaims,
@@ -52,31 +82,10 @@ const generateAccessToken = async (
     .sign(SECRET)
 
   const authUser: AuthUser = {
-    verifiedEmail: claims.email_verified,
     scope: claims.scope,
     expiresAt: expiresAtMs,
   }
   return { accessToken, authUser }
 }
 
-export const validateAccessToken = async (
-  token: string,
-): Promise<Result<AccessTokenPayload, Error>> => {
-  try {
-    const result = await jwtVerify<AccessTokenPayload>(token, SECRET, {
-      issuer: process.env.API_URL!,
-      audience: process.env.CLIENT_URL!,
-    })
-    return Result.success(result.payload)
-  } catch (error) {
-    if (error instanceof JOSEError) {
-      return Result.error(error)
-    }
-    return Result.error(
-      new UnexpectedError(
-        "Unexpected error when verifying access token.",
-        "UNEXPECTED_ERROR",
-      ),
-    )
-  }
-}
+export default jwtService

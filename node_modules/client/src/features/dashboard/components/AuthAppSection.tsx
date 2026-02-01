@@ -3,12 +3,13 @@ import EnrollmentConfiguredTag from "./EnrollmentConfiguredTag"
 import EnrollmentActionButton from "./EnrollmentActionButton"
 import { useTranslation } from "react-i18next"
 import { useMfaEnrollments } from "@features/mfa"
+import SettingsContent from "./SettingsContent"
 
 const AuthAppSection = () => {
   const { t } = useTranslation()
   const { totp, isLoading } = useMfaEnrollments()
   return (
-    <div className="flex justify-between p-4">
+    <SettingsContent className="p-4">
       <div className="flex gap-2 items-center">
         <IconSmartphone className="w-5 h-5 text-stone-300" />
         <EnrollmentConfiguredTag
@@ -22,7 +23,7 @@ const AuthAppSection = () => {
         isConfigured={totp?.configured ?? false}
         showSkeleton={isLoading}
       />
-    </div>
+    </SettingsContent>
   )
 }
 export default AuthAppSection

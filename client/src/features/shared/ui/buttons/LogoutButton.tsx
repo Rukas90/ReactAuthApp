@@ -1,13 +1,28 @@
 import { useLogout } from "@src/features/auth"
-import PlainButton from "./PlainButton"
+import { useTranslation } from "react-i18next"
+import type { BaseButtonProps } from "./BaseButton"
 
-const LogoutButton = () => {
+import clsx from "clsx"
+import BaseButton from "./BaseButton"
+
+const LogoutButton = (props: BaseButtonProps) => {
+  const { t } = useTranslation()
   const logout = useLogout()
 
   const handleLogout = async () => {
     await logout()
   }
-
-  return <PlainButton text="Logout" action={handleLogout} />
+  return (
+    <BaseButton
+      text={t("LOGOUT")}
+      {...props}
+      className={clsx(
+        "text-neutral-200 bg-stone-800 transition-colors py-2 px-6",
+        !props.disabled && "hover:bg-stone-700 active:bg-stone-600",
+        props.className,
+      )}
+      action={handleLogout}
+    />
+  )
 }
 export default LogoutButton

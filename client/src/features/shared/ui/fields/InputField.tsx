@@ -3,9 +3,60 @@ import {
   type HTMLInputAutoCompleteAttribute,
   type HTMLInputTypeAttribute,
 } from "react"
-import visibilityOnIcon from "@icons/misc/visibility-on.svg"
-import visibilityOffIcon from "@icons/misc/visibility-off.svg"
-import { IconCheckbox } from "@features/shared"
+import { VisibilityToggleIcon } from "@features/shared"
+import clsx from "clsx"
+
+export type InputVariant = "default" | "mini"
+
+const InputVariants = {
+  default: {
+    container: {
+      base: "text-base",
+      default: "h-12",
+      expanded: "h-16",
+    },
+    input: {
+      base: "",
+      expanded: "pt-4",
+    },
+    label: {
+      default: "text-[1rem] text-stone-500",
+      expanded: "text-[0.85rem] text-stone-600",
+    },
+  },
+  mini: {
+    container: {
+      base: "text-sm",
+      default: "h-10",
+      expanded: "h-12",
+    },
+    input: {
+      base: "text-sm",
+      expanded: "pt-5",
+    },
+    label: {
+      default: "text-[0.85rem] text-stone-500",
+      expanded: "text-[0.7rem] text-stone-600",
+    },
+  },
+} satisfies Record<
+  InputVariant,
+  {
+    container: {
+      base: string
+      default: string
+      expanded: string
+    }
+    input: {
+      base: string
+      expanded: string
+    }
+    label: {
+      default: string
+      expanded: string
+    }
+  }
+>
 
 interface Props extends Pick<React.ComponentProps<"div">, "id" | "className"> {
   name?: string | undefined
@@ -19,6 +70,7 @@ interface Props extends Pick<React.ComponentProps<"div">, "id" | "className"> {
   extendWidth?: boolean
   indicateError?: boolean
   expandable?: boolean
+  variant?: InputVariant
 }
 const InputField = ({
   id,
@@ -34,6 +86,7 @@ const InputField = ({
   extendWidth,
   indicateError,
   expandable = true,
+  variant = "default",
 }: Props) => {
   const [text, setText] = useState(value || "")
   const [hidden, setHidden] = useState(hideable && isHidden)
@@ -48,22 +101,29 @@ const InputField = ({
     }
   }
   const expand = expandable && !!text
+  const config = InputVariants[variant]
 
   return (
     <div
-      className={`relative rounded-sm bg-stone-950 flex h-12 items-center px-3 py-2 transition-[background-color,height] hover:bg-stone-900 focus:border focus:border-stone-300 
-        ${expand && "h-16"} ${indicateError && "border border-red-900"} ${
-          extendWidth && "w-full"
-        }`}
+      className={clsx(
+        "relative px-3 py-2 rounded-sm flex items-center transition-[background-color,height]",
+        "bg-stone-950 hover:bg-stone-900 focus:border focus:border-stone-300",
+        config.container.base,
+        expand ? config.container.expanded : config.container.default,
+        indicateError && "border border-red-900",
+        extendWidth && "w-full",
+      )}
     >
       {(expandable || !text) && (
         <label
           htmlFor={id}
-          className={`absolute left-3 pointer-events-none transition-all ${
+          className={clsx(
+            "absolute pointer-events-none transition-all left-3",
+            expand ? config.label.expanded : config.label.default,
             expand
-              ? "top-1.5 text-[0.85rem] text-stone-600 translate-y-0"
-              : "top-1/2 text-[1rem] text-stone-500 -translate-y-1/2"
-          }`}
+              ? "text-stone-500 top-1.5 translate-y-0"
+              : "text-stone-600 top-1/2 -translate-y-1/2",
+          )}
         >
           {placeholder}
         </label>
@@ -75,17 +135,16 @@ const InputField = ({
         onChange={onChangeCallback}
         type={hidden ? "password" : type}
         autoComplete={autocomplete}
-        className={`bg-transparent border-0 outline-0 h-auto text-stone-200 p-0 m-0 ${
-          expand && "pt-5"
-        } ${className} ${extendWidth && "w-100"}`}
+        className={clsx(
+          config.input.base,
+          "bg-transparent border-0 outline-0 h-auto text-stone-200 p-0 m-0",
+          expand && config.input.expanded,
+          className,
+          extendWidth && "w-100",
+        )}
       />
       {hideable && (
-        <IconCheckbox
-          value={hidden}
-          onValueChanged={setHidden}
-          checkedIcon={visibilityOffIcon}
-          uncheckedIcon={visibilityOnIcon}
-        />
+        <VisibilityToggleIcon isHidden={hidden} onToggled={setHidden} />
       )}
     </div>
   )

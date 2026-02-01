@@ -1,10 +1,28 @@
 type NodeEnv = "production" | "development"
 
-export const appConfig = {
-  env: process.env.NODE_ENV as NodeEnv,
+class AppConfig {
+  name: string
+  env: NodeEnv
+  origin: { api: string; client: string }
+  isProduction: boolean
+  isDevelopment: boolean
 
-  isProduction: process.env.NODE_ENV === "production",
-  isDevelopment: process.env.NODE_ENV === "development",
+  constructor() {
+    this.name = process.env.APP_NAME ?? "MyApp"
+    this.env = process.env.NODE_ENV as NodeEnv
+    this.origin = {
+      api: process.env.API_ORIGIN!,
+      client: process.env.CLIENT_ORIGIN!,
+    }
+    this.isProduction = process.env.NODE_ENV === "production"
+    this.isDevelopment = process.env.NODE_ENV === "development"
+  }
+}
+let instance: AppConfig | null = null
 
-  name: process.env.APP_NAME ?? "MyApp",
+export const config = () => {
+  if (!instance) {
+    instance = new AppConfig()
+  }
+  return instance
 }

@@ -8,8 +8,10 @@ export const validateOAuthProvider = syncRoute(
     const provider = req.params.provider as OAuthProvider
 
     if (!provider || !OAuthProviderCollection.includes(provider)) {
-      return next(new OAuthInvalidProviderError())
+      return next(new OAuthInvalidProviderError(provider))
     }
+    req.params.provider = provider
+
     next()
   },
 )

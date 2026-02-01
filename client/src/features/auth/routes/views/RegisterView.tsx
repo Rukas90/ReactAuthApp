@@ -1,11 +1,6 @@
 import { useTranslation } from "react-i18next"
 import AuthView from "./AuthView"
-import {
-  TitleText,
-  LinkText,
-  HorizontalLineLabel,
-  Captcha,
-} from "@features/shared"
+import { TitleText, LinkText, DividerLabel, Captcha } from "@features/shared"
 import { RegisterForm } from "../../components"
 import SocialLoginButtons from "../../components/SocialLoginButtons"
 import { useRegisterForm } from "../../hooks"
@@ -18,12 +13,10 @@ const RegisterView = () => {
     <AuthView error={form.error}>
       <TitleText>{t("REGISTER")}</TitleText>
       <p className="text-stone-400">
-        Already have an account? <LinkText to="/login">Login</LinkText>
+        Already have an account? <LinkText to="/login">{t("LOGIN")}</LinkText>
       </p>
       <SocialLoginButtons />
-      <HorizontalLineLabel className="py-4 text-stone-400">
-        {t("OR")}
-      </HorizontalLineLabel>
+      <DividerLabel className="py-4 text-stone-400">{t("OR")}</DividerLabel>
       <RegisterForm onSubmit={form.onSubmit} fieldErrors={form.fieldErrors} />
       <Captcha setToken={form.setCaptchaToken} />
     </AuthView>

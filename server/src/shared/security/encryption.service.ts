@@ -6,6 +6,7 @@ import {
   CipherGCMTypes,
 } from "crypto"
 import { Result } from "@project/shared"
+import logger from "../logger"
 
 export class EncryptionError extends Error {
   code = "ENCRYPTION_FAILED"
@@ -22,7 +23,7 @@ export type CipherGCMOptions = {
 
 export const encryptGCM = (
   data: string,
-  { key, algorithm, authTagLength = 16 }: CipherGCMOptions
+  { key, algorithm, authTagLength = 16 }: CipherGCMOptions,
 ): Result<string, EncryptionError> => {
   try {
     const iv = randomBytes(12)
@@ -38,13 +39,13 @@ export const encryptGCM = (
 
     return Result.success(combined.toString("base64"))
   } catch (error) {
-    console.error(error)
+    logger.error(error)
     return Result.error(new EncryptionError())
   }
 }
 export const decryptGCM = (
   encryptedText: string,
-  { key, algorithm, authTagLength = 16 }: CipherGCMOptions
+  { key, algorithm, authTagLength = 16 }: CipherGCMOptions,
 ): Result<string, DecryptionError> => {
   try {
     const combined = Buffer.from(encryptedText, "base64")
@@ -63,7 +64,7 @@ export const decryptGCM = (
 
     return Result.success(decrypted.toString("utf8"))
   } catch (error) {
-    console.error(error)
+    logger.error(error)
     return Result.error(new DecryptionError())
   }
 }

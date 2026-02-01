@@ -1,8 +1,7 @@
-import { VoidResult } from "@project/shared"
+import { LoginSchema, VoidResult, type LoginData } from "@project/shared"
 import type z from "zod"
 import useAuthForm from "./useAuthForm"
 import useLogin from "./useLogin"
-import { LoginSchema, type LoginData } from "../schemas"
 
 const useLoginForm = () => {
   const login = useLogin()

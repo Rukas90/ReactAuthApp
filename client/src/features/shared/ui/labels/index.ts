@@ -1,2 +1,2 @@
-export { default as HorizontalLineLabel } from "./HorizontalLineLabel"
+export { default as DividerLabel } from "./DividerLabel"
 export { default as TagLabel } from "./TagLabel"

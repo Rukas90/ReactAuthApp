@@ -1,35 +1,42 @@
-import { getUserByEmail } from "@features/user"
+import { userService } from "@features/user"
 import { hashing } from "@shared/security"
 import { User } from "@prisma/client"
-import { Result } from "@project/shared"
+import { Result, VoidResult } from "@project/shared"
 import { AuthInvalidCredentialsError } from "../error/auth.error"
 
-export const loginWithCredentials = async (
-  email: string,
-  password: string,
-): Promise<Result<User, AuthInvalidCredentialsError>> => {
-  if (!email || !password) {
-    return Result.error(new AuthInvalidCredentialsError())
-  }
-  const user = await getUserByEmail(email)
+const loginService = {
+  loginWithCredentials: async (
+    email: string,
+    password: string,
+  ): Promise<Result<User, AuthInvalidCredentialsError>> => {
+    if (!email || !password) {
+      return Result.error(new AuthInvalidCredentialsError())
+    }
+    const user = await userService.getUserByEmail(email)
 
-  if (!user) {
-    return Result.error(new AuthInvalidCredentialsError())
-  }
-  if (!user.password_hash) {
-    return Result.error(new AuthInvalidCredentialsError())
-  }
-  const isPasswordValid = await validatePassword(password, user.password_hash)
+    if (!user.ok) {
+      return Result.error(new AuthInvalidCredentialsError())
+    }
+    if (!user.data.password_hash) {
+      return Result.error(new AuthInvalidCredentialsError())
+    }
+    const validation = await loginService.validatePassword(
+      password,
+      user.data.password_hash,
+    )
 
-  if (!isPasswordValid) {
-    return Result.error(new AuthInvalidCredentialsError())
-  }
-  return Result.success(user)
+    if (!validation.ok) {
+      return validation
+    }
+    return Result.success(user.data)
+  },
+  validatePassword: async (
+    input: string,
+    hashedPassword: string,
+  ): Promise<VoidResult<AuthInvalidCredentialsError>> => {
+    return (await hashing.argon2.compare(input, hashedPassword))
+      ? VoidResult.ok()
+      : VoidResult.error(new AuthInvalidCredentialsError())
+  },
 }
-
-const validatePassword = async (
-  input: string,
-  hashedPassword: string,
-): Promise<boolean> => {
-  return await hashing.argon2.compare(input, hashedPassword)
-}
+export default loginService

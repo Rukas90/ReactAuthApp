@@ -1,13 +1,13 @@
-import GithubIcon from "@icons/social/github.svg"
 import { useTranslation } from "react-i18next"
 import PlainButton from "./PlainButton"
+import { IconGithub } from "../icons"
 
 const GithubButton = () => {
   const { t } = useTranslation()
 
   return (
     <PlainButton
-      icon={GithubIcon}
+      icon={<IconGithub className="w-5 mr-2" />}
       text={t("CONTINUE_WITH_GITHUB")}
       extendWidth
       className="text-neutral-900 bg-stone-100"

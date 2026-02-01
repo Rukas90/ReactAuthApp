@@ -1,4 +1,8 @@
-import { InvalidOperationError, UnexpectedError } from "@shared/errors"
+import {
+  InvalidOperationError,
+  ResourceMissingError,
+  UnexpectedError,
+} from "@shared/errors"
 import { OAuthErrorCodes, OAuthProvider } from "@project/shared"
 
 export class OAuthFailedToAuthenticateError extends UnexpectedError {
@@ -31,8 +35,11 @@ export class OAuthEmailNotProvidedError extends InvalidOperationError {
   }
 }
 export class OAuthInvalidProviderError extends InvalidOperationError {
-  constructor() {
-    super("Invalid OAuth provider.", OAuthErrorCodes.OAUTH_PROVIDER_INVALID)
+  constructor(provider: OAuthProvider) {
+    super(
+      `Invalid OAuth provider. Provider: ${provider}`,
+      OAuthErrorCodes.OAUTH_PROVIDER_INVALID,
+    )
   }
 }
 export class OAuthUnsupportedProviderError extends InvalidOperationError {
@@ -48,6 +55,22 @@ export class OAuthUserInfoFetchFailedError extends UnexpectedError {
     super(
       `Failed to fetch user info from ${provider}.`,
       OAuthErrorCodes.OAUTH_USERINFO_FETCH_FAILED,
+    )
+  }
+}
+export class OAuthDisconnectNotPossibleError extends UnexpectedError {
+  constructor(provider: OAuthProvider) {
+    super(
+      `Could not disconnect oauth "${provider}" provider from user. At least one login method must be available.`,
+      OAuthErrorCodes.OAUTH_DISCONNECT_NOT_POSSIBLE,
+    )
+  }
+}
+export class OAuthProviderNotFoundError extends ResourceMissingError {
+  constructor(provider: OAuthProvider) {
+    super(
+      `OAuth "${provider}" provider was not found.`,
+      OAuthErrorCodes.OAUTH_NOT_FOUND,
     )
   }
 }

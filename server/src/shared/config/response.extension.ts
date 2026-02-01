@@ -1,4 +1,4 @@
-import { appConfig } from "@base/app"
+import { config } from "@base/app"
 import * as express from "express"
 import { type Response } from "express-serve-static-core"
 import {
@@ -7,8 +7,9 @@ import {
   SuccessCode,
   AuthResponseDto,
 } from "@project/shared"
+import superjson from "superjson"
 
-export function extendResponse() {
+export const extendResponse = () => {
   express.response.ok = function <T>(
     data: T,
     statusCode: SuccessCode = 200,
@@ -17,14 +18,16 @@ export function extendResponse() {
       status: "success",
       data: data,
     }
-    return (this as Response).status(statusCode).json(response)
+    return (this as Response)
+      .status(statusCode)
+      .send(superjson.stringify(response))
   }
   express.response.auth = function (data: AuthResponseDto): express.Response {
     const response: SuccessResponse<AuthResponseDto> = {
       status: "success",
       data,
     }
-    return (this as Response).status(200).json(response)
+    return (this as Response).status(200).send(superjson.stringify(response))
   }
   express.response.problem = function (
     details: ProblemDetails,
@@ -39,7 +42,8 @@ export function extendResponse() {
         detail: details.detail,
         code: details.code,
         instance: details.instance,
-        ...(appConfig.isDevelopment && { stack: details.stack }),
+        ...(config().isDevelopment && { stack: details.stack }),
+        extensions: details.extensions,
       })
   }
 }

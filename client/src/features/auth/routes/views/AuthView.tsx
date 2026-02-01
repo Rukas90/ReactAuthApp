@@ -1,6 +1,6 @@
 import { ErrorBox } from "@features/shared"
 import type { ReactNode } from "react"
-import Background from "../../components/Background"
+import { LanguagePicker } from "@src/features/localization"
 
 interface Props {
   children?: ReactNode
@@ -8,14 +8,15 @@ interface Props {
 }
 const AuthView = ({ children, error }: Props) => {
   return (
-    <Background>
-      <div className="min-w-137.5 w-1/2 p-16 grow bg-black">
-        <div className="flex w-full flex-col gap-4 max-w-106.25 mx-auto items-center text-center">
-          {children}
-          <ErrorBox isHidden={!error}>{error}</ErrorBox>
-        </div>
+    <div className="relative flex min-w-full min-h-full w-1/2 px-16 py-64 items-start justify-center bg-[#040404]">
+      <div className="flex flex-col gap-4 max-w-106.25 items-center text-center">
+        {children}
+        <ErrorBox isHidden={!error}>{error}</ErrorBox>
       </div>
-    </Background>
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2">
+        <LanguagePicker />
+      </div>
+    </div>
   )
 }
 export default AuthView

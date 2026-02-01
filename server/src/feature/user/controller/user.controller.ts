@@ -1,11 +1,19 @@
 import { Express, Router } from "express"
-import { getUserByIdHandler } from "./user.handler"
-import { authenticateRequest } from "@features/auth"
+import {
+  deleteUserAccountHandler,
+  getUserProfileHandler,
+  getUserSessionsHandler,
+  revokeUserSessionHandler,
+  sendEmailVerificationHandler,
+  updateUserPasswordHandler,
+} from "./user.handler"
+import { authenticateRequest, requireScope } from "@features/auth"
+import { validateCsrf } from "@features/csrf"
 
-export const useUserRoutes = (app: Express) => {
-  app.use("/v1/user", userRouter)
+const useRoutes = (app: Express) => {
+  app.use("/v1/user", router)
 }
-const userRouter = Router()
+const router = Router()
 
 /**
  * @openapi
@@ -26,4 +34,50 @@ const userRouter = Router()
  *       404:
  *         description: User not found
  */
-userRouter.get("/:id", authenticateRequest, getUserByIdHandler)
+router.get(
+  "/profile",
+  authenticateRequest,
+  requireScope("admin:access"),
+  getUserProfileHandler,
+)
+
+router.post(
+  "/password",
+  validateCsrf,
+  authenticateRequest,
+  requireScope("admin:access"),
+  updateUserPasswordHandler,
+)
+
+router.get(
+  "/sessions",
+  authenticateRequest,
+  requireScope("admin:access"),
+  getUserSessionsHandler,
+)
+
+router.delete(
+  "/:sessionId",
+  validateCsrf,
+  authenticateRequest,
+  requireScope("admin:access"),
+  revokeUserSessionHandler,
+)
+
+router.delete(
+  "/",
+  validateCsrf,
+  authenticateRequest,
+  requireScope("admin:access"),
+  deleteUserAccountHandler,
+)
+
+router.post(
+  "/email-verifications",
+  validateCsrf,
+  authenticateRequest,
+  requireScope("admin:access"),
+  sendEmailVerificationHandler,
+)
+
+export default useRoutes

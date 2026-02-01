@@ -7,19 +7,35 @@ import {
   registerHandler,
 } from "./auth.handler"
 import { validateCaptchaToken } from "@features/captcha"
-import { requireScope } from "../middleware/requireScope.middleware"
+import { validateBody } from "@base/shared/middleware"
+import { LoginSchema, RegisterSchema } from "@project/shared"
+import { validateCsrf } from "@features/csrf"
 
-export const useAuthRoutes = (app: Express) => {
+const useRoutes = (app: Express) => {
   app.use("/v1/auth", router)
 }
 const router = Router()
 
-router.post("/login", validateCaptchaToken, loginHandler)
+router.post(
+  "/login",
+  validateCsrf,
+  validateBody(LoginSchema),
+  validateCaptchaToken,
+  loginHandler,
+)
 
-router.post("/register", validateCaptchaToken, registerHandler)
+router.post(
+  "/register",
+  validateCsrf,
+  validateBody(RegisterSchema),
+  validateCaptchaToken,
+  registerHandler,
+)
 
-router.post("/logout", logoutHandler)
+router.post("/logout", validateCsrf, logoutHandler)
 
 router.get("/session", authUserHandler)
 
-router.post("/refresh", requireScope(["admin:access"]), refreshHandler)
+router.post("/refresh", refreshHandler)
+
+export default useRoutes

@@ -20,7 +20,7 @@ const ErrorBox = ({
   return (
     <div
       className={clsx(
-        "flex items-center text-[0.95rem] rounded-sm bg-[#5a201159] border border-[#5a1f11af] text-gray-300 w-full transition-all",
+        "flex items-center text-[0.95rem] rounded-sm bg-[#5a111159] border border-[#741a1aaf] text-gray-300 w-full transition-all",
         className,
         isHidden
           ? "opacity-0 -translate-y-full max-h-0 p-0 m-0 border-0"

@@ -5,8 +5,11 @@ import { totpCodeSchema } from "@project/shared"
 import { useOutletContext } from "react-router-dom"
 import type { MfaOutletContext } from "../routes/MfaAuthView"
 import { useAuthContext } from "@src/features/auth"
+import { useTranslation } from "react-i18next"
 
 const TotpLogin = () => {
+  const { t } = useTranslation()
+
   const { setUser } = useAuthContext()
   const { setError } = useOutletContext<MfaOutletContext>()
 
@@ -35,12 +38,9 @@ const TotpLogin = () => {
       method="submit"
       onSubmit={handleVerification}
     >
-      <PlainText className="text-center">
-        Enter the code from your two-factor authentication app or browser
-        extension below.
-      </PlainText>
+      <PlainText className="text-center">{t("TOTP_MFA_NOTE")}</PlainText>
       <CodeField id="verify_code" name="code" />
-      <SubmitButton type="submit" text="Verify" extendWidth />
+      <SubmitButton type="submit" text={t("VERIFY")} extendWidth />
     </form>
   )
 }

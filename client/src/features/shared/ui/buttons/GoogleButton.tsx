@@ -1,13 +1,13 @@
-import GoogleIcon from "@icons/social/google.svg"
 import { useTranslation } from "react-i18next"
 import PlainButton from "./PlainButton"
+import { IconGoogle } from "../icons"
 
 const GoogleButton = () => {
   const { t } = useTranslation()
 
   return (
     <PlainButton
-      icon={GoogleIcon}
+      icon={<IconGoogle className="w-5 mr-2" />}
       text={t("CONTINUE_WITH_GOOGLE")}
       extendWidth
       className="text-neutral-900 bg-stone-100"

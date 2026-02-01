@@ -48,3 +48,11 @@ export class AuthRegistrationFailedError extends UnexpectedError {
     )
   }
 }
+export class AuthInvalidSessionError extends AccessForbiddenError {
+  constructor() {
+    super(
+      "An invalid or missing session token.",
+      AuthErrorCodes.AUTH_INVALID_SESSION,
+    )
+  }
+}

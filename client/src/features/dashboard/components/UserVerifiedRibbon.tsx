@@ -1,10 +1,10 @@
 import { LinkText, TagLabel } from "@features/shared"
-import { useUser } from "@features/auth"
+import useUserProfile from "../hooks/useUserProfile"
 
 const UserVerifiedRibbon = () => {
-  const user = useUser()
+  const { profile, isLoading } = useUserProfile()
 
-  if (user && user.verifiedEmail) {
+  if (isLoading || (profile && profile.verifiedEmail)) {
     return null
   }
   return (

@@ -60,15 +60,10 @@ export type MfaEnrollment = Prisma.MfaEnrollmentModel
  */
 export type RefreshToken = Prisma.RefreshTokenModel
 /**
- * Model Session
+ * Model UserSession
  * 
  */
-export type Session = Prisma.SessionModel
-/**
- * Model BlockedSession
- * 
- */
-export type BlockedSession = Prisma.BlockedSessionModel
+export type UserSession = Prisma.UserSessionModel
 /**
  * Model Verification
  * 

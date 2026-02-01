@@ -11,13 +11,8 @@ import useTotpSetup from "../hooks/useTotpSetup"
 import { useNavigate } from "react-router-dom"
 
 const TotpSetupContent = () => {
-  const {
-    data,
-    confirmCode: verifyCode,
-    cancelSetup,
-    error,
-    requiredCodeLength,
-  } = useTotpSetup()
+  const { data, confirmCode, cancelSetup, error, requiredCodeLength } =
+    useTotpSetup()
   const [code, setCode] = useState("")
   const navigate = useNavigate()
 
@@ -40,7 +35,7 @@ const TotpSetupContent = () => {
         />
         <SubmitButton
           text="Submit"
-          action={() => verifyCode(code)}
+          action={() => confirmCode(code)}
           disabled={code.length !== requiredCodeLength}
         />
       </div>

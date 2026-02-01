@@ -1,14 +1,13 @@
-import { VoidResult } from "@project/shared"
+import { RegisterSchema, VoidResult, type RegisterData } from "@project/shared"
 import type z from "zod"
 import useAuthForm from "./useAuthForm"
 import useRegister from "./useRegister"
-import { type RegisterData, RegisterSchema } from "../schemas"
 
 const useRegisterForm = () => {
   const register = useRegister()
 
   const handleRegister = async (
-    data: RegisterData
+    data: RegisterData,
   ): Promise<VoidResult<string>> => {
     const result = await register(data)
     if (!result.ok) {
@@ -19,7 +18,7 @@ const useRegisterForm = () => {
 
   const getValidationError = (
     form: FormData,
-    validationError: z.ZodSafeParseError<RegisterData>
+    validationError: z.ZodSafeParseError<RegisterData>,
   ): string => {
     if (!form.get("email") && !form.get("password")) {
       return "Please enter a valid email and password."

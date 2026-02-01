@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react"
 import { IconButton } from "../buttons"
-import { IconCopy } from "../icons"
+import { IconCopy, VisibilityToggleIcon } from "../icons"
 
 interface Props extends Pick<React.ComponentProps<"input">, "id" | "name"> {
   value?: string
   readOnly?: boolean
+  isHidden?: boolean
 }
-const CopyableField = ({ id, name, value, readOnly }: Props) => {
+const CopyableField = ({ id, name, value, readOnly, isHidden }: Props) => {
+  const [hidden, setHidden] = useState(isHidden)
   const [text, setText] = useState("")
 
   useEffect(() => {
@@ -22,7 +24,9 @@ const CopyableField = ({ id, name, value, readOnly }: Props) => {
         value={text}
         onChange={(e) => setText(e.target.value)}
         readOnly={readOnly}
+        type={hidden ? "password" : "text"}
       />
+      <VisibilityToggleIcon isHidden={hidden} onToggled={setHidden} />
       <IconButton
         className="w-5 text-stone-400 hover:text-stone-300 active:text-stone-500 transition"
         icon={<IconCopy />}

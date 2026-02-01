@@ -55,8 +55,7 @@ export const ModelName = {
   OAuth: 'OAuth',
   MfaEnrollment: 'MfaEnrollment',
   RefreshToken: 'RefreshToken',
-  Session: 'Session',
-  BlockedSession: 'BlockedSession',
+  UserSession: 'UserSession',
   Verification: 'Verification'
 } as const
 
@@ -118,6 +117,7 @@ export const RefreshTokenScalarFieldEnum = {
   lookup_hash: 'lookup_hash',
   created_at: 'created_at',
   expires_at: 'expires_at',
+  revoked_at: 'revoked_at',
   revoked: 'revoked',
   user_id: 'user_id'
 } as const
@@ -125,38 +125,30 @@ export const RefreshTokenScalarFieldEnum = {
 export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[keyof typeof RefreshTokenScalarFieldEnum]
 
 
-export const SessionScalarFieldEnum = {
-  session_id: 'session_id',
+export const UserSessionScalarFieldEnum = {
+  id: 'id',
+  family_id: 'family_id',
+  user_agent: 'user_agent',
   ip_address: 'ip_address',
-  device_type: 'device_type',
   location: 'location',
-  login_time: 'login_time',
-  last_activity_time: 'last_activity_time',
-  source: 'source',
+  created_at: 'created_at',
+  expires_at: 'expires_at',
+  last_accessed_at: 'last_accessed_at',
+  revoked: 'revoked',
   user_id: 'user_id'
 } as const
 
-export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
-
-
-export const BlockedSessionScalarFieldEnum = {
-  session_id: 'session_id',
-  block_reason: 'block_reason',
-  block_start_time: 'block_start_time',
-  block_end_time: 'block_end_time'
-} as const
-
-export type BlockedSessionScalarFieldEnum = (typeof BlockedSessionScalarFieldEnum)[keyof typeof BlockedSessionScalarFieldEnum]
+export type UserSessionScalarFieldEnum = (typeof UserSessionScalarFieldEnum)[keyof typeof UserSessionScalarFieldEnum]
 
 
 export const VerificationScalarFieldEnum = {
   id: 'id',
-  type: 'type',
+  dispatch_type: 'dispatch_type',
+  payload_encrypted: 'payload_encrypted',
   code_hash: 'code_hash',
-  dispatch: 'dispatch',
+  lookup_hash: 'lookup_hash',
   created_at: 'created_at',
   expires_at: 'expires_at',
-  attempts_left: 'attempts_left',
   user_id: 'user_id'
 } as const
 

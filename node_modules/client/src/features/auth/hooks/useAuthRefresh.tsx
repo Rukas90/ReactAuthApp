@@ -1,8 +1,8 @@
 import type { ApiResult } from "@api/Response"
 import useAuthContext from "./useAuthContext"
-import type { AuthResponseDto } from "../dto"
 import { AuthService } from "../services"
 import { useCallback, useRef } from "react"
+import type { AuthResponseDto } from "@project/shared"
 
 const useAuthRefresh = () => {
   const { track, setUser } = useAuthContext()

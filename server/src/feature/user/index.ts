@@ -1,7 +1,2 @@
-export {
-  getUserByEmail,
-  getUserById,
-  createNewUser,
-  verifyUser,
-} from "./service/user.service"
-export { useUserRoutes } from "./controller/user.controller"
+export { default as userService } from "./service/user.service"
+export { default as VerifyEmailDispatch } from "./dispatch/verify-email.dispatch"

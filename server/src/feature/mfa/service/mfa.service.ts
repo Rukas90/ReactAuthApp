@@ -9,95 +9,87 @@ type EnrollmentStatus =
   | "AWAITING_VERIFICATION"
   | "CONFIGURED"
 
-export const getEnrollment = async (
-  userId: string,
-  method: MfaMethod,
-): Promise<MfaEnrollment | null> => {
-  return await database.client.mfaEnrollment.findUnique({
-    where: {
-      user_id_method: {
+const mfaService = {
+  getEnrollment: async (
+    userId: string,
+    method: MfaMethod,
+  ): Promise<MfaEnrollment | null> => {
+    return await database.client.mfaEnrollment.findUnique({
+      where: {
+        user_id_method: {
+          user_id: userId,
+          method: method,
+        },
+      },
+    })
+  },
+  deleteEnrollment: async (userId: string, method: MfaMethod) => {
+    return await database.client.mfaEnrollment.deleteMany({
+      where: {
         user_id: userId,
         method: method,
       },
-    },
-  })
-}
-export const deleteEnrollment = async (userId: string, method: MfaMethod) => {
-  return await database.client.mfaEnrollment.deleteMany({
-    where: {
-      user_id: userId,
-      method: method,
-    },
-  })
-}
-
-export const createNewEnrollment = async (
-  userId: string,
-  method: MfaMethod,
-  expMin: number,
-): Promise<MfaEnrollment> => {
-  const expiration = new Date(Date.now() + expMin * 60 * 1000)
-  return await database.client.mfaEnrollment.upsert({
-    where: {
-      user_id_method: {
+    })
+  },
+  createNewEnrollment: async (
+    userId: string,
+    method: MfaMethod,
+    expMin: number,
+  ): Promise<MfaEnrollment> => {
+    const expiration = new Date(Date.now() + expMin * 60 * 1000)
+    return await database.client.mfaEnrollment.upsert({
+      where: {
+        user_id_method: {
+          user_id: userId,
+          method: method,
+        },
+      },
+      update: {
+        configured: false,
+        expires_At: expiration,
+        credentials: undefined,
+      },
+      create: {
+        user_id: userId,
+        method: method,
+        configured: false,
+        expires_At: expiration,
+      },
+    })
+  },
+  getMfaEnrollments: async (userId: string): Promise<MfaEnrollment[]> => {
+    return await database.client.mfaEnrollment.findMany({
+      where: {
+        user_id: userId,
+      },
+    })
+  },
+  configureEnrollment: async (userId: string, method: MfaMethod) => {
+    return await database.client.mfaEnrollment.updateMany({
+      where: {
         user_id: userId,
         method: method,
       },
-    },
-    update: {
-      configured: false,
-      expires_At: expiration,
-      credentials: undefined,
-    },
-    create: {
-      user_id: userId,
-      method: method,
-      configured: false,
-      expires_At: expiration,
-    },
-  })
+      data: {
+        configured: true,
+        expires_At: undefined,
+      },
+    })
+  },
+  getEnrollmentStatus: (enrollment: MfaEnrollment | null): EnrollmentStatus => {
+    if (!enrollment) {
+      return "NULL"
+    }
+    if (enrollment.configured) {
+      return "CONFIGURED"
+    }
+    if (!enrollment.expires_At) {
+      return "INVALID"
+    }
+    if (new Date() > enrollment.expires_At) {
+      return "EXPIRED"
+    }
+    return "AWAITING_VERIFICATION"
+  },
 }
-
-export const getMfaEnrollments = async (
-  userId: string,
-): Promise<MfaEnrollment[]> => {
-  return await database.client.mfaEnrollment.findMany({
-    where: {
-      user_id: userId,
-    },
-  })
-}
-
-export const configureEnrollment = async (
-  userId: string,
-  method: MfaMethod,
-) => {
-  return await database.client.mfaEnrollment.updateMany({
-    where: {
-      user_id: userId,
-      method: method,
-    },
-    data: {
-      configured: true,
-      expires_At: undefined,
-    },
-  })
-}
-
-export const getEnrollmentStatus = (
-  enrollment: MfaEnrollment | null,
-): EnrollmentStatus => {
-  if (!enrollment) {
-    return "NULL"
-  }
-  if (enrollment.configured) {
-    return "CONFIGURED"
-  }
-  if (!enrollment.expires_At) {
-    return "INVALID"
-  }
-  if (new Date() > enrollment.expires_At) {
-    return "EXPIRED"
-  }
-  return "AWAITING_VERIFICATION"
-}
+export default mfaService
