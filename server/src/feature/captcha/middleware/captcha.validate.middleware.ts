@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from "express"
 import { asyncRoute } from "@shared/util"
 import { CaptchaInvalidTokenError } from "../error/captcha.error"
+import captchaService from "../service/captcha.service"
+import { Result } from "@project/shared"
 
 export const validateCaptchaToken = asyncRoute(
   async (req: Request, _: Response, next: NextFunction) => {
@@ -9,6 +11,12 @@ export const validateCaptchaToken = asyncRoute(
     if (token === null) {
       return next(new CaptchaInvalidTokenError())
     }
-    next()
+    const result = await captchaService.validateToken(token, req.ip as string)
+
+    Result.tap(
+      result,
+      (_) => next(),
+      (error) => next(error),
+    )
   },
 )
