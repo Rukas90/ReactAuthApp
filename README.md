@@ -65,7 +65,7 @@ flowchart TD
     Revoke --> MFA
 
     MFA{"MFA Enabled?"}
-    MFA -->|Yes| Pre2FA["Issue Pre-MFA Token\nlimited scope"]
+    MFA -->|Yes| Pre2FA["Issue Pre-MFA Token, limited scope"]
     MFA -->|No| Session
 
     Register -->|"Created"| Session
@@ -85,4 +85,41 @@ flowchart TD
     end
 
     Cookies --> Success["Authenticated"]
+```
+
+### MFA Authentication (e.g. TOTP)
+
+```mermaid
+flowchart TD
+    Client3(["Client with Pre-MFA Token"])
+    Client3 -->|"POST /totp/login"| Middleware["Validate Scope"]
+    Middleware -->Login["Decrypt Secret<br>& Verify Code"]
+    Login -->|Invalid| ErrCode2["Invalid Code"]
+    Login -->|Valid| Session["Clear Pre-MFA Token<br>Create Full Session"]
+    Session --> Done2["Fully Authenticated"]
+```
+
+### MFA Setup (e.g. TOTP)
+
+```mermaid
+flowchart TD
+    Client(["Authenticated Client"])
+
+    Client -->|"POST /totp/initialize"| Init["Check Enrollment Status"]
+
+    Init -->|"Configured"| ErrAlready["Already Configured"]
+    Init -->|"Expired / Invalid"| Delete["Delete Stale Enrollment"]
+    Delete --> Create
+    Init -->|"Null"| Create["Create Enrollment<br>(15 min expiry)"]
+    Init -->|"Awaiting Verification"| Creds["Get or Generate Secret"]
+
+    Create --> Creds
+    Creds --> Encrypt["Encrypt Secret<br>(AES-256-GCM)"]
+    Encrypt --> QR["Generate QR Code<br>+ Setup Key"]
+    QR --> Client2(["Client receives<br>QR Code & Key"])
+
+    Client2 -->|"POST /totp/confirm"| Confirm["Decrypt Secret<br>& Verify Code"]
+    Confirm -->|Invalid| ErrCode["Invalid Code"]
+    Confirm -->|Valid| Configured["Mark Enrollment<br>as Configured"]
+    Configured --> Done1["TOTP Setup Complete"]
 ```
