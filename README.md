@@ -1,8 +1,8 @@
 <img alt="Logo" src="./resources/gitbanner.jpg" width="100%" />
 
 <div align="center" width="100%">
-<h3>Secure Dashboard<h3>
-<h4>Comprehensive Web Authentication Application<h4>
+<h3>Secure Dashboard</h3>
+<h4>Comprehensive Web Authentication Application</h4>
 </div>
 
 ### Summary
@@ -40,7 +40,21 @@ The client is a responsive React frontend built with Vite and Tailwind CSS, feat
 - BullMq
 - ...
 
-### Authentication Flow
+### Run Locally
+
+This project can be run locally. Below are the steps that are required to run this project on the local machine.
+
+1. Clone repository
+2. Create and configure `.env` files in both Client and Server following `.env.example` as guidelines
+3. Build the shared project using `yarn build`
+4. Install and run Redis in Docker
+   <span style="color: gray;">For more information, visit: https://hub.docker.com/_/redis</span>
+5. Run both Client and Server projects using `yarn dev`
+6. Go to client origin `http://www.127.0.0.1.sslip.io:5173`
+
+### Functionality Flow Graphs
+
+#### Authentication
 
 ```mermaid
 flowchart TD
@@ -87,7 +101,7 @@ flowchart TD
     Cookies --> Success["Authenticated"]
 ```
 
-### MFA Authentication (e.g. TOTP)
+#### MFA Authentication (e.g. TOTP)
 
 ```mermaid
 flowchart TD
@@ -99,7 +113,7 @@ flowchart TD
     Session --> Done2["Fully Authenticated"]
 ```
 
-### MFA Setup (e.g. TOTP)
+#### MFA Setup (e.g. TOTP)
 
 ```mermaid
 flowchart TD
