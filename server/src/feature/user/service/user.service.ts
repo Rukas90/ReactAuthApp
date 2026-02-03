@@ -24,7 +24,6 @@ import { UserInclude } from "prisma/generated/models/User"
 import VerifyEmailDispatch from "../dispatch/verify-email.dispatch"
 import { establishVerification, VerificationJob } from "@features/verification"
 import ms from "ms"
-import { SessionNotFoundError } from "@features/session"
 
 const userService = {
   constants: {
