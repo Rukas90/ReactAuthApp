@@ -19,6 +19,7 @@ model User {
   sessions       UserSession[]
   mfaEnrollments MfaEnrollment[]
   verifications  Verification[]
+  backupCodes    BackupCode[]
 }
 
 model OAuth {
@@ -45,6 +46,16 @@ model MfaEnrollment {
 
   @@unique([user_id, method])
   @@index([user_id])
+}
+
+model BackupCode {
+  id          String    @id @default(uuid())
+  code_hash   String    @unique
+  lookup_hash String    @unique
+  user        User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id     String
+  created_at  DateTime  @default(now())
+  used_at     DateTime?
 }
 
 model RefreshToken {

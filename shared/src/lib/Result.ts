@@ -24,14 +24,14 @@ export const Result = {
   match<T, E, R>(
     result: Result<T, E>,
     onSuccess: (data: T) => R,
-    onFailure: (error: E) => R
+    onFailure: (error: E) => R,
   ): R {
     return result.ok ? onSuccess(result.data) : onFailure(result.error)
   },
   tap<T, E>(
     result: Result<T, E>,
     onSuccess: (data: T) => void,
-    onFailure: (error: E) => void
+    onFailure: (error: E) => void,
   ): void {
     return result.ok ? onSuccess(result.data) : onFailure(result.error)
   },

@@ -13,17 +13,23 @@ import {
 } from "@features/auth"
 import { extractSessionContext } from "@base/feature/session"
 import { generateCsrfCookie } from "@features/csrf"
+import enrollmentRepository from "../repository/enrollments.repository"
 
-export const getUserEnrollments = authRoute(async (req: AuthRequest, res) => {
-  const enrollments = await mfaService.getMfaEnrollments(
-    req.session.auth.userId,
-  )
-  const infos: MfaEnrollmentInfo[] = enrollments.map((e) => ({
-    method: e.method as MfaMethod,
-    configured: e.configured,
-  }))
-  res.ok(infos)
-})
+export const getUserEnrollments = authRoute(
+  async (req: AuthRequest, res, next) => {
+    const enrollments = await enrollmentRepository.findAllByUserId(
+      req.session.auth.userId,
+    )
+    if (!enrollments.ok) {
+      return next(enrollments.error)
+    }
+    const infos: MfaEnrollmentInfo[] = enrollments.data.map((e) => ({
+      method: e.method as MfaMethod,
+      configured: e.configured,
+    }))
+    res.ok(infos)
+  },
+)
 
 export const initializeTotpData = authRoute(async (req, res, next) => {
   Result.tap(
@@ -47,14 +53,16 @@ export const initializeMethodData = async <TData>(
   return await getData(user.data)
 }
 
-export const deleteMfaEnrollment = authRoute(async (req, res) => {
+export const deleteMfaEnrollment = authRoute(async (req, res, next) => {
   const method = req.params.method as MfaMethod
-  const result = await mfaService.deleteEnrollment(
+  const result = await enrollmentRepository.deleteByUserIdAndMethod(
     req.session.auth.userId,
     method,
   )
-
-  if (result.count > 0) {
+  if (!result.ok) {
+    return next(result.error)
+  }
+  if (result.data.count > 0) {
     return res.ok("Enrollment was deleted successfully!")
   }
   res.ok("No enrollment was found. No enrollment of type was deleted.")
@@ -69,7 +77,7 @@ export const confirmTotp = authRoute(async (req, res, next) => {
   if (!verification.ok) {
     return next(verification.error)
   }
-  await mfaService.configureEnrollment(userId, "totp")
+  await enrollmentRepository.markMethodAsConfiguredByUserId(userId, "totp")
   res.ok("Verification was successfull!")
 })
 

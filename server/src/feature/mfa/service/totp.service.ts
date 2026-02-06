@@ -5,7 +5,7 @@ import { config, database } from "@base/app"
 import { CipherGCMOptions, decryptGCM, encryptGCM } from "@shared/security"
 import QRCode from "qrcode"
 import { Result, TotpData, VoidResult } from "@project/shared"
-import { DomainError } from "@shared/errors"
+import { DatabaseError, DomainError } from "@shared/errors"
 import {
   MfaAlreadyConfiguredError,
   MfaNotFoundError,
@@ -17,6 +17,7 @@ import {
   MfaDecryptionError,
 } from "../error/mfa.error"
 import logger from "@shared/logger"
+import enrollmentRepository from "../repository/enrollments.repository"
 
 type TotpCredentials = {
   secret_enc: string
@@ -115,9 +116,18 @@ const generateQRCodeURi = async (
 }
 
 const totpService = {
-  getTotpData: async (user: User): Promise<Result<TotpData, DomainError>> => {
-    let enrollment = await mfaService.getEnrollment(user.id, "totp")
+  getTotpData: async (
+    user: User,
+  ): Promise<Result<TotpData, DomainError | DatabaseError>> => {
+    const result = await enrollmentRepository.findAllByUserIdAndMethod(
+      user.id,
+      "totp",
+    )
 
+    if (!result.ok) {
+      return result
+    }
+    let enrollment: MfaEnrollment | null = result.data
     const status = mfaService.getEnrollmentStatus(enrollment)
 
     switch (status) {
@@ -137,11 +147,15 @@ const totpService = {
         break
     }
     if (!enrollment) {
-      enrollment = await mfaService.createNewEnrollment(
+      const newEnrollment = await enrollmentRepository.create(
         user.id,
         "totp",
         SETUP_EXPIRATION_MINUTES,
       )
+      if (!newEnrollment.ok) {
+        return newEnrollment
+      }
+      enrollment = newEnrollment.data
     }
     const { credentials, generatedSecret } = await getCredentials(
       user,
@@ -177,13 +191,19 @@ const totpService = {
     userId: string,
     code: string,
     options?: { ensureConfigured?: boolean },
-  ): Promise<VoidResult<DomainError>> => {
-    let enrollment = await mfaService.getEnrollment(userId, "totp")
+  ): Promise<VoidResult<DomainError | DatabaseError>> => {
+    let enrollment = await enrollmentRepository.findAllByUserIdAndMethod(
+      userId,
+      "totp",
+    )
 
-    if (!enrollment) {
+    if (!enrollment.ok) {
+      return enrollment
+    }
+    if (!enrollment.data) {
       return VoidResult.error(new MfaNotFoundError())
     }
-    const status = mfaService.getEnrollmentStatus(enrollment)
+    const status = mfaService.getEnrollmentStatus(enrollment.data)
 
     switch (status) {
       case "AWAITING_VERIFICATION":
@@ -199,7 +219,7 @@ const totpService = {
     if (status === "AWAITING_VERIFICATION" && options?.ensureConfigured) {
       return VoidResult.error(new MfaVerificationError())
     }
-    const credentials = enrollment.credentials
+    const credentials = enrollment.data.credentials
 
     if (!credentials) {
       return VoidResult.error(new MfaCredentialsMissingError())

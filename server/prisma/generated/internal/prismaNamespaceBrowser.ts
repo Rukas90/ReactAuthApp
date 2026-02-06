@@ -54,6 +54,7 @@ export const ModelName = {
   User: 'User',
   OAuth: 'OAuth',
   MfaEnrollment: 'MfaEnrollment',
+  BackupCode: 'BackupCode',
   RefreshToken: 'RefreshToken',
   UserSession: 'UserSession',
   Verification: 'Verification'
@@ -108,6 +109,18 @@ export const MfaEnrollmentScalarFieldEnum = {
 } as const
 
 export type MfaEnrollmentScalarFieldEnum = (typeof MfaEnrollmentScalarFieldEnum)[keyof typeof MfaEnrollmentScalarFieldEnum]
+
+
+export const BackupCodeScalarFieldEnum = {
+  id: 'id',
+  code_hash: 'code_hash',
+  lookup_hash: 'lookup_hash',
+  user_id: 'user_id',
+  created_at: 'created_at',
+  used_at: 'used_at'
+} as const
+
+export type BackupCodeScalarFieldEnum = (typeof BackupCodeScalarFieldEnum)[keyof typeof BackupCodeScalarFieldEnum]
 
 
 export const RefreshTokenScalarFieldEnum = {

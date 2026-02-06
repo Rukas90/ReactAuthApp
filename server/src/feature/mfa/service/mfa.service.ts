@@ -1,6 +1,4 @@
-import { database } from "@base/app"
 import { MfaEnrollment } from "@prisma/client"
-import { MfaMethod } from "@project/shared"
 
 type EnrollmentStatus =
   | "NULL"
@@ -10,72 +8,6 @@ type EnrollmentStatus =
   | "CONFIGURED"
 
 const mfaService = {
-  getEnrollment: async (
-    userId: string,
-    method: MfaMethod,
-  ): Promise<MfaEnrollment | null> => {
-    return await database.client.mfaEnrollment.findUnique({
-      where: {
-        user_id_method: {
-          user_id: userId,
-          method: method,
-        },
-      },
-    })
-  },
-  deleteEnrollment: async (userId: string, method: MfaMethod) => {
-    return await database.client.mfaEnrollment.deleteMany({
-      where: {
-        user_id: userId,
-        method: method,
-      },
-    })
-  },
-  createNewEnrollment: async (
-    userId: string,
-    method: MfaMethod,
-    expMin: number,
-  ): Promise<MfaEnrollment> => {
-    const expiration = new Date(Date.now() + expMin * 60 * 1000)
-    return await database.client.mfaEnrollment.upsert({
-      where: {
-        user_id_method: {
-          user_id: userId,
-          method: method,
-        },
-      },
-      update: {
-        configured: false,
-        expires_At: expiration,
-        credentials: undefined,
-      },
-      create: {
-        user_id: userId,
-        method: method,
-        configured: false,
-        expires_At: expiration,
-      },
-    })
-  },
-  getMfaEnrollments: async (userId: string): Promise<MfaEnrollment[]> => {
-    return await database.client.mfaEnrollment.findMany({
-      where: {
-        user_id: userId,
-      },
-    })
-  },
-  configureEnrollment: async (userId: string, method: MfaMethod) => {
-    return await database.client.mfaEnrollment.updateMany({
-      where: {
-        user_id: userId,
-        method: method,
-      },
-      data: {
-        configured: true,
-        expires_At: undefined,
-      },
-    })
-  },
   getEnrollmentStatus: (enrollment: MfaEnrollment | null): EnrollmentStatus => {
     if (!enrollment) {
       return "NULL"

@@ -55,6 +55,11 @@ export type OAuth = Prisma.OAuthModel
  */
 export type MfaEnrollment = Prisma.MfaEnrollmentModel
 /**
+ * Model BackupCode
+ * 
+ */
+export type BackupCode = Prisma.BackupCodeModel
+/**
  * Model RefreshToken
  * 
  */

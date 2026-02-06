@@ -187,6 +187,7 @@ export type UserWhereInput = {
   sessions?: Prisma.UserSessionListRelationFilter
   mfaEnrollments?: Prisma.MfaEnrollmentListRelationFilter
   verifications?: Prisma.VerificationListRelationFilter
+  backupCodes?: Prisma.BackupCodeListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -200,6 +201,7 @@ export type UserOrderByWithRelationInput = {
   sessions?: Prisma.UserSessionOrderByRelationAggregateInput
   mfaEnrollments?: Prisma.MfaEnrollmentOrderByRelationAggregateInput
   verifications?: Prisma.VerificationOrderByRelationAggregateInput
+  backupCodes?: Prisma.BackupCodeOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -216,6 +218,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   sessions?: Prisma.UserSessionListRelationFilter
   mfaEnrollments?: Prisma.MfaEnrollmentListRelationFilter
   verifications?: Prisma.VerificationListRelationFilter
+  backupCodes?: Prisma.BackupCodeListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -251,6 +254,7 @@ export type UserCreateInput = {
   sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
   mfaEnrollments?: Prisma.MfaEnrollmentCreateNestedManyWithoutUserInput
   verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
+  backupCodes?: Prisma.BackupCodeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -264,6 +268,7 @@ export type UserUncheckedCreateInput = {
   sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
   mfaEnrollments?: Prisma.MfaEnrollmentUncheckedCreateNestedManyWithoutUserInput
   verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
+  backupCodes?: Prisma.BackupCodeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -277,6 +282,7 @@ export type UserUpdateInput = {
   sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
   mfaEnrollments?: Prisma.MfaEnrollmentUpdateManyWithoutUserNestedInput
   verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
+  backupCodes?: Prisma.BackupCodeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -290,6 +296,7 @@ export type UserUncheckedUpdateInput = {
   sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
   mfaEnrollments?: Prisma.MfaEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
+  backupCodes?: Prisma.BackupCodeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -389,6 +396,20 @@ export type UserUpdateOneRequiredWithoutMfaEnrollmentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMfaEnrollmentsInput, Prisma.UserUpdateWithoutMfaEnrollmentsInput>, Prisma.UserUncheckedUpdateWithoutMfaEnrollmentsInput>
 }
 
+export type UserCreateNestedOneWithoutBackupCodesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBackupCodesInput, Prisma.UserUncheckedCreateWithoutBackupCodesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBackupCodesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutBackupCodesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBackupCodesInput, Prisma.UserUncheckedCreateWithoutBackupCodesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBackupCodesInput
+  upsert?: Prisma.UserUpsertWithoutBackupCodesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBackupCodesInput, Prisma.UserUpdateWithoutBackupCodesInput>, Prisma.UserUncheckedUpdateWithoutBackupCodesInput>
+}
+
 export type UserCreateNestedOneWithoutRefreshTokensInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutRefreshTokensInput, Prisma.UserUncheckedCreateWithoutRefreshTokensInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutRefreshTokensInput
@@ -441,6 +462,7 @@ export type UserCreateWithoutOauthsInput = {
   sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
   mfaEnrollments?: Prisma.MfaEnrollmentCreateNestedManyWithoutUserInput
   verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
+  backupCodes?: Prisma.BackupCodeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutOauthsInput = {
@@ -453,6 +475,7 @@ export type UserUncheckedCreateWithoutOauthsInput = {
   sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
   mfaEnrollments?: Prisma.MfaEnrollmentUncheckedCreateNestedManyWithoutUserInput
   verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
+  backupCodes?: Prisma.BackupCodeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutOauthsInput = {
@@ -481,6 +504,7 @@ export type UserUpdateWithoutOauthsInput = {
   sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
   mfaEnrollments?: Prisma.MfaEnrollmentUpdateManyWithoutUserNestedInput
   verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
+  backupCodes?: Prisma.BackupCodeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOauthsInput = {
@@ -493,6 +517,7 @@ export type UserUncheckedUpdateWithoutOauthsInput = {
   sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
   mfaEnrollments?: Prisma.MfaEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
+  backupCodes?: Prisma.BackupCodeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutMfaEnrollmentsInput = {
@@ -505,6 +530,7 @@ export type UserCreateWithoutMfaEnrollmentsInput = {
   oauths?: Prisma.OAuthCreateNestedManyWithoutUserInput
   sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
   verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
+  backupCodes?: Prisma.BackupCodeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutMfaEnrollmentsInput = {
@@ -517,6 +543,7 @@ export type UserUncheckedCreateWithoutMfaEnrollmentsInput = {
   oauths?: Prisma.OAuthUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
   verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
+  backupCodes?: Prisma.BackupCodeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutMfaEnrollmentsInput = {
@@ -545,6 +572,7 @@ export type UserUpdateWithoutMfaEnrollmentsInput = {
   oauths?: Prisma.OAuthUpdateManyWithoutUserNestedInput
   sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
   verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
+  backupCodes?: Prisma.BackupCodeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMfaEnrollmentsInput = {
@@ -556,6 +584,75 @@ export type UserUncheckedUpdateWithoutMfaEnrollmentsInput = {
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   oauths?: Prisma.OAuthUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
+  backupCodes?: Prisma.BackupCodeUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutBackupCodesInput = {
+  id?: string
+  email: string
+  password_hash?: string | null
+  is_verified: boolean
+  created_at?: Date | string
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  oauths?: Prisma.OAuthCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  mfaEnrollments?: Prisma.MfaEnrollmentCreateNestedManyWithoutUserInput
+  verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutBackupCodesInput = {
+  id?: string
+  email: string
+  password_hash?: string | null
+  is_verified: boolean
+  created_at?: Date | string
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  oauths?: Prisma.OAuthUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  mfaEnrollments?: Prisma.MfaEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutBackupCodesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutBackupCodesInput, Prisma.UserUncheckedCreateWithoutBackupCodesInput>
+}
+
+export type UserUpsertWithoutBackupCodesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutBackupCodesInput, Prisma.UserUncheckedUpdateWithoutBackupCodesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutBackupCodesInput, Prisma.UserUncheckedCreateWithoutBackupCodesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutBackupCodesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutBackupCodesInput, Prisma.UserUncheckedUpdateWithoutBackupCodesInput>
+}
+
+export type UserUpdateWithoutBackupCodesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  oauths?: Prisma.OAuthUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  mfaEnrollments?: Prisma.MfaEnrollmentUpdateManyWithoutUserNestedInput
+  verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutBackupCodesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  oauths?: Prisma.OAuthUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  mfaEnrollments?: Prisma.MfaEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -569,6 +666,7 @@ export type UserCreateWithoutRefreshTokensInput = {
   sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
   mfaEnrollments?: Prisma.MfaEnrollmentCreateNestedManyWithoutUserInput
   verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
+  backupCodes?: Prisma.BackupCodeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutRefreshTokensInput = {
@@ -581,6 +679,7 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
   sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
   mfaEnrollments?: Prisma.MfaEnrollmentUncheckedCreateNestedManyWithoutUserInput
   verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
+  backupCodes?: Prisma.BackupCodeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutRefreshTokensInput = {
@@ -609,6 +708,7 @@ export type UserUpdateWithoutRefreshTokensInput = {
   sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
   mfaEnrollments?: Prisma.MfaEnrollmentUpdateManyWithoutUserNestedInput
   verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
+  backupCodes?: Prisma.BackupCodeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRefreshTokensInput = {
@@ -621,6 +721,7 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
   sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
   mfaEnrollments?: Prisma.MfaEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
+  backupCodes?: Prisma.BackupCodeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -633,6 +734,7 @@ export type UserCreateWithoutSessionsInput = {
   oauths?: Prisma.OAuthCreateNestedManyWithoutUserInput
   mfaEnrollments?: Prisma.MfaEnrollmentCreateNestedManyWithoutUserInput
   verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
+  backupCodes?: Prisma.BackupCodeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -645,6 +747,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   oauths?: Prisma.OAuthUncheckedCreateNestedManyWithoutUserInput
   mfaEnrollments?: Prisma.MfaEnrollmentUncheckedCreateNestedManyWithoutUserInput
   verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
+  backupCodes?: Prisma.BackupCodeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -673,6 +776,7 @@ export type UserUpdateWithoutSessionsInput = {
   oauths?: Prisma.OAuthUpdateManyWithoutUserNestedInput
   mfaEnrollments?: Prisma.MfaEnrollmentUpdateManyWithoutUserNestedInput
   verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
+  backupCodes?: Prisma.BackupCodeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -685,6 +789,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   oauths?: Prisma.OAuthUncheckedUpdateManyWithoutUserNestedInput
   mfaEnrollments?: Prisma.MfaEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
+  backupCodes?: Prisma.BackupCodeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutVerificationsInput = {
@@ -697,6 +802,7 @@ export type UserCreateWithoutVerificationsInput = {
   oauths?: Prisma.OAuthCreateNestedManyWithoutUserInput
   sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
   mfaEnrollments?: Prisma.MfaEnrollmentCreateNestedManyWithoutUserInput
+  backupCodes?: Prisma.BackupCodeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutVerificationsInput = {
@@ -709,6 +815,7 @@ export type UserUncheckedCreateWithoutVerificationsInput = {
   oauths?: Prisma.OAuthUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
   mfaEnrollments?: Prisma.MfaEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  backupCodes?: Prisma.BackupCodeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutVerificationsInput = {
@@ -737,6 +844,7 @@ export type UserUpdateWithoutVerificationsInput = {
   oauths?: Prisma.OAuthUpdateManyWithoutUserNestedInput
   sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
   mfaEnrollments?: Prisma.MfaEnrollmentUpdateManyWithoutUserNestedInput
+  backupCodes?: Prisma.BackupCodeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutVerificationsInput = {
@@ -749,6 +857,7 @@ export type UserUncheckedUpdateWithoutVerificationsInput = {
   oauths?: Prisma.OAuthUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
   mfaEnrollments?: Prisma.MfaEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  backupCodes?: Prisma.BackupCodeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -762,6 +871,7 @@ export type UserCountOutputType = {
   sessions: number
   mfaEnrollments: number
   verifications: number
+  backupCodes: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -770,6 +880,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   sessions?: boolean | UserCountOutputTypeCountSessionsArgs
   mfaEnrollments?: boolean | UserCountOutputTypeCountMfaEnrollmentsArgs
   verifications?: boolean | UserCountOutputTypeCountVerificationsArgs
+  backupCodes?: boolean | UserCountOutputTypeCountBackupCodesArgs
 }
 
 /**
@@ -817,6 +928,13 @@ export type UserCountOutputTypeCountVerificationsArgs<ExtArgs extends runtime.Ty
   where?: Prisma.VerificationWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountBackupCodesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BackupCodeWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -829,6 +947,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   mfaEnrollments?: boolean | Prisma.User$mfaEnrollmentsArgs<ExtArgs>
   verifications?: boolean | Prisma.User$verificationsArgs<ExtArgs>
+  backupCodes?: boolean | Prisma.User$backupCodesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -863,6 +982,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   mfaEnrollments?: boolean | Prisma.User$mfaEnrollmentsArgs<ExtArgs>
   verifications?: boolean | Prisma.User$verificationsArgs<ExtArgs>
+  backupCodes?: boolean | Prisma.User$backupCodesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -876,6 +996,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     sessions: Prisma.$UserSessionPayload<ExtArgs>[]
     mfaEnrollments: Prisma.$MfaEnrollmentPayload<ExtArgs>[]
     verifications: Prisma.$VerificationPayload<ExtArgs>[]
+    backupCodes: Prisma.$BackupCodePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1282,6 +1403,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   mfaEnrollments<T extends Prisma.User$mfaEnrollmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$mfaEnrollmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MfaEnrollmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   verifications<T extends Prisma.User$verificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$verificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VerificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  backupCodes<T extends Prisma.User$backupCodesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$backupCodesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BackupCodePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1821,6 +1943,30 @@ export type User$verificationsArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.VerificationScalarFieldEnum | Prisma.VerificationScalarFieldEnum[]
+}
+
+/**
+ * User.backupCodes
+ */
+export type User$backupCodesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BackupCode
+   */
+  select?: Prisma.BackupCodeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BackupCode
+   */
+  omit?: Prisma.BackupCodeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BackupCodeInclude<ExtArgs> | null
+  where?: Prisma.BackupCodeWhereInput
+  orderBy?: Prisma.BackupCodeOrderByWithRelationInput | Prisma.BackupCodeOrderByWithRelationInput[]
+  cursor?: Prisma.BackupCodeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BackupCodeScalarFieldEnum | Prisma.BackupCodeScalarFieldEnum[]
 }
 
 /**

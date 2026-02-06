@@ -387,6 +387,7 @@ export const ModelName = {
   User: 'User',
   OAuth: 'OAuth',
   MfaEnrollment: 'MfaEnrollment',
+  BackupCode: 'BackupCode',
   RefreshToken: 'RefreshToken',
   UserSession: 'UserSession',
   Verification: 'Verification'
@@ -405,7 +406,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "oAuth" | "mfaEnrollment" | "refreshToken" | "userSession" | "verification"
+    modelProps: "user" | "oAuth" | "mfaEnrollment" | "backupCode" | "refreshToken" | "userSession" | "verification"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -628,6 +629,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.MfaEnrollmentCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.MfaEnrollmentCountAggregateOutputType> | number
+        }
+      }
+    }
+    BackupCode: {
+      payload: Prisma.$BackupCodePayload<ExtArgs>
+      fields: Prisma.BackupCodeFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BackupCodeFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BackupCodePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BackupCodeFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BackupCodePayload>
+        }
+        findFirst: {
+          args: Prisma.BackupCodeFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BackupCodePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BackupCodeFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BackupCodePayload>
+        }
+        findMany: {
+          args: Prisma.BackupCodeFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BackupCodePayload>[]
+        }
+        create: {
+          args: Prisma.BackupCodeCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BackupCodePayload>
+        }
+        createMany: {
+          args: Prisma.BackupCodeCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BackupCodeCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BackupCodePayload>[]
+        }
+        delete: {
+          args: Prisma.BackupCodeDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BackupCodePayload>
+        }
+        update: {
+          args: Prisma.BackupCodeUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BackupCodePayload>
+        }
+        deleteMany: {
+          args: Prisma.BackupCodeDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BackupCodeUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BackupCodeUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BackupCodePayload>[]
+        }
+        upsert: {
+          args: Prisma.BackupCodeUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BackupCodePayload>
+        }
+        aggregate: {
+          args: Prisma.BackupCodeAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBackupCode>
+        }
+        groupBy: {
+          args: Prisma.BackupCodeGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BackupCodeGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BackupCodeCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BackupCodeCountAggregateOutputType> | number
         }
       }
     }
@@ -927,6 +1002,18 @@ export const MfaEnrollmentScalarFieldEnum = {
 export type MfaEnrollmentScalarFieldEnum = (typeof MfaEnrollmentScalarFieldEnum)[keyof typeof MfaEnrollmentScalarFieldEnum]
 
 
+export const BackupCodeScalarFieldEnum = {
+  id: 'id',
+  code_hash: 'code_hash',
+  lookup_hash: 'lookup_hash',
+  user_id: 'user_id',
+  created_at: 'created_at',
+  used_at: 'used_at'
+} as const
+
+export type BackupCodeScalarFieldEnum = (typeof BackupCodeScalarFieldEnum)[keyof typeof BackupCodeScalarFieldEnum]
+
+
 export const RefreshTokenScalarFieldEnum = {
   id: 'id',
   family_id: 'family_id',
@@ -1179,6 +1266,7 @@ export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   oAuth?: Prisma.OAuthOmit
   mfaEnrollment?: Prisma.MfaEnrollmentOmit
+  backupCode?: Prisma.BackupCodeOmit
   refreshToken?: Prisma.RefreshTokenOmit
   userSession?: Prisma.UserSessionOmit
   verification?: Prisma.VerificationOmit
